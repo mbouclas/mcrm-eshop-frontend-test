@@ -1,0 +1,21 @@
+---
+import Layout from '@layouts/Layout.astro';
+import LoginForm from '@partials/login-form.astro';
+---
+
+<Layout title="Checkout" >
+
+<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8" x-data="user">
+
+  <template x-if="!$store.user.user">
+  <LoginForm></LoginForm>
+  </template>
+
+  <template x-if="$store.user.user">
+    <p>Welcome <span x-text="$store.user.user.firstName"></span></p>
+  </template>
+  </div>
+
+<script src="../js/user.js"></script>
+
+</Layout>

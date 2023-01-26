@@ -1,0 +1,59 @@
+---
+import { ProductsService } from '@services/products.service';
+import { moneyFormat } from '@helpers/money-format';
+import AddToCartButton from '@partials/add-to-cart-button.astro';
+
+const all = await (new ProductsService).load();
+const products = all.filter(item => item.variants)
+.map(item => item)
+.filter(item => item.variants.find(i => i.color))
+
+
+function getProductColors(variants) {
+    const colors = [];
+    variants.forEach(variant => {
+        if (colors.indexOf(variant.color) !== -1) {return}
+        
+        colors.push(variant.color);
+    });
+
+    return colors
+}
+---
+
+<div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
+<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+
+
+{products.map(item => (
+    <div class="group relative flex flex-col rounded-lg border border-gray-200 bg-white">
+                  <div class="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
+                    <img src={item.thumb && item.thumb.url} alt={item.title} class="h-full w-full object-cover object-center sm:h-full sm:w-full">
+                  </div>
+                  <div class="flex flex-1 flex-col space-y-2 p-4">
+                    <h3 class="text-sm font-medium text-gray-900">
+                      <a href={`/product/${item.sku}/${item.slug}`}>
+                        <span aria-hidden="true" class=" inset-0"></span>
+                        {item.title}
+                      </a>
+                    </h3>
+                    <p class="text-sm text-gray-500">{item.description}</p>
+                    <div class="flex flex-1 flex-col justify-end">
+                        {item.variants && item.variants.length > 0 && (
+                      <p class="text-sm italic text-gray-500">{getProductColors(item.variants).length} variants</p>
+                      <select>
+                        {item.variants.map(variant => (
+                            <option>{variant.name} - {variant.color}</option>
+                        ))}
+                        </select>
+                      )}
+                      <p class="text-base font-medium text-gray-900">{moneyFormat(item.price)}</p>
+                      <AddToCartButton item={item}></AddToCartButton>
+                    </div>
+                  </div>
+                </div>
+ 
+))}
+
+</div>
+</div>

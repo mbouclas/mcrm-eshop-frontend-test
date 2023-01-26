@@ -1,0 +1,16 @@
+<div x-data>
+
+            <p><span x-text="$store.cart.items.length"></span> Items</p>
+            <p>€<span x-text="$store.cart.total"></span></p>
+    <template x-for="item in $store.cart.items">
+        <p>
+            <span x-text="item.quantity"></span>x 
+            <span x-text="item.title"></span> 
+            <a href="" x-on:click.prevent="removeItem(item.uuid)">-</a>
+        </p>
+    </template>
+
+    <button type="button" x-on:click="clear()">Clear Cart</button>
+    <p><a href="/cart">View Cart</a></p>
+    <p><a href="/checkout">Checkout</a></p>
+</div>

@@ -1,0 +1,11 @@
+---
+
+---
+<div x-data="app">
+<template x-if="$store.user.user">
+    <a href="" @click.prevent="logout()"><span x-text="$store.user.user.firstName"></span> Logout</a>
+</template>
+<template x-if="!$store.user.user">
+<a href="/login">Login</a>
+</template>
+</div>

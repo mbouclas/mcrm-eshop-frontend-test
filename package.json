@@ -1,0 +1,42 @@
+{
+  "name": "@example/basics",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dump:data": "node --experimental-modules scripts/index.mjs",
+    "dev": "astro dev",
+    "start": "astro dev --experimental-integrations",
+    "build": "npm run dump:data && astro build --experimental-integrations",
+    "build:local": "astro build --experimental-integrations",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/alpinejs": "^0.1.2",
+    "@astrojs/partytown": "^1.0.2",
+    "@types/alpinejs": "^3.7.1",
+    "alpinejs": "^3.10.5",
+    "astro-critters": "^1.1.22",
+    "tailwindcss": "^3.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^3.0.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.8",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.14",
+    "astro": "^2.0.1",
+    "astro-compress": "^1.1.21",
+    "astro-icon": "^0.8.0",
+    "astro-imagetools": "^0.7.6",
+    "astro-seo": "^0.6.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "gzipper": "^7.2.0",
+    "lodash": "^4.17.21",
+    "postcss": "^8.4.21"
+  }
+}
