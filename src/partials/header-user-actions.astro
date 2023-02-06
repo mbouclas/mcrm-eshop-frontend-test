@@ -1,11 +1,495 @@
 ---
-
+import "../input.css"
 ---
-<div x-data="app">
-<template x-if="$store.user.user">
-    <a href="" @click.prevent="logout()"><span x-text="$store.user.user.firstName"></span> Logout</a>
-</template>
-<template x-if="!$store.user.user">
-<a href="/login">Login</a>
-</template>
-</div>
+
+<!-- START HEADER -->
+<header class="hidden lg:block">
+  <nav class="w-full py-2 bg-info">
+    <div class="container mx-auto 2xl:px-20" x-data="app">
+      <ul class="flex gap-4">
+        <li class="font-light text-white">
+          <a href="">Home</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="">Digital Marketing</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="">Corporate Pricing</a>
+        </li>
+        <li class="ml-auto">
+          <template x-if="$store.user.user">
+            <a href="" @click.prevent="logout()"
+              ><span x-text="$store.user.user.firstName"></span> Logout</a
+            >
+          </template>
+          <template x-if="!$store.user.user">
+            <a href="/login">Login</a>
+          </template>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <nav class="py-4">
+    <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
+      <div class="logo">
+        <a href="/"
+          ><img
+            src="/public/logo.png"
+            alt=""
+            class="w-40 h-24 -ml-5"
+            srcset=""
+          />
+        </a>
+      </div>
+
+      <div class="flex-grow">
+        <div class="relative">
+          <input
+            type="text"
+            class="bg-white px-3 py-2.5 w-full border rounded-2xl"
+          />
+        </div>
+      </div>
+      <div class="flex items-center flex-none gap-4">
+        <!-- START LINK ITEM -->
+        <div class="flex items-center gap-2">
+          <div>
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.5472 4C9.31915 4 5.04166 8.27749 5.04166 13.5055C5.04166 15.4066 5.59615 17.2285 6.62592 18.7336L5.04166 22.4566C4.88324 22.7734 5.20009 23.0903 5.59615 23.0111L9.31915 21.4268C10.8242 22.4566 12.6461 23.0111 14.5472 23.0111C19.7752 23.0111 24.0527 18.7336 24.0527 13.5055C24.0527 8.27749 19.7752 4 14.5472 4Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <ellipse
+                cx="14.548"
+                cy="17.4679"
+                rx="0.792128"
+                ry="0.792127"
+                fill="black"></ellipse>
+              <path
+                d="M14.5474 15.4073L14.4682 13.8231C15.7356 13.8231 16.8446 12.7933 16.8446 11.4467C16.8446 10.1001 15.8148 9.07031 14.4682 9.07031C13.1216 9.07031 12.0918 10.1001 12.0918 11.4467H12.171C12.171 10.1001 13.28 9.07031 14.5474 9.07031C15.8148 9.07031 16.9238 10.1793 16.9238 11.4467C16.9238 12.7933 15.894 13.8231 14.5474 13.8231V15.4073Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <a class="text-xs cursor-pointer hover:underline">
+            <p class="text-sm">Help is Here</p>
+            <span>1.866.507.7454</span>
+          </a>
+        </div>
+        <!-- END LINK ITEM -->
+        <!-- START LINK ITEM -->
+        <div class="relative flex items-center gap-2 dropdown" tabindex="1">
+          <div>
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="13.4197"
+                cy="10.8738"
+                r="4.37382"
+                stroke="black"
+                stroke-width="1.5"></circle>
+              <path
+                d="M5.75586 22.5005C5.75586 21.5482 5.9541 20.6053 6.33925 19.7255C6.7244 18.8457 7.28893 18.0463 8.0006 17.3729C8.71227 16.6996 9.55715 16.1654 10.487 15.801C11.4168 15.4366 12.4134 15.249 13.4199 15.249C14.4263 15.249 15.4229 15.4366 16.3528 15.801C17.2826 16.1654 18.1275 16.6996 18.8392 17.3729C19.5509 18.0463 20.1154 18.8457 20.5005 19.7255C20.8857 20.6053 21.0839 21.5482 21.0839 22.5005"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <a class="text-xs cursor-pointer hover:underline">
+            <p class="text-sm">Link</p>
+          </a>
+          <div
+            class="absolute w-full bg-transparent bg-white dropdown-item top-4 h-80"
+          >
+            <div
+              class="absolute z-40 w-full h-auto bg-white border border-gray-200 shadow top-10 -left-28"
+            >
+              <div class="relative w-full">
+                <div
+                  class="absolute h-5 w-5 transform rotate-45 bg-white left-1/2 -translate-x-1/2 -top-2.5 border-t border-l"
+                >
+                </div>
+
+                <div class="p-8">
+                  <p>
+                    Save your designs, easily track your orders, and get access
+                    to exclusive member benefits.
+                  </p>
+
+                  <div class="flex w-full py-3">
+                    <a
+                      href=""
+                      class="w-full px-5 py-3 text-lg text-center text-white bg-primary rounded-3xl"
+                      >Sign in
+                    </a>
+                  </div>
+
+                  <div class="flex w-full py-3">
+                    <a
+                      href=""
+                      class="w-full px-5 py-3 text-lg text-center border border-primary text-primary rounded-3xl"
+                      >Sign in
+                    </a>
+                  </div>
+
+                  <div class="w-full py-3 border-b border-gray-200"></div>
+
+                  <div
+                    class="flex items-center justify-between w-full py-3 pt-6"
+                  >
+                    <img
+                      src="data:image/svg+xml;utf8,%3Csvg%20width%3D%2233%22%20height%3D%2232%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M15.745%203.791a.75.75%200%200%200-.49%200l-12.997%204.5a.752.752%200%200%200-.508.7V23.5c0%20.32.203.604.505.709l12.993%204.497a.747.747%200%200%200%20.492.005l5.997-2a.75.75%200%200%200-.474-1.422l-5.013%201.67V13.874l11.5-3.833V17a.75.75%200%200%200%201.5%200V9a.75.75%200%200%200-.521-.714L15.745%203.79ZM3.25%2010.067l11.496%204.139.004.001v12.74l-11.5-3.981V10.067Zm19.027.217%203.892-1.297L15.5%205.294l-3.873%201.34%209.94%203.406.71.243Zm-2.345.781-4.673%201.558L4.793%209l4.531-1.569.228.079%2010.38%203.555Zm5.883%208.9a2.37%202.37%200%201%200%20.523%204.71%202.37%202.37%200%200%200-.523-4.71Zm-3.585%202.782a3.87%203.87%200%201%201%207.28%201.36l1.54%201.232a.75.75%200%201%201-.937%201.17l-1.54-1.231a3.87%203.87%200%200%201-6.343-2.53Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E"
+                      alt=""
+                    />
+                    <span class="text-sm font-bold"
+                      >Find and track your order</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END LINK ITEM -->
+
+        <!-- START LINK ITEM -->
+        <div class="flex items-center gap-2">
+          <div>
+            <svg
+              width="28"
+              height="29"
+              viewBox="0 0 28 29"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              ><g clip-path="url(#clip0)"
+                ><path
+                  d="M22 8.09863H6V24.7986H22V8.09863Z"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-miterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path><path
+                  d="M11.5 10.6002V5.5002C11.5 4.8002 12.1 4.2002 12.8 4.2002H15.4C16.1 4.2002 16.7 4.8002 16.7 5.5002V10.7002"
+                  stroke="black"
+                  stroke-width="1.5"
+                  stroke-miterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </g><defs
+                ><clipPath id="clip0"
+                  ><rect
+                    width="24"
+                    height="24"
+                    fill="white"
+                    transform="translate(2 2.5)"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <a class="text-xs cursor-pointer hover:underline">
+            <p class="text-sm">Cart</p>
+          </a>
+        </div>
+        <!-- END LINK ITEM -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- START CATEGORIES NAV -->
+  <nav class="w-full py-4">
+    <div class="container px-3 mx-auto 2xl:px-20">
+      <ul class="flex items-center w-full border-b">
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+          tabindex="1"
+        >
+          <a href="">All Categories</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b list-menu hover:border-primary"
+        >
+          <a href="">Clothing</a>
+          <div
+            class="absolute left-0 top-auto z-50 w-full h-64 mt-5 text-black bg-white megamenu"
+          >
+            <div class="container px-4 py-4 mx-auto lg:px-20">
+              <div class="grid grid-cols-1 lg:grid-cols-6">
+                <!-- START ITEM       -->
+                <div class="">
+                  <h4 class="mb-4 font-medium">Shirts & Tops</h4>
+                  <ul class="flex flex-col gap-4 text-sm">
+                    <li>
+                      <a href="#" class="hover:text-primary">T-shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Polo shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Dress Shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Tank Tops</a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- END ITEM -->
+
+                <!-- START ITEM       -->
+                <div class="">
+                  <h4 class="mb-4 font-medium">Outer wear</h4>
+                  <ul class="flex flex-col gap-4 text-sm">
+                    <li>
+                      <a href="#" class="hover:text-primary">T-shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Polo shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Dress Shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Tank Tops</a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- END ITEM -->
+
+                <!-- START ITEM       -->
+                <div class="">
+                  <h4 class="mb-4 font-medium">Hats</h4>
+                  <ul class="flex flex-col gap-4 text-sm">
+                    <li>
+                      <a href="#" class="hover:text-primary">T-shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Polo shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Dress Shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Tank Tops</a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- END ITEM -->
+
+                <!-- START ITEM       -->
+                <div class="">
+                  <h4 class="mb-4 font-medium">Other Clothing</h4>
+                  <ul class="flex flex-col gap-4 text-sm">
+                    <li>
+                      <a href="#" class="hover:text-primary">T-shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Polo shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Dress Shirts</a>
+                    </li>
+                    <li>
+                      <a href="#">Tank Tops</a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- END ITEM -->
+              </div>
+            </div>
+          </div>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Bags</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Drinkware</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Writing & Office</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Technology</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">HouseHold & Auto</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Sports & Leisure</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Treats</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Deals</a>
+        </li>
+        <li
+          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
+        >
+          <a href="">Collections</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- END CATEGORIES NAV -->
+</header>
+<!-- END HEADER -->
+
+<!-- START MOBILE -->
+<header class="py-3 lg:hidden">
+  <div class="container flex items-center justify-between px-4">
+    <div class="flex items-center gap-3">
+      <span class="navburger"
+        ><svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="5.75"
+            y1="9.25"
+            x2="18.25"
+            y2="9.25"
+            stroke="black"
+            stroke-width="1.5"
+            stroke-linecap="round"></line>
+          <line
+            x1="5.75"
+            y1="15.25"
+            x2="18.25"
+            y2="15.25"
+            stroke="black"
+            stroke-width="1.5"
+            stroke-linecap="round"></line>
+        </svg>
+      </span>
+      <span class="text-black">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </span>
+    </div>
+    <div class="">
+      <div class="logo">
+        <img
+          src="/public/logo.png"
+          alt=""
+          class="object-contain w-20 h-20 -ml-6"
+          srcset=""
+        />
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="">
+        <span class="site-header-link-icon"
+          ><svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.5472 4C9.31915 4 5.04166 8.27749 5.04166 13.5055C5.04166 15.4066 5.59615 17.2285 6.62592 18.7336L5.04166 22.4566C4.88324 22.7734 5.20009 23.0903 5.59615 23.0111L9.31915 21.4268C10.8242 22.4566 12.6461 23.0111 14.5472 23.0111C19.7752 23.0111 24.0527 18.7336 24.0527 13.5055C24.0527 8.27749 19.7752 4 14.5472 4Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <ellipse
+              cx="14.548"
+              cy="17.4679"
+              rx="0.792128"
+              ry="0.792127"
+              fill="black"></ellipse>
+            <path
+              d="M14.5474 15.4073L14.4682 13.8231C15.7356 13.8231 16.8446 12.7933 16.8446 11.4467C16.8446 10.1001 15.8148 9.07031 14.4682 9.07031C13.1216 9.07031 12.0918 10.1001 12.0918 11.4467H12.171C12.171 10.1001 13.28 9.07031 14.5474 9.07031C15.8148 9.07031 16.9238 10.1793 16.9238 11.4467C16.9238 12.7933 15.894 13.8231 14.5474 13.8231V15.4073Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a href="">
+        <svg
+          width="28"
+          height="29"
+          viewBox="0 0 28 29"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          ><g clip-path="url(#clip0)"
+            ><path
+              d="M22 8.09863H6V24.7986H22V8.09863Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path><path
+              d="M11.5 10.6002V5.5002C11.5 4.8002 12.1 4.2002 12.8 4.2002H15.4C16.1 4.2002 16.7 4.8002 16.7 5.5002V10.7002"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </g><defs
+            ><clipPath id="clip0"
+              ><rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(2 2.5)"></rect>
+            </clipPath>
+          </defs>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+<!-- END MOBILE -->

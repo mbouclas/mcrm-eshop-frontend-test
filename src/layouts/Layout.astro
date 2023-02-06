@@ -2,6 +2,7 @@
 export interface Props {
 	title: string;
 }
+import Footer from '@components/Footer.astro';
 import CartIcon from '@partials/cart-icon.astro';
 import HeaderUserActions from '@partials/header-user-actions.astro';
 const { title } = Astro.props;
@@ -17,19 +18,17 @@ const initialState = JSON.stringify({
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/public/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body x-data="app" class="antialiased font-sans bg-gray-200 ">
+	<body x-data="app" class="antialiased font-sans">
+		<HeaderUserActions/>
 		<main x-data="cart">
-		<header>
-			<HeaderUserActions></HeaderUserActions>
-			<CartIcon></CartIcon>
-		</header>
 		<slot />
-
+		
 	</main>
+	<Footer/>
 	</body>
 
 	<input type="hidden" value={initialState} x-ref="initialState" />
@@ -45,7 +44,6 @@ const initialState = JSON.stringify({
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
 	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
