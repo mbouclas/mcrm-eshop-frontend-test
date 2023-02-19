@@ -1,5 +1,8 @@
 ---
 import "../input.css"
+
+const isLoginPage = Astro.url.pathname === '/login'
+const isRegisterPage = Astro.url.pathname === '/register'
 ---
 
 <!-- START HEADER -->
@@ -23,12 +26,13 @@ import "../input.css"
             >
           </template>
           <template x-if="!$store.user.user">
-            <a href="/login">Login</a>
+            <a class="bg-white rounded-lg font-medium px-4 py-1 text-info" href="/login">Login</a>
           </template>
         </li>
       </ul>
     </div>
   </nav>
+{!isLoginPage && !isRegisterPage && (
   <nav class="py-4">
     <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
       <div class="logo">
@@ -364,6 +368,9 @@ import "../input.css"
     </div>
   </nav>
   <!-- END CATEGORIES NAV -->
+  )
+}
+
 </header>
 <!-- END HEADER -->
 
