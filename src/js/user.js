@@ -13,10 +13,12 @@ document.addEventListener("alpine:init", () => {
     username: null,
     email: null,
     password: null,
+    newPassword: null,
     rememberMe: false,
-    errors: [],
+    error: null,
     loginInPlace: false,
     registerInPlace: false,
+    forgotPasswordInPlace: false,
     init() {
       console.log("user started")
       if (
@@ -33,6 +35,14 @@ document.addEventListener("alpine:init", () => {
       ) {
         this.registerInPlace =
           this.$refs.registerForm.dataset.inplace === "true"
+      }
+      if (
+        this.$refs.forgotPasswordForm &&
+        this.$refs.forgotPasswordForm.dataset &&
+        this.$refs.forgotPasswordForm.dataset.inplace
+      ) {
+        this.forgotPasswordInPlace =
+          this.$refs.forgotPasswordForm.dataset.inplace === "true"
       }
       this.baseUrl = this.$store.global.baseUrl
     },
@@ -61,7 +71,7 @@ document.addEventListener("alpine:init", () => {
       const response = await res.json()
       if (!response.accessToken) {
         //errors
-        this.errors.push(res.reason.message ?? res.reason)
+        this.error = response.reason ?? response.reason
         return
       }
 
@@ -96,9 +106,46 @@ document.addEventListener("alpine:init", () => {
         body: urlencoded,
       }
       const res = await fetch(`${this.baseUrl}oauth/register`, requestOptions)
+      const response = await res.json()
       if (res.status !== 200 && res.status !== 201 && res.status !== 204) {
         //errors
-        this.errors.push(res.statusText)
+        this.error = response.reason ?? response.reason
+        return
+      }
+      this.$store.user.success = true
+      this.loading = false
+
+      if (this.registerInPlace) {
+        return
+      }
+    },
+
+    async forgotPassword() {
+      this.loading = true
+      const headers = new Headers()
+      headers.append("Content-Type", "application/x-www-form-urlencoded")
+
+      headers.append("credentials", "same-origin")
+
+      const urlencoded = new URLSearchParams()
+      urlencoded.append("email", this.email)
+      urlencoded.append("password", this.newPassword)
+      urlencoded.append("grant_type", "password")
+
+      const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: urlencoded,
+      }
+      const res = await fetch(
+        `${this.baseUrl}oauth/forgot-password`,
+        requestOptions
+      )
+      const response = await res.json()
+
+      if (res.status !== 200 && res.status !== 201 && res.status !== 204) {
+        //errors
+        this.error = response.reason ?? response.reason
         return
       }
       this.$store.user.success = true

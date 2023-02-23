@@ -3,6 +3,7 @@ import "../input.css"
 
 const isLoginPage = Astro.url.pathname === '/login'
 const isRegisterPage = Astro.url.pathname === '/register'
+const isForgotPassword = Astro.url.pathname === '/forgot-password'
 ---
 
 <!-- START HEADER -->
@@ -32,7 +33,7 @@ const isRegisterPage = Astro.url.pathname === '/register'
       </ul>
     </div>
   </nav>
-{!isLoginPage && !isRegisterPage && (
+{!isLoginPage && !isRegisterPage && !isForgotPassword && (
   <nav class="py-4">
     <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
       <div class="logo">

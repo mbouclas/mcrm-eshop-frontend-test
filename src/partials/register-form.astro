@@ -1,8 +1,11 @@
 ---
 const { inPlace = false } = Astro.props
+import Error from "@components/Error.astro";
 ---
 
 <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+<h1 class="text-center font-bold text-3xl">Register a new account</h1>
+
   <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
     <form
       class="space-y-6"
@@ -79,6 +82,9 @@ const { inPlace = false } = Astro.props
       </div>
 
       <div class="flex flex-col gap-y-4 justify-between">
+       <template x-if="error">
+        <Error message="'Error registering: ' + error"/>
+       </template>
         <div class="flex items-center">
           <input
             id="remember-me"

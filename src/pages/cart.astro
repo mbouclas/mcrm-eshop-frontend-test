@@ -1,8 +1,172 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import Layout from "@layouts/Layout.astro"
+import { ProductsService } from "@services/products.service"
+import { moneyFormat } from "@helpers/money-format"
+
+const all = await new ProductsService().load()
+const products = all
+  .filter((item) => item.variants)
+  .map((item) => item)
+  .filter((item) => item.variants.find((i) => i.color))
+
+let total = 0
+for (let i = 0; i < products.length; i++) {
+  total += products[i].price
+}
 ---
 
+<Layout title="Cart">
+  <!--
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+  <div class="bg-white" x-data="cart">
+    <div class="mx-auto max-w-4xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+        Shopping Cart
+      </h1>
+      <form class="mt-12">
+        <div>
+          <h2 class="sr-only">Items in your shopping cart</h2>
+          <ul
+            role="list"
+            class="divide-y divide-gray-200 border-t border-b border-gray-200"
+          >
+            <template x-for="item in $store.cart.items">
+              <li class="flex py-6 sm:py-10">
+                <div class="flex-shrink-0">
+                  <img
+                    :src='item.thumb && item.thumb.url ? item.thumb.url :  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"'
+                    alt="Insulated bottle with white base and black snap lid."
+                    class="h-24 w-24 rounded-lg object-cover object-center sm:h-32 sm:w-32"
+                  />
+                </div>
 
-<Layout title="Cart" >
+                <div
+                  class="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6"
+                >
+                  <div>
+                    <div class="flex justify-between sm:grid sm:grid-cols-2">
+                      <div class="pr-6">
+                        <h3 class="text-sm">
+                          <a
+                            href="#"
+                            class="font-medium text-gray-700 hover:text-gray-800"
+                            x-text="item.title"></a>
+                        </h3>
+                      </div>
 
+                      <p
+                        class="text-right text-sm font-medium text-gray-900"
+                        x-text="moneyFormat(item.price)"
+                      >
+                      </p>
+                    </div>
+
+                    <div
+                      class="mt-4 flex items-center sm:absolute sm:top-0 sm:left-1/2 sm:mt-0 sm:block"
+                    >
+                      <label for="quantity-0" class="sr-only"
+                        >Quantity, Nomad Tumbler</label
+                      >
+                      <span
+                        x-text="item.quantity"
+                        class="block border-[1px] mx-auto w-[40px] text-center border-gray-200 rounded-xl p-2"
+                      ></span>
+                      <button
+                        type="button"
+                        class="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:mt-3"
+                      >
+                        <span
+                          x-on:click.prevent="addItem(item.id)"
+                          x-data="cartButton">Add</span
+                        >
+                      </button>
+                      <button
+                        type="button"
+                        class="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:mt-3"
+                      >
+                        <span x-on:click.prevent="removeItem(item.id)"
+                          >Remove</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+
+                  <p class="mt-4 flex space-x-2 text-sm text-gray-700">
+                    <svg
+                      class="h-5 w-5 flex-shrink-0 text-green-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                    <span>In stock</span>
+                  </p>
+                </div>
+              </li>
+            </template>
+
+            <!-- More products... -->
+          </ul>
+        </div>
+
+        <!-- Order summary -->
+        <div class="mt-10 sm:ml-32 sm:pl-6">
+          <div class="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:p-8">
+            <h2 class="sr-only">Order summary</h2>
+
+            <div class="flow-root">
+              <dl class="-my-4 divide-y divide-gray-200 text-sm">
+                <div class="flex items-center justify-between py-4">
+                  <dt class="text-base font-medium text-gray-900">
+                    Order total
+                  </dt>
+                  <dd
+                    class="text-base font-medium text-gray-900"
+                    x-text="moneyFormat($store.cart.total)"
+                  >
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-10">
+            <button
+              type="submit"
+              class="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              >Checkout</button
+            >
+          </div>
+
+          <div class="mt-6 text-center text-sm text-gray-500">
+            <p>
+              or
+              <a
+                href="#"
+                class="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Continue Shopping
+                <span aria-hidden="true"> &rarr;</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </Layout>
