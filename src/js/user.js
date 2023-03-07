@@ -14,11 +14,13 @@ document.addEventListener("alpine:init", () => {
     email: null,
     password: null,
     newPassword: null,
+    token: null,
     rememberMe: false,
     error: null,
     loginInPlace: false,
     registerInPlace: false,
     forgotPasswordInPlace: false,
+    success:false,
     init() {
       console.log("user started")
       if (
@@ -79,7 +81,7 @@ document.addEventListener("alpine:init", () => {
       this.$store.user.setUser(response)
 
       this.loading = false
-
+      window.location.href = '/'
       if (this.loginInPlace) {
         return
       }
@@ -149,6 +151,41 @@ document.addEventListener("alpine:init", () => {
         return
       }
       this.$store.user.success = true
+      this.loading = false
+
+      if (this.registerInPlace) {
+        return
+      }
+    },
+    async forgotPasswordConfirm() {
+      this.loading = true
+      const headers = new Headers()
+      headers.append("Content-Type", "application/x-www-form-urlencoded")
+
+      headers.append("credentials", "same-origin")
+
+      const urlencoded = new URLSearchParams()
+      urlencoded.append("token", this.token)
+      urlencoded.append("password", this.newPassword)
+      urlencoded.append("grant_type", "password")
+
+      const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: urlencoded,
+      }
+      const res = await fetch(
+        `${this.baseUrl}oauth/forgot-password-confirm`,
+        requestOptions
+      )
+      const response = await res.json()
+
+      if (res.status !== 200 && res.status !== 201 && res.status !== 204) {
+        //errors
+        this.error = response.reason ?? response.reason
+        return
+      }
+      this.$store.user.forgotPasswordConfirmSuccess = true
       this.loading = false
 
       if (this.registerInPlace) {

@@ -11,6 +11,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('user', {
         user: null,
         success:false,
+        forgotPasswordConfirmSuccess:false,
         init() {
             let storedUser = localStorage.getItem('user');
             if (!storedUser || typeof storedUser === 'undefined') {

@@ -1,4 +1,5 @@
 ---
+import Loader from '@components/Loader.astro';
 import Layout from '@layouts/Layout.astro';
 import LoginForm from '@partials/login-form.astro';
 ---
@@ -11,7 +12,7 @@ import LoginForm from '@partials/login-form.astro';
   </template>
 
   <template x-if="$store.user.user">
-    <p>Welcome <span x-text="$store.user.user.firstName"></span></p>
+    <Loader/>
   </template>
   </div>
 
