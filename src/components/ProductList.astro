@@ -2,22 +2,29 @@
 import { ProductsService } from '@services/products.service';
 import { moneyFormat } from '@helpers/money-format';
 import AddToCartButton from '@partials/add-to-cart-button.astro';
+import {PropertiesService} from '@services/properties.service';
 
+const propertiesService = new PropertiesService();
 const all = await (new ProductsService).load();
 const products = all.filter(item => item.variants)
 .map(item => item)
 .filter(item => item.variants.find(i => i.color))
+const colors = await propertiesService.getPropertyValues({slug: 'color'});
 
 
-function getProductColors(variants) {
+function getProductColors(propertyValues) {
     const colors = [];
-    variants.forEach(variant => {
-        if (colors.indexOf(variant.color) !== -1) {return}
-        
-        colors.push(variant.color);
+    propertyValues.forEach(value => {
+        if (!value.color) {return}
+
+        colors.push(value.color);
     });
 
     return colors
+}
+
+function findColor(code) {
+    return propertiesService.findValue(colors,{code})
 }
 ---
 
@@ -29,7 +36,7 @@ function getProductColors(variants) {
           <div class="flex items-center flex-col justify-between">
             <a href={`/product/${item.sku}/${item.slug}`}>
               <img
-               src={item.thumb && item.thumb.url} alt={item.title}
+               src={item.thumb} alt={item.title}
                alt={item.title}
                title={item.title}
                width="158"
@@ -39,31 +46,15 @@ function getProductColors(variants) {
             <div class="flex w-full">
               <div class="flex-1">
                 <div class="w-full grid grid-cols-5 px-3">
-                  <div
-                    class="h-6 w-6 border border-red-500 flex rounded-full items-center justify-center"
-                  >
-                    <div class="h-3 w-3 bg-red-500 rounded-full"></div>
-                  </div>
-                  <div
-                    class="h-6 w-6 flex rounded-full items-center justify-center"
-                  >
-                    <div class="h-3 w-3 bg-blue-500 rounded-full"></div>
-                  </div>
-                  <div
-                    class="h-6 w-6 flex rounded-full items-center justify-center"
-                  >
-                    <div class="h-3 w-3 bg-gray-500 rounded-full"></div>
-                  </div>
-                  <div
-                    class="h-6 w-6 flex rounded-full items-center justify-center"
-                  >
-                    <div class="h-3 w-3 bg-emerald-500 rounded-full"></div>
-                  </div>
-                  <div
-                    class="h-6 w-6 flex rounded-full items-center justify-center"
-                  >
-                    <div class="h-3 w-3 bg-blue-500 rounded-full"></div>
-                  </div>
+                    {getProductColors(item.propertyValue).map(color => (
+
+                            <div class={`h-6 w-6 border border-[${color}] flex rounded-full items-center justify-center`}
+                            style={`border-color:${color}`}>
+                                <div class={`h-3 w-3 rounded-full`} style={`background-color:${color}`}></div>
+                            </div>
+                    ))}
+
+
                 </div>
               </div>
               <div class="flex items-center">
@@ -95,10 +86,10 @@ function getProductColors(variants) {
             </div>
                <div class="flex flex-1 flex-col w-full">
                         {item.variants && item.variants.length > 0 && (
-                      <p class="text-sm italic text-gray-500">{getProductColors(item.variants).length} variants</p>
+                      <p class="text-sm italic text-gray-500">{getProductColors(item.propertyValue).length} colors</p>
                       <select>
                         {item.variants.map(variant => (
-                            <option>{variant.name} - {variant.color}</option>
+                            <option>{variant.variantId} - {findColor(variant.color)?.name}</option>
                         ))}
                         </select>
                       )}
@@ -107,17 +98,17 @@ function getProductColors(variants) {
                          <div
               class="w-full text-lg text-gray-500 flex items-center mt-1"
             >
-         
+
             </div>
 
             <div class="w-full text-blue-500 py-2.5">
               No minimum quantity
             </div>
-        
+
                     </div>
                   </div>
-               
-         
+
+
           ))}
 
           <!-- END ITEM -->
