@@ -22,10 +22,12 @@ if (process.env.USE_CACHE && process.env.USE_CACHE === "true") {
 if (!fs.existsSync(cacheFolderLocation)) {
     fs.mkdirSync(cacheFolderLocation)
 }
-await saveAllProducts();
+
+// await saveAllProperties();
+// await saveAllProducts();
 // await saveProductCategories();
-await saveProductPerCategories();
-process.exit();
+// await saveProductPerCategories();
+// process.exit();
 
 await saveAllProducts();
 await saveAllProperties();

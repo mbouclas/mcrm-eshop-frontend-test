@@ -1,0 +1,15 @@
+---
+import {getProductColors} from "@helpers/colors";
+import GridItem from '@partials/product-grid-item.astro';
+import {PropertiesService} from "@services/properties.service";
+const {products} = Astro.props;
+const properties = await (new PropertiesService()).load();
+const allColors = properties.find(i => i.slug === 'color')['propertyValue'];
+---
+
+{products.map(item => (
+
+        <GridItem item={item} allColors={allColors} />
+
+        ))}
+

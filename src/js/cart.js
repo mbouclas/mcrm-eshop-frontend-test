@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
       total: 0,
       items: [],
       async update(cart) {
+          if (!cart) { return}
         this.items = cart
         this.total = cart.total
         for (let key in cart) {
@@ -21,7 +22,7 @@ document.addEventListener('alpine:init', () => {
           this.$store.global.sessId = localSess
         }
 
-        this.loading = true
+/*        this.loading = true
         const res = await fetch(`${this.$store.cart.baseUrl}get`, {
           method: "GET",
           mode: "cors",
@@ -36,7 +37,7 @@ document.addEventListener('alpine:init', () => {
         if (!this.$store.global.sessId) {
           this.$store.global.sessId = res.headers.get("x-sess-id")
           localStorage.setItem("sessId", this.$store.global.sessId)
-        }
+        }*/
       },
       moneyFormat(number) {
         return new Intl.NumberFormat("el-EL", {

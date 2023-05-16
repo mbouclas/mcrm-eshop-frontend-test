@@ -1,6 +1,6 @@
 ---
 import "../input.css"
-
+import Cart from '@components/mini-cart.component.svelte';
 const isLoginPage = Astro.url.pathname === '/login'
 const isRegisterPage = Astro.url.pathname === '/register'
 const isForgotPassword = Astro.url.pathname === '/forgot-password'
@@ -212,6 +212,7 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
           <a class="text-xs cursor-pointer hover:underline">
             <p class="text-sm">Cart</p>
           </a>
+          <Cart client:idle />
         </div>
         <!-- END LINK ITEM -->
       </div>
