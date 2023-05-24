@@ -9,3 +9,7 @@ export function sortBy(items: any[], sortField = 'createdAt', way = 'desc') {
         return new Date(b[sortField]).getTime() - new Date(a[sortField]).getTime()
     });
 }
+
+export function highlighter(str: string, term: string) {
+    return str.replace(new RegExp(term, "gi"), (match) => `<mark class="mark">${match}</mark>`);
+}

@@ -1,5 +1,5 @@
 ---
-import "../input.css"
+import TopBarSearch from '@components/search/top-search-bar.svelte';
 import Cart from '@components/mini-cart.component.svelte';
 const isLoginPage = Astro.url.pathname === '/login'
 const isRegisterPage = Astro.url.pathname === '/register'
@@ -8,8 +8,8 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
 
 <!-- START HEADER -->
 <header class="hidden lg:block">
-  <nav class="w-full py-2 bg-info">
-    <div class="container mx-auto 2xl:px-20" x-data="app">
+  <nav class="w-full py-2 bg-sky">
+    <div class="container mx-auto 2xl:px-20">
       <ul class="flex gap-4">
         <li class="font-light text-white">
           <a href="">Home</a>
@@ -21,14 +21,7 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
           <a href="">Corporate Pricing</a>
         </li>
         <li class="ml-auto">
-          <template x-if="$store.user.user">
-            <a href="" @click.prevent="logout()"
-              ><span x-text="$store.user.user.firstName"></span> Logout</a
-            >
-          </template>
-          <template x-if="!$store.user.user">
-            <a class="bg-white rounded-lg font-medium px-4 py-1 text-info" href="/login">Login</a>
-          </template>
+
         </li>
       </ul>
     </div>
@@ -49,10 +42,7 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
 
       <div class="flex-grow">
         <div class="relative">
-          <input
-            type="text"
-            class="bg-white px-3 py-2.5 w-full border rounded-2xl"
-          />
+          <TopBarSearch client:idle />
         </div>
       </div>
       <div class="flex items-center flex-none gap-4">

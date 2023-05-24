@@ -46,11 +46,10 @@ export const cart = atom<ICart>({
 
 onMount(cart, () => {
     task(async () => {
-        setHttpLoading(true);
         const res = await cartService.getCart();
         res.qty = res.items.length;
         cart.set(res);
-        setHttpLoading(false);
+
         return cart.get();
     })
 })
@@ -64,27 +63,24 @@ cart.subscribe(value => {
 });
 
 export const addToCartAction = async (item: IAddToCartDto, overwriteQuantity = false) => {
-    setHttpLoading(true);
     const res = await cartService.addToCart(item, overwriteQuantity);
     res.qty = res.items.length;
-    setHttpLoading(false);
+
     cart.set(res);
 }
 
 export async function removeFromCart(item: IAddToCartDto) {
     item.quantity = 0;
-    setHttpLoading(true);
     const res = await cartService.removeFromCart(item);
     res.qty = res.items.length;
-    setHttpLoading(false);
+
     cart.set(res);
 }
 
 export const clearCart = async () => {
-    setHttpLoading(true);
     const res = await cartService.clearCart();
     res.qty = 0;
-    setHttpLoading(false);
+
     cart.set(res);
 }
 

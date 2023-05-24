@@ -2,15 +2,11 @@
 export interface Props {
 	title: string;
 }
+import "../input.css"
 import Footer from '@components/Footer.astro';
 import CartIcon from '@partials/cart-icon.astro';
 import HeaderUserActions from '@partials/header-user-actions.astro';
 const { title } = Astro.props;
-
-const initialState = JSON.stringify({
-	baseCartUrl: import.meta.env.PUBLIC_CART_ENDPOINT,
-	baseUrl: import.meta.env.PUBLIC_API_ENDPOINT
-});
 ---
 
 <!DOCTYPE html>
@@ -24,18 +20,14 @@ const initialState = JSON.stringify({
 	</head>
 	<body x-data="app" class="antialiased font-sans">
 		<HeaderUserActions/>
-		<main x-data="cart">
+		<main>
 		<slot />
 
 	</main>
 	<Footer/>
 	</body>
 
-	<input type="hidden" value={initialState} x-ref="initialState" />
 
-	<script defer src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"></script>
-<script src="../js/global.js" ></script>
-<script src="../js/cart.js" ></script>
 </html>
 <style is:global>
 	:root {

@@ -1,7 +1,13 @@
-export function optimizeCloudinaryImage(src: string, w: number|null = null, h: number|null = null) {
+export function optimizeCloudinaryImage(src: string, w: number|null = null, h: number|null = null, cropMode: 'fit'|'fill' = 'fit') {
+    if (!src) {
+        return ``;
+    }
     const width = (w) ? `w_${w},` : '';
     const height = (h) ? `h_${h},` : '';
-    const crop = (w || h) ? 'c_fit,' : '';
+    let crop = (w || h) ? 'c_fit,' : '';
+    if (crop.length > 0) {
+        crop = `c_${cropMode},`
+    }
     return src.replace('upload/', `upload/${width}${height}${crop}q_auto:good/f_auto/`);
 }
 

@@ -3,15 +3,26 @@ import {setHttpLoading} from "@stores/http.store";
 import type {IStep} from "@models/checkout";
 import {CheckoutService} from "@services/checkout.service";
 import type {IPaymentMethod, IShippingMethod, IStoreConfig} from "@models/general";
+import type {IAddress, IUser} from "@models/user.model";
 export const cartQuantities = [1,2,3,4,5,6,7,8,9,10]
 const checkoutService = new CheckoutService();
+
 const steps = [
     {
         id: 'contact',
-        status: 'complete',
+        status: 'current',
         current: true,
         title: 'Contact Information',
         description: 'Enter your contact information',
+        href: '#',
+        handler: true
+    },
+    {
+        id: 'shipping',
+        status: 'upcoming',
+        current: false,
+        title: 'Shipping Information',
+        description: 'Enter your shipping information',
         href: '#',
         handler: true
     },
@@ -25,34 +36,50 @@ const steps = [
         handler: true
     },
     {
-        id: 'review',
+        id: 'payment',
         current: false,
         status: 'upcoming',
-        title: 'Review',
-        description: 'Review & complete order',
+        title: 'Payment',
+        description: 'Select your payment method',
         href: '#',
         handler: true
     }
 ] as IStep[];
+
+export interface IGuestContactInformation {
+    email: string;
+    phone: string;
+}
+
 export interface ICheckoutStore {
     steps: IStep[];
     stepChanged: IStep|null;
     paymentMethods: IPaymentMethod[];
     shippingMethods: IShippingMethod[];
+    shippingInformation: IAddress;
+    billingInformation: IAddress;
+    contactInformation: IAddress|IGuestContactInformation;
+    paymentMethod: IPaymentMethod;
     config: IStoreConfig;
+    guestUser?: IUser;
 }
+
 export const checkoutStore = atom<ICheckoutStore>({
     steps,
     stepChanged: null,
     paymentMethods: [],
     shippingMethods: [],
+    shippingInformation: {} as IAddress,
+    contactInformation: {} as IAddress|IGuestContactInformation,
+    billingInformation: {} as IAddress,
+    paymentMethod: {} as IPaymentMethod,
     config: {} as IStoreConfig,
+    guestUser: {} as IUser,
 });
 
 onMount(checkoutStore, () => {
     // go get the config
     task(async () => {
-        setHttpLoading(true);
         const res = await checkoutService.get();
         const store = checkoutStore.get();
         store.config = res.config;
@@ -60,9 +87,13 @@ onMount(checkoutStore, () => {
         store.shippingMethods = res.shippingMethods || [];
 
         checkoutStore.set(store);
-        setHttpLoading(false);
+
         return checkoutStore.get();
     });
+});
+
+checkoutStore.subscribe((state) => {
+    localStorage.setItem('checkout', JSON.stringify(state));
 });
 
 export const setStepsAction = action(checkoutStore, 'setSteps', (store, id, status) => {
@@ -78,13 +109,40 @@ export const setStepsAction = action(checkoutStore, 'setSteps', (store, id, stat
     return store.get();
 });
 
-export async function setPaymentMethod() {
+export const setContactInformationAction = action(checkoutStore, 'setContactInformation', (store, contactInformation) => {
+    const s = store.get();
+    s.contactInformation = contactInformation;
+    store.set(s);
+    return store.get();
+});
 
-}
+export const setShippingInformationAction = action(checkoutStore, 'setShippingInformation', (store, shippingInformation) => {
+    const s = store.get();
+    s.shippingInformation = shippingInformation;
+    store.set(s);
+    return store.get();
+});
 
-export async function setShippingMethod() {
+export const setBillingInformationAction = action(checkoutStore, 'setBillingInformation', (store, billingInformation) => {
+    const s = store.get();
+    s.billingInformation = billingInformation;
+    store.set(s);
+    return store.get();
+});
 
-}
+export const setPaymentMethodAction = action(checkoutStore, 'setPaymentMethod', (store, paymentMethod) => {
+    const s = store.get();
+    s.paymentMethod = paymentMethod;
+    store.set(s);
+    return store.get();
+});
+
+export const setGuestUserAction = action(checkoutStore, 'setGuestUser', (store, guestUser) => {
+    const s = store.get();
+    s.guestUser = guestUser;
+    store.set(s);
+    return store.get();
+});
 
 export async function completeOrder() {
 

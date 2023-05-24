@@ -1,5 +1,5 @@
 import {PropertiesService} from "@services/properties.service";
-import type {IPropertyValue, IVariantEs} from "@models/products.model";
+import type {IProductColorForSelector, IPropertyValue, IVariantEs} from "@models/products.model";
 
 export interface IProductProperty {
     propertyUuid: string;
@@ -38,10 +38,25 @@ export function findColor(code: string) {
 }*/
 
 export function getProductColors(propertyValues: IPropertyValue[], variants: IVariantEs[] = []) {
-    const colors: {color: string, image?: string}[] = [];
+    const colors: IProductColorForSelector[] = [];
     variants.forEach(variant => {
-        console.log(propertyValues.find(v => v.code === '001'))
+        const found = propertyValues.find(v => v.code === variant.color);
+        if (found) {
+            colors.push({
+                color: found.color as string,
+                image: found.image,
+                code: found.code as string,
+                name: found.name,
+                variant: {
+                    variantId: variant.variantId,
+                    image: variant.image as string,
+                    color: variant.color,
+                }
+            })
+        }
     });
 
-    return colors;
+
+
+    return colors.sort(((a, b) => a.variant.variantId > b.variant.variantId ? 1 : -1));
 }

@@ -69,7 +69,7 @@ document.addEventListener("alpine:init", () => {
         headers: headers,
         body: urlencoded,
       }
-      const res = await fetch(`${this.baseUrl}oauth/token`, requestOptions)
+      const res = await fetch(`http://localhost:3003/oauth/token`, requestOptions)
       const response = await res.json()
       if (!response.accessToken) {
         //errors
@@ -77,11 +77,12 @@ document.addEventListener("alpine:init", () => {
         return
       }
 
+      console.log(response)
       // set the global state
       this.$store.user.setUser(response)
 
       this.loading = false
-      window.location.href = '/'
+      // window.location.href = '/'
       if (this.loginInPlace) {
         return
       }

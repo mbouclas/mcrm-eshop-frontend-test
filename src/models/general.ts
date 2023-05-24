@@ -9,6 +9,7 @@ export interface IShippingMethod {
     uuid: string;
     slug: string;
     status: boolean;
+    baseCost?: number;
 }
 export interface IStoreInitialQuery {
     shippingMethods?: (IShippingMethod)[] | null;
@@ -22,8 +23,22 @@ export interface IPaymentMethod {
     uuid: string;
     slug: string;
     status: boolean;
+    providerName: string;
+    paymentInformation?: IGenericObject;
+    selectedShippingMethod?: IShippingMethod|null;
+    shippingMethod: IShippingMethod[];
 }
 export interface IStoreConfig {
     quickCheckout: boolean;
     guestCheckout: boolean;
+}
+
+export interface IOtp {
+    id: string;
+    otp: string;
+    success: boolean;
+}
+
+export interface IEvent<T> extends Event {
+    detail: T;
 }

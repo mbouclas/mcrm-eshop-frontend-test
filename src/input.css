@@ -24,7 +24,7 @@
     transform: translateX(100%);
     background-color: #48bb78;
   }
-  
+
   /* Toggle B */
 .switch input:checked ~ .dot {
     transform: translateX(100%);
@@ -39,3 +39,7 @@
   .slide-down:focus + .slide-down-item {
     height: auto;
 }
+
+  mark {
+      @apply bg-yellow-300 text-black font-semibold;
+  }

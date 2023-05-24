@@ -1,13 +1,17 @@
 ---
 import {getProductColors} from "@helpers/colors";
+import Icon from 'astro-icon';
 import {config} from "@data/config";
 import {moneyFormat} from "@helpers/money-format";
 import {optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
 import AddToCartButton from '@components/add-to-cart-button.component.svelte';
-
+import ColorSelector from '@components/product/color-selector.svelte';
+import {appConfig} from "../stores/http.store";
 const {item, allColors} = Astro.props;
 
+
 const colors = getProductColors(allColors, item.variants.filter(variant => variant.color && variant.image));
+
 // console.log(colors.filter(c => c.image))
 function slimDownProduct(item) {
     return {
@@ -17,13 +21,15 @@ function slimDownProduct(item) {
 }
 ---
 <div class=" relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
-    <div class="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
-<img  src={item.thumb ? optimizeCloudinaryImage(item.thumb, 360) : config.defaultNoImage}
+    <div class=" sm:aspect-none group-hover:opacity-75 sm:h-96">
+        <a href={`/product/${item.sku}/${item.slug}`} title={item.title}>
+<img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')} id={`item-${item.slug}`}
      alt={item.title}
      title={item.title}
      width="158"
      height="158"
-             class="h-full w-full object-cover object-center sm:h-full sm:w-full">
+             class="h-full object-contain w-full  sm:h-full sm:w-full">
+        </a>
     </div>
     <div class="flex flex-1 flex-col space-y-2 p-4 bg-gray-50">
         <h3 class="text-sm font-medium text-gray-900">
@@ -32,18 +38,7 @@ function slimDownProduct(item) {
                 {item.title}
             </a>
         </h3>
-        <div class="w-full grid grid-cols-5 px-3">
-            {colors.map(color => (
-
-                    <a href="#" data-image={color.image} @click.prevent="selectVariant(color)">
-                    <div class={`h-6 w-6 border border-[${color.color}] flex rounded-full items-center justify-center`}
-                         style={`border-color:${color.color}`}>
-                        <div class={`h-3 w-3 rounded-full`} style={`background-color:${color.color}`}></div>
-                    </div>
-                    </a>
-            ))}
-
-    </div>
+            <ColorSelector colors={colors} client:idle targetImage={`#item-${item.slug}`} />
         <div class="flex flex-1 flex-col justify-end">
             {colors.length > 0 && (
             <p class="text-sm italic text-gray-500">{colors.length} {colors.length === 1 ? 'color' : 'colors'}</p>

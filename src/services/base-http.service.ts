@@ -1,5 +1,8 @@
+import type {IOtp} from "@models/general";
+
 export class BaseHttpService {
     protected sessId: string|null = null;
+    protected mainUrl = `${import.meta.env.PUBLIC_BASE_URL}`;
     constructor() {
         this.sessId = localStorage.getItem('sessId');
     }
@@ -20,5 +23,14 @@ export class BaseHttpService {
             mode: "cors",
             credentials: "include",
         }
+    }
+
+    public async getOtp(): Promise<IOtp> {
+        const res = await fetch(`${this.mainUrl}auth/otp`, {
+            method: 'GET',
+            headers: this.setHeaders(),
+        });
+
+        return await res.json();
     }
 }

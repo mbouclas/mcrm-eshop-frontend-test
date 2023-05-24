@@ -6,9 +6,10 @@ import Layout from "@layouts/Layout.astro";
 import ProductGrid from '@partials/product-grid.astro';
 import Breadcrumbs from "@partials/breadcrumbs.astro";
 import FiltersBar from '@partials/product-filters-bar.astro';
-import ColorsList from "@partials/filters-bar-list-colors.astro";
+import ColorsList from "@components/search/filters/colors.filter.svelte";
+import MaterialsList from "@components/search/filters/materials.filter.svelte";
 import Pagination from "@partials/paginator.astro";
-
+import MainSearch from '@components/search/main.svelte';
 export async function getStaticPaths() {
     const allProducts = await (new ProductsService).load();
     const categories = await (new ProductsService).categories(true);
@@ -73,10 +74,15 @@ if (category && !category.parents) {
     category.parents = [];
 }
 
+const appliedFilters = [{category}]
+const propertiesService = new PropertiesService();
+const allColors = await propertiesService.getPropertyValues({slug: 'color'});
+const allMaterials = await propertiesService.getPropertyValues({slug: 'material'});
 
 ---
 <Layout title="Products">
-
+<MainSearch appliedFilters={appliedFilters} colors={allColors} materials={allMaterials}
+            client:idle />
 
 <Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...category?.parents]}
              current={category.slug !== 'all' ? category.title : ''}
@@ -151,9 +157,15 @@ if (category && !category.parents) {
 
         <div class="hidden lg:block">
             <form class="space-y-10 divide-y divide-gray-200">
+                <div class="py-6">
                 <FiltersBar aggregations={aggregations} categories={categories} category={category} />
-                <ColorsList agg={aggregations.find(a => a.key === 'colors')} />
-
+                </div>
+                <div class="py-6">
+                    <ColorsList client:idle  />
+                </div>
+                <div class="py-6">
+                <MaterialsList client:idle  />
+                </div>
 
             </form>
         </div>{/* End of desktop */}

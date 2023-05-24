@@ -90,3 +90,89 @@ export interface IPropertyValue {
     code?: string;
     value?: string;
 }
+
+export interface IProductColorForSelectorVariant {
+    variantId: string;
+    image: string;
+    color: string;
+}
+export interface IProductColorForSelector {
+    color: string,
+    image?: string
+    variant: IProductColorForSelectorVariant;
+    code: string;
+    name: string;
+}
+
+export interface IAggregation {
+    key: string;
+    results?: (Results)[] | null;
+}
+export interface Results {
+    key: string;
+    doc_count: number;
+    slug: string;
+    to: number;
+    from: number;
+}
+export interface ISearchResult {
+    aggregations?: (IAggregation)[] | null;
+    data?: (Data)[] | null;
+    total: number;
+    from: number;
+    limit: number;
+    page: number;
+    pages: number;
+}
+export interface Data {
+    sku: string;
+    slug: string;
+    title: string;
+    id: string;
+    price: number;
+    thumb: string;
+    description: string;
+    createdAt: string;
+    properties?: (Properties)[] | null;
+    variants?: (Variants)[] | null;
+    images?: Images[] | null;
+    categories?: (Categories)[] | null;
+}
+export interface Properties {
+    propertyUuid: string;
+    propertyName: string;
+    type: string;
+    propertySlug: string;
+    slug: string;
+    uuid: string;
+    name: string;
+    code: string;
+    color: string;
+    image: string;
+}
+export interface Variants {
+    uuid: string;
+    title: string;
+    slug: string;
+    price: number;
+    sku: string;
+    variantId: string;
+    image: string;
+    color: string;
+    material: string;
+}
+export interface Images {
+    uuid: string;
+    url: string;
+}
+export interface Categories {
+    uuid: string;
+    title: string;
+    slug: string;
+}
+
+
+export interface IPropertiesStore {
+    colors: IPropertyEs[];
+    materials: IPropertyEs[];
+}
