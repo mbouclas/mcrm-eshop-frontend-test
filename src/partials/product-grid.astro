@@ -5,6 +5,7 @@ const {products} = Astro.props;
 const properties = await (new PropertiesService()).load();
 const allColors = properties.find(i => i.slug === 'color')['propertyValue'];
 ---
+<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
 
 {products.map(item => (
 
@@ -12,3 +13,4 @@ const allColors = properties.find(i => i.slug === 'color')['propertyValue'];
 
         ))}
 
+</div>{/* End of products grid */}

@@ -92,6 +92,7 @@ export interface IPropertyValue {
 }
 
 export interface IProductColorForSelectorVariant {
+    uuid: string;
     variantId: string;
     image: string;
     color: string;
@@ -106,7 +107,7 @@ export interface IProductColorForSelector {
 
 export interface IAggregation {
     key: string;
-    results?: (Results)[] | null;
+    results?: Results[];
 }
 export interface Results {
     key: string;
@@ -123,6 +124,7 @@ export interface ISearchResult {
     limit: number;
     page: number;
     pages: number;
+    initialSearch: boolean;
 }
 export interface Data {
     sku: string;

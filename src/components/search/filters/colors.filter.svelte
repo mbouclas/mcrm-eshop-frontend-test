@@ -74,9 +74,7 @@
     }
 
 </script>
-{#if loading}
-    <Skeleton />
-{/if}
+
 {#if colorFilters.length > 0}
 <div class="bg-gray-100">
     <div class="mx-auto max-w-7xl px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
@@ -87,6 +85,7 @@
         <div class="mt-2 sm:ml-4 sm:mt-0">
             <div class="-m-1 flex flex-wrap items-center">
                 {#each colorFilters as filter}
+                    {#if filter && filter.name}
                   <span class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900">
                       <span>{filter.name}</span>
                       <button on:click={removeFilter(filter)}
@@ -96,6 +95,7 @@
                         </svg>
                       </button>
                     </span>
+                        {/if}
                 {/each}
             </div>
         </div>
@@ -105,7 +105,10 @@
 {/if}
     <fieldset>
         <legend class="block text-sm font-medium text-gray-900">Color</legend>
-        <div class="space-y-3 pt-6 h-[400px] overflow-y-auto">
+        <div class="space-y-3 pt-6 max-h-[400px] overflow-y-auto">
+            {#if loading}
+                <Skeleton />
+            {/if}
         <div class="grid grid-cols-5 gap-2">
             {#each res as item}
             <a href="#" on:click|preventDefault={filter.bind(this, item)} title={`${item.name} (${item.doc_count})`}>

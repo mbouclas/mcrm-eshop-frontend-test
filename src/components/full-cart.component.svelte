@@ -5,6 +5,9 @@
     import {cart} from "@stores/cart.store";
     import type {ICart} from "@stores/cart.store";
     import {httpLoading} from "@stores/http.store";
+    import NumberPad from "@components/number-pad.svelte";
+    import Spinner from "@components/loading-spiner.svelte";
+
 
     const cartHandlers = new CartHandlers({
         items: [],
@@ -18,9 +21,15 @@
     });
     httpLoading.subscribe(val => loading = val);
 
+    function onQuantityChange(idx: number, qty: number) {
+        cartHandlers.changeQuantity(idx, qty);
+    }
 </script>
-
-
+{#if loading}
+<div class="rounded-md shadow-md bg-white absolute left-1/2 items-center -bottom-18 mt-3 p-3 z-10">
+    <Spinner />
+</div>
+{/if}
     <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
         <section aria-labelledby="cart-heading" class="lg:col-span-7">
             <h2 id="cart-heading" class="sr-only">Items in your shopping cart</h2>
@@ -40,21 +49,21 @@
                                         <a href={`/product/${item.sku}/${item.slug}`} class="font-medium text-gray-700 hover:text-gray-800">{item.title}</a>
                                     </h3>
                                 </div>
+                                {#if item.metaData}
                                 <div class="mt-1 flex text-sm">
-                                    <p class="text-gray-500">Sienna</p>
-                                    <p class="ml-4 border-l border-gray-200 pl-4 text-gray-500">Large</p>
+                                    {#if item.metaData.color}
+                                    <p class="text-gray-500">{item.metaData.color.name}</p>
+                                    {/if}
                                 </div>
+                                {/if}
+
                                 <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)}</p>
                             </div>
 
                             <div class="mt-4 sm:mt-0 sm:pr-9">
                                 <label for={`quantity-${idx}`} class="sr-only">Quantity, {item.title}</label>
-                                <select id={`quantity-${idx}`} on:change={() => cartHandlers.changeQuantity(idx)} bind:value={item.quantity}
-                                        name={`quantity-${idx}`} class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-                                    {#each cartQuantities as quantity}
-                                    <option value={quantity}>{quantity}</option>
-                                    {/each}
-                                </select>
+                                <NumberPad min={1} max={10000} counter={item.quantity} on:numberPadChange={(e) => onQuantityChange(idx, e.detail)} />
+
 
                                 <div class="absolute right-0 top-0">
                                     <button on:click={cartHandlers.removeItemFromCart.bind(this, item)} type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
@@ -67,12 +76,6 @@
                             </div>
                         </div>
 
-                        <p class="mt-4 flex space-x-2 text-sm text-gray-700">
-                            <svg class="h-5 w-5 flex-shrink-0 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span>In stock</span>
-                        </p>
                     </div>
                 </li>
                     {/each}

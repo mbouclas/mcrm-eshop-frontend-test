@@ -25,7 +25,7 @@ async function onInputChanged() {
 }
 
 function goTo(item: Data) {
-    window.location.href = `/product/${item.slug}`;
+    window.location.href = `/product/${item.sku}/${item.slug}`;
 }
 
 function reset() {

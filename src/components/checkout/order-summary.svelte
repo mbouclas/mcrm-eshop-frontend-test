@@ -1,7 +1,8 @@
 <script lang="ts">
     import {CartHandlers} from '@services/cart-component.service';
     import {moneyFormat} from "@helpers/money-format";
-    import {cartQuantities} from "@stores/checkout.store";
+    import NumberPad from '@components/number-pad.svelte';
+    import type {ICartItem} from "@stores/cart.store";
     import {cart} from "@stores/cart.store";
     import type {ICart} from "@stores/cart.store";
     import {httpLoading} from "@stores/http.store";
@@ -16,8 +17,9 @@
     });
     httpLoading.subscribe(val => loading = val);
 
-    async function confirmOrder() {
 
+    function onQuantityChange(idx: number, qty: number) {
+        cartHandlers.changeQuantity(idx, qty);
     }
 </script>
 <h2 class="text-lg font-medium text-gray-900">Order summary</h2>
@@ -37,8 +39,13 @@
                         <h4 class="text-sm">
                             <a href={`/product/${item.sku}/${item.slug}`} class="font-medium text-gray-700 hover:text-gray-800">{item.title}</a>
                         </h4>
-                        <p class="mt-1 text-sm text-gray-500">Black</p>
-                        <p class="mt-1 text-sm text-gray-500">Large</p>
+                        {#if item.metaData}
+                            {#if item.metaData.color}
+                                <p class="mt-1 text-sm text-gray-500">{item.metaData.color.name}</p>
+                            {/if}
+
+                        {/if}
+
                     </div>
 
                     <div class="ml-4 flow-root flex-shrink-0">
@@ -53,17 +60,12 @@
                 </div>
 
                 <div class="flex flex-1 items-end justify-between pt-2">
-                    <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)}</p>
+                    <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)} x {item.quantity} = {moneyFormat(item.price * item.quantity)}</p>
 
                     <div class="ml-4">
                         <label for={`quantity-${idx}`} class="sr-only">Quantity</label>
-                        <select id={`quantity-${idx}`} on:change={() => cartHandlers.changeQuantity(idx)} bind:value={item.quantity}
-                                name={`quantity-${idx}`}
-                                class="rounded-md border border-gray-300 text-left text-base font-medium text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-                            {#each cartQuantities as quantity}
-                                <option value={quantity}>{quantity}</option>
-                            {/each}
-                        </select>
+                        <NumberPad min={1} max={10000} counter={item.quantity} on:numberPadChange={(e) => onQuantityChange(idx, e.detail)} />
+
                     </div>
                 </div>
             </div>
@@ -71,6 +73,7 @@
         {/each}
         <!-- More products... -->
     </ul>
+
     <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
         <div class="flex items-center justify-between">
             <dt class="text-sm">Subtotal</dt>

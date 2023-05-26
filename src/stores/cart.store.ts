@@ -9,6 +9,11 @@ export interface ICartItem {
     name: string;
     price: number;
     quantity: number;
+    title: string;
+    slug?: string;
+    productId: string;
+    variantId?: string;
+    metaData?: IGenericObject;
 }
 
 export interface ICart {

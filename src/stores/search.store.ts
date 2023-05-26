@@ -11,7 +11,8 @@ export const searchStore = atom<ISearchResult>({
     page: 1,
     pages: 0,
     from: 0,
-    limit: searchConfig.defaultLimit
+    limit: searchConfig.defaultLimit,
+    initialSearch: true,
 });
 
 export const appliedFiltersStore = atom<IGenericObject[]>([]);
@@ -30,9 +31,16 @@ export const searchWithPropertiesStore = computed([searchStore, propertiesStore]
     }
 });
 
-export const setSearchAction = action(searchStore, 'setSearchAction', (store, res) => {
-    store.set(res);
+export const searchWithFiltersStore = computed([searchStore, appliedFiltersStore], (searchResults, appliedFilters) => {
+    return{
+        searchResults,
+        appliedFilters
+    }
+})
 
+export const setSearchAction = action(searchStore, 'setSearchAction', (store, res, initialSearch = false) => {
+    res.initialSearch = initialSearch;
+    store.set(res);
     return store.get();
 });
 

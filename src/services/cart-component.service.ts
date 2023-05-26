@@ -17,11 +17,20 @@ export class CartHandlers {
         await removeFromCart({id: item.productId, quantity: 0});
     }
 
-    async changeQuantity(idx: number) {
+    async changeQuantity(idx: number, quantity?: number) {
         // setTimeout is needed to get the correct value from the select
         setTimeout(async () => {
             if (this.Cart.items) {
-                await addToCartAction({id: this.Cart.items[idx].productId, quantity: this.Cart.items[idx].quantity}, true);
+                if (quantity) {
+                    this.Cart.items[idx].quantity = quantity
+                }
+
+                await addToCartAction({
+                    id: this.Cart.items[idx].productId,
+                    quantity: this.Cart.items[idx].quantity,
+                    variantId: this.Cart.items[idx].variantId,
+                    metaData: this.Cart.items[idx].metaData,
+                }, true);
             }
         });
     }

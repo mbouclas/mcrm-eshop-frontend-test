@@ -1,10 +1,13 @@
 import type {ICartItem} from "@stores/cart.store";
 import {BaseHttpService} from "@services/base-http.service";
 import {setHttpLoading} from "@stores/http.store";
+import type {IGenericObject} from "@models/general";
 
 export interface IAddToCartDto {
     id: string;
+    variantId?: string;
     quantity: number;
+    metaData?: IGenericObject;
 }
 export class CartService extends BaseHttpService {
     async getCart() {

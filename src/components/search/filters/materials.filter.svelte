@@ -51,12 +51,13 @@
 
     }
 </script>
-{#if loading}
-    <Skeleton />
-    {/if}
+
 <fieldset>
     <legend class="block text-sm font-medium text-gray-900">Material</legend>
-    <div class="space-y-3 pt-6 h-[400px] overflow-y-auto">
+    <div class="space-y-3 pt-6 max-h-[400px] overflow-y-auto">
+        {#if loading}
+            <Skeleton />
+        {/if}
         {#each res as item, idx}
         <div class="flex items-center">
             <input on:change={filter.bind(this, item)} bind:checked={item['checked']}
