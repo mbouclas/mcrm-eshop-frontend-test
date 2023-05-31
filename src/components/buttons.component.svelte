@@ -1,7 +1,8 @@
 <script lang="ts">
     export let onClickHandler;
     export let type: 'submit'|'button' = 'button';
-    export let color = 'primary';
+    export let color = 'primary',
+    disabled = false;
     let classes;
 
     switch (color) {
@@ -39,7 +40,7 @@
 
 </script>
 
-<button on:click={handleClick}
+<button on:click={handleClick} disabled={disabled}
         type={type} class={`${classes} mt-6 w-full rounded-md border border-transparent  px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2 disabled:cursor-not-allowed`}>
     <slot></slot>
 </button>

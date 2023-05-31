@@ -2,12 +2,18 @@
     import type {IPaymentMethod, IShippingMethod} from "@models/general";
     import ShippingMethodSelect from "@components/checkout/shipping-method-select.svelte";
     import CC from '@components/checkout/provider-cc.svelte';
+    import Quote from '@components/checkout/provider-quote.svelte';
     import FormErrors from "@components/form-errors.svelte";
     import Button from "@components/buttons.component.svelte";
+    import {onMount} from "svelte";
     export let paymentMethods: IPaymentMethod[] = [];
     export let selectedShippingMethod: IShippingMethod|null = null;
     export let selectedPaymentMethod: IPaymentMethod|null = null;
     let errors = {};
+
+    onMount(() => {
+        selectedPaymentMethod = paymentMethods[0];
+    });
 
     function setPaymentMethod(item) {
         selectedPaymentMethod = item;
@@ -38,10 +44,10 @@
     <FormErrors errors={errors} />
 {/if}
 
-<div class="mt-10 border-t border-gray-200 pt-10">
-    <h2 class="text-lg font-medium text-gray-900">Payment</h2>
+<div class=" border-t border-gray-200 pt-10">
+    <h2 class="text-lg font-medium text-gray-900">Finalize your order</h2>
 
-    <fieldset class="mt-4">
+<!--    <fieldset class="mt-4">
         <legend class="sr-only">Payment type</legend>
         <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
             {#each paymentMethods as item}
@@ -53,15 +59,21 @@
             </div>
                 {/each}
         </div>
-    </fieldset>
+    </fieldset>-->
 
     {#if selectedPaymentMethod && selectedPaymentMethod.providerName === 'stripe'}
         <CC bind:paymentInformation={selectedPaymentMethod.paymentInformation} />
     {/if}
+
+    {#if selectedPaymentMethod && selectedPaymentMethod.providerName === 'quote'}
+        <Quote bind:paymentInformation={selectedPaymentMethod.paymentInformation} />
+    {/if}
 </div>
 
 
-{#if selectedPaymentMethod}
+{#if selectedPaymentMethod && selectedPaymentMethod.shippingMethod.length > 0}
     <ShippingMethodSelect shippingMethods={selectedPaymentMethod.shippingMethod} bind:selectedShippingMethod={selectedPaymentMethod.selectedShippingMethod} />
 {/if}
+
+
 <Button color="black" type="button" onClickHandler={validate}>Place Order</Button>

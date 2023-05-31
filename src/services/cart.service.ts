@@ -1,4 +1,4 @@
-import type {ICartItem} from "@stores/cart.store";
+import type {ICart, ICartItem} from "@stores/cart.store";
 import {BaseHttpService} from "@services/base-http.service";
 import {setHttpLoading} from "@stores/http.store";
 import type {IGenericObject} from "@models/general";
@@ -54,6 +54,20 @@ export class CartService extends BaseHttpService {
             method: 'DELETE',
             headers: this.setHeaders(),
             credentials: "include",
+        });
+
+        setHttpLoading(false);
+        return await res.json();
+    }
+
+    async saveCartToServer(items: ICartItem[]) {
+        setHttpLoading(true);
+
+        const res = await fetch(`${import.meta.env.PUBLIC_CART_ENDPOINT}update`, {
+            method: 'PATCH',
+            headers: this.setHeaders(),
+            credentials: "include",
+            body: JSON.stringify(items)
         });
 
         setHttpLoading(false);

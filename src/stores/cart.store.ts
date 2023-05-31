@@ -1,7 +1,8 @@
-import {atom, task, onMount} from 'nanostores'
+import {atom, task, onMount, action} from 'nanostores'
 import {CartService, IAddToCartDto} from "@services/cart.service";
 import {setHttpLoading} from "@stores/http.store";
 import type {IGenericObject} from "@models/general";
+
 const cartService = new CartService();
 
 export interface ICartItem {
@@ -30,8 +31,12 @@ export interface ICart {
 }
 
 
-export interface ICartMetaData extends IGenericObject {}
-export interface ICartCoupon extends IGenericObject {}
+export interface ICartMetaData extends IGenericObject {
+}
+
+export interface ICartCoupon extends IGenericObject {
+}
+
 export interface ICartItem {
     productId: string;
     quantity: number;
@@ -73,6 +78,27 @@ export const addToCartAction = async (item: IAddToCartDto, overwriteQuantity = f
 
     cart.set(res);
 }
+
+export const saveCartToServerAction = async () => {
+  const c = cart.get();
+  if (!c.items) {
+    return;
+  }
+
+  await cartService.saveCartToServer(c.items);
+};
+
+export const setMetaDataAction = action(cart, 'setMetaDataAction', (store, idx: number, metaData: IGenericObject) => {
+    const state = store.get();
+    if (!state.items) {
+        return store.get();
+    }
+
+    state.items[idx].metaData = metaData;
+    store.set(state);
+
+    return store.get();
+});
 
 export async function removeFromCart(item: IAddToCartDto) {
     item.quantity = 0;

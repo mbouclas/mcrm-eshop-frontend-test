@@ -39,8 +39,8 @@ const steps = [
         id: 'payment',
         current: false,
         status: 'upcoming',
-        title: 'Payment',
-        description: 'Select your payment method',
+        title: 'Finalize Order',
+        description: 'Review and submit your order',
         href: '#',
         handler: true
     }

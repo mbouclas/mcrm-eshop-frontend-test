@@ -178,3 +178,12 @@ export interface IPropertiesStore {
     colors: IPropertyEs[];
     materials: IPropertyEs[];
 }
+
+export interface IModalStore {
+    shown: boolean;
+}
+
+export interface ISort {
+    sort: string;
+    way: string;
+}

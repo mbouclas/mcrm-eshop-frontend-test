@@ -27,6 +27,10 @@ export function filterIsApplied(appliedFilters: IGenericObject[], item: IPropert
     appliedFilters.forEach(filter => {
         if (found) {return;}
         const key = Object.keys(filter)[0];
+        //like page = 2
+        if (!Array.isArray(filter[key])) {
+            return;
+        }
 
         filter[key].forEach((value: any) => {
             found = item.slug === value;

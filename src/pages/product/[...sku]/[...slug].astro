@@ -59,42 +59,7 @@ const srcSet = cloudinarySrcSet(item.thumb || config.defaultNoImage);
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
                 <!-- Image gallery -->
                 <div class="flex flex-col-reverse">
-                    <!-- Image selector -->
-                    {/* *
-                    <div class="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-                        <div class="grid grid-cols-4 gap-6" aria-orientation="horizontal" role="tablist">
-                            <button id="tabs-2-tab-1" class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4" x-data="Components.tab(0)" aria-controls="tabs-2-panel-1" role="tab" x-init="init()" @click="onClick" @keydown="onKeydown" @tab-select.window="onTabSelect" :tabindex="selected ? 0 : -1" :aria-selected="selected ? 'true' : 'false'" type="button" tabindex="0" aria-selected="true">
-                                <span class="sr-only">Angled view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                      <img src={item.thumb} alt="" class="h-full w-full object-cover object-center">
-                    </span>
-                                <span class="pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2 ring-indigo-500" aria-hidden="true"></span>
-                            </button>
-                            <button id="tabs-2-tab-2" class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4" x-data="Components.tab(0)" aria-controls="tabs-2-panel-2" role="tab" x-init="init()" @click="onClick" @keydown="onKeydown" @tab-select.window="onTabSelect" :tabindex="selected ? 0 : -1" :aria-selected="selected ? 'true' : 'false'" type="button" tabindex="-1" aria-selected="false">
-                                <span class="sr-only">Front view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                      <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg" alt="" class="h-full w-full object-cover object-center">
-                    </span>
-                                <span class="ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2" aria-hidden="true" x-state:on="Selected" x-state:off="Not Selected" :class="{ 'ring-indigo-500': selected, 'ring-transparent': !(selected) }"></span>
-                            </button>
-                            <button id="tabs-2-tab-3" class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4" x-data="Components.tab(0)" aria-controls="tabs-2-panel-3" role="tab" x-init="init()" @click="onClick" @keydown="onKeydown" @tab-select.window="onTabSelect" :tabindex="selected ? 0 : -1" :aria-selected="selected ? 'true' : 'false'" type="button" tabindex="-1" aria-selected="false">
-                                <span class="sr-only">Back view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                      <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-03.jpg" alt="" class="h-full w-full object-cover object-center">
-                    </span>
-                                <span class="ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2" aria-hidden="true" x-state:on="Selected" x-state:off="Not Selected" :class="{ 'ring-indigo-500': selected, 'ring-transparent': !(selected) }"></span>
-                            </button>
-                            <button id="tabs-2-tab-4" class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4" x-data="Components.tab(0)" aria-controls="tabs-2-panel-4" role="tab" x-init="init()" @click="onClick" @keydown="onKeydown" @tab-select.window="onTabSelect" :tabindex="selected ? 0 : -1" :aria-selected="selected ? 'true' : 'false'" type="button" tabindex="-1" aria-selected="false">
-                                <span class="sr-only">Back angle open view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                      <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg" alt="" class="h-full w-full object-cover object-center">
-                    </span>
-                                <span class="ring-transparent pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2" aria-hidden="true" x-state:on="Selected" x-state:off="Not Selected" :class="{ 'ring-indigo-500': selected, 'ring-transparent': !(selected) }"></span>
-                            </button>
 
-                        </div>
-                    </div>
-                    */}
                     <div class="aspect-h-1 aspect-w-1 w-full">
 <!--                            <img src={optimizeCloudinaryImage(item.thumb, 900)} alt={item.title} id="main" width="640" height="480"
                                  class="h-full w-full object-cover object-center sm:rounded-lg">-->
@@ -105,7 +70,7 @@ const srcSet = cloudinarySrcSet(item.thumb || config.defaultNoImage);
                                     sizes={`(max-width: 767px) 100vw`}>
 
                             <source srcset={`${srcSet.copies[1].url} 1700w`}>
-                            <img src={srcSet.original} class="h-full w-full object-cover object-center sm:rounded-lg"
+                            <img src={srcSet.original} class="h-full w-full object-cover object-center sm:rounded-lg transition duration-200 hover:scale-110"
                                  alt={item.title}></picture>
                         )}
                     </div>

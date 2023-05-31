@@ -66,7 +66,7 @@ function onKeyPressed(e) {
             </div>
         {/if}
         {#if results.length > 0}
-        <!-- INPUT -->
+
         <ul class="rounded-md shadow-md bg-white absolute left-0 right-0 -bottom-18 mt-3 p-3 z-10">
             <li class="text-xs uppercase text-gray-400 border-b border-gray border-solid py-2 px-5 mb-2">
                 Results

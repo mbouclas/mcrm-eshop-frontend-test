@@ -1,21 +1,22 @@
 <script lang="ts">
     import Skeleton from '@components/skeleton.loader.svelte';
     import {
-        addFilterAction,
-        appliedFiltersStore,
+        addFilterAction, removeFilterAction,
         removeFilterValueAction,
-        searchWithPropertiesStore
+        searchWithPropertiesStore, setModalShownAction
     } from "@stores/search.store";
     import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import type {IPropertyEs} from "@models/products.model";
-
+    export let type: 'main'|'modal' = "main";
     let res = [],
     loading = true,
         appliedFilters = [],
         colorFilters = [];
 
-    appliedFiltersStore.subscribe(state => {
-        appliedFilters = state;
+
+    searchWithPropertiesStore.subscribe(state => {
+        appliedFilters = state.appliedFilters;
+
         colorFilters = [];// reset after every removal of filter
         const existing = appliedFilters.filter(f => {
             const key = Object.keys(f)[0];
@@ -28,9 +29,8 @@
         if (Array.isArray(existing) && existing.length > 0){
             colorFilters = existing[0];
         }
-    });
 
-    searchWithPropertiesStore.subscribe(state => {
+
         if (state.properties.colors.length === 0) {
             return;
         }
@@ -57,20 +57,33 @@
         });
 
         if (colorFilters.length > 0){
-
-            colorFilters = colorFilters.map((f, idx) => {
+            colorFilters = colorFilters
+                .filter(v => typeof v === 'string')
+                .map((f, idx) => {
                 return state.properties.colors.find(v => v.slug === f);
             });
 
         }
+
+
     });
 
     async function filter(item: IPropertyEs) {
-        addFilterAction({colors: item.slug}  as any)
+        addFilterAction({colors: item.slug}  as any);
+        removeFilterAction('page');
+        if (type === 'modal'){
+            setModalShownAction(false);
+        }
+
     }
 
     function removeFilter(filter: IPropertyEs) {
         removeFilterValueAction('colors', filter.slug);
+        removeFilterAction('page');
+        if (type === 'modal'){
+            setModalShownAction(false);
+        }
+
     }
 
 </script>
@@ -105,6 +118,7 @@
 {/if}
     <fieldset>
         <legend class="block text-sm font-medium text-gray-900">Color</legend>
+        <div class="border-b  border-gray-200 mb-4 my-2"></div>
         <div class="space-y-3 pt-6 max-h-[400px] overflow-y-auto">
             {#if loading}
                 <Skeleton />

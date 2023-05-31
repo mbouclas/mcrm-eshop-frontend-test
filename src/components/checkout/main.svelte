@@ -12,6 +12,7 @@ import {
     setStepsAction
 } from "@stores/checkout.store";
 import {userStore} from "@stores/user.store";
+
 let steps, config, paymentMethods, shippingMethods;
 
 $: shippingInformation = {};

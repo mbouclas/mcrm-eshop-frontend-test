@@ -7,6 +7,9 @@
     import {httpLoading} from "@stores/http.store";
     import NumberPad from "@components/number-pad.svelte";
     import Spinner from "@components/loading-spiner.svelte";
+    import AttachFiles from "@components/checkout/quote/attach-files.svelte";
+    import Modal from "@components/full-screen-modal.svelte";
+    import {setModalShownAction} from "@stores/search.store";
 
 
     const cartHandlers = new CartHandlers({
@@ -14,7 +17,8 @@
         total: 0,
     } as ICart);
 
-    let loading = false;
+    let loading = false,
+    modalIsShown = false;
 
     cart.subscribe((val) => {
         cartHandlers.Cart = val;
@@ -24,12 +28,22 @@
     function onQuantityChange(idx: number, qty: number) {
         cartHandlers.changeQuantity(idx, qty);
     }
+
+    function toggleModal() {
+        modalIsShown = !modalIsShown;
+        setModalShownAction(modalIsShown);
+
+    }
 </script>
 {#if loading}
 <div class="rounded-md shadow-md bg-white absolute left-1/2 items-center -bottom-18 mt-3 p-3 z-10">
     <Spinner />
 </div>
 {/if}
+
+<Modal title="Attach Files to Order">
+    <AttachFiles on:attachFilesDone={toggleModal} />
+</Modal>
     <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
         <section aria-labelledby="cart-heading" class="lg:col-span-7">
             <h2 id="cart-heading" class="sr-only">Items in your shopping cart</h2>
@@ -50,11 +64,32 @@
                                     </h3>
                                 </div>
                                 {#if item.metaData}
-                                <div class="mt-1 flex text-sm">
+
+                                <div class="mt-1  text-sm">
                                     {#if item.metaData.color}
                                     <p class="text-gray-500">{item.metaData.color.name}</p>
                                     {/if}
+                                    {#if Array.isArray(item.metaData.uploadedFiles) && item.metaData.uploadedFiles.length > 0}
+                                        <div class="grid grid-cols-2">
+                                            <p class=" text-sm text-gray-500">{item.metaData.uploadedFiles.length} Files Attached</p>
+
+                                            <p class="text-right">
+                                                <button type="button" on:click={toggleModal} title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 hover:text-gray-700"
+                                                         width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83z"/></svg>
+                                                </button>
+                                            </p>
+                                        </div>
+                                        {:else}
+                                        <button type="button" on:click={toggleModal} title="Attach Files"
+                                                class="mt-4 inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            Attach files
+                                            <svg class="h-5 w-5 text-white"
+                                                 xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M15 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7l-5-5zM6 20V4h8v4h4v12H6zm10-10v5c0 2.21-1.79 4-4 4s-4-1.79-4-4V8.5a2.5 2.5 0 0 1 2.76-2.49c1.3.13 2.24 1.32 2.24 2.63V15h-2V8.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V15c0 1.1.9 2 2 2s2-.9 2-2v-5h2z"/></svg>
+                                        </button>
+                                    {/if}
                                 </div>
+
                                 {/if}
 
                                 <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)}</p>

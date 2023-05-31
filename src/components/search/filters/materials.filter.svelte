@@ -2,13 +2,13 @@
     import Skeleton from '@components/skeleton.loader.svelte';
     import {
         addFilterAction,
-        appliedFiltersStore,
+        appliedFiltersStore, removeFilterAction,
         removeFilterValueAction,
-        searchWithPropertiesStore
+        searchWithPropertiesStore, setModalShownAction
     } from "@stores/search.store";
     import type {IPropertyEs} from "@models/products.model";
     import {filterIsApplied} from "@helpers/validation";
-
+    export let type: 'main'|'modal' = "main";
     let res = [];
     let loading = true,
         appliedFilters = [];
@@ -43,10 +43,18 @@
     async function filter(item: IPropertyEs) {
         if (item['checked']) {
             removeFilterValueAction('material', item.slug);
+            removeFilterAction('page');
+            if (type === 'modal') {
+                setModalShownAction(false);
+            }
             return;
         }
         else {
-            addFilterAction({material: item.slug} as any)
+            addFilterAction({material: item.slug} as any);
+            removeFilterAction('page');
+            if (type === 'modal') {
+                setModalShownAction(false);
+            }
         }
 
     }
@@ -54,6 +62,7 @@
 
 <fieldset>
     <legend class="block text-sm font-medium text-gray-900">Material</legend>
+    <div class="border-b  border-gray-200 mb-4 my-2"></div>
     <div class="space-y-3 pt-6 max-h-[400px] overflow-y-auto">
         {#if loading}
             <Skeleton />

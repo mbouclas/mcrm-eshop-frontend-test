@@ -1,27 +1,34 @@
 <script lang="ts">
     import Skeleton from '@components/skeleton.loader.svelte';
     import type {Results} from "@models/products.model";
-    import {addFilterAction, appliedFiltersStore, removeFilterValueAction, searchStore} from "@stores/search.store";
+    import {
+        addFilterAction,
+        appliedFiltersStore,
+        removeFilterAction,
+        removeFilterValueAction,
+        searchStore, searchWithFiltersStore, setModalShownAction
+    } from "@stores/search.store";
     import type {IPropertyEs} from "@models/products.model";
     import {filterIsApplied} from "@helpers/validation";
-
+    import {onMount} from "svelte";
+    export let type: 'main'|'modal' = "main";
     let res = [],
         loading = true,
         priceRanges: Results[] = [],
         appliedFilters = [],
         priceFilters = [];
 
-    searchStore.subscribe(state => {
-        if (!state.aggregations || !Array.isArray(state.aggregations) || state.aggregations.length === 0) {
+    searchWithFiltersStore.subscribe(state => {
+        if (!state.searchResults.aggregations || !Array.isArray(state.searchResults.aggregations) || state.searchResults.aggregations.length === 0) {
             return;
         }
 
-        const found = state.aggregations.find(a => a.key === 'price');
+        const found = state.searchResults.aggregations.find(a => a.key === 'price');
         if (!found || !found.results) {return;}
 
         loading = false;
         priceRanges = found.results.map(r => {
-            r['checked'] = filterIsApplied(appliedFilters, r);
+            r['checked'] = filterIsApplied(state.appliedFilters, r);
             return r;
         });
     });
@@ -42,13 +49,25 @@
         }
     });
 
+    onMount(() => {
+
+    })
+
     function filter(item: IPropertyEs) {
         if (item['checked']) {
             removeFilterValueAction('price', item.slug);
+            removeFilterAction('page');
+            if (type === 'modal'){
+                setModalShownAction(false);
+            }
             return;
         }
         else {
-            addFilterAction({price: item.slug} as any)
+            addFilterAction({price: item.slug} as any);
+            removeFilterAction('page');
+            if (type === 'modal'){
+                setModalShownAction(false);
+            }
         }
     }
 
@@ -74,7 +93,8 @@
 
 
 <fieldset>
-    <legend class="block text-sm font-medium text-gray-900">Price</legend>
+    <legend class="block text-sm font-medium text-gray-900 ">Price</legend>
+    <div class="border-b  border-gray-200 mb-4 my-2"></div>
     <div class="space-y-3 pt-6">
         {#if loading}
             <Skeleton />

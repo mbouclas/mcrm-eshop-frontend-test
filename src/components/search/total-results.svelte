@@ -5,6 +5,9 @@
         suffix = 'Products';
 
     searchWithFiltersStore.subscribe(state => {
+        if (state.searchResults.initialSearch){
+            return;
+        }
         count = state.searchResults.total;
     })
 </script>

@@ -1,6 +1,5 @@
 <script lang="ts">
     import {searchWithFiltersStore, setSearchAction} from "@stores/search.store";
-    import {MD5} from "@helpers/general";
     import {onMount} from "svelte";
     import {SearchService} from "@services/search.service";
 
@@ -12,7 +11,6 @@
     let arrayOfPages = [],
         inDynamicMode = false,
         initialState = true,
-        previousStateHash,
         filters;
 
     fillArrayOfPages(totalPages);
@@ -26,23 +24,17 @@
     })
 
     searchWithFiltersStore.subscribe(state => {
-        const stateHash = MD5.hash(JSON.stringify(state));
-        // If !previousStateHash, we're here for the first time
-        if (initialState){
+        if (state.searchResults.initialSearch){
             return;
         }
 
-        if (stateHash === previousStateHash) {
-            fillArrayOfPages(state.searchResults.pages);
-            return;
-        }
+        currentPage = state.searchResults.page;
 
         next = (state.searchResults.page === state.searchResults.pages) ? null : state.searchResults.page + 1;
         previous = (state.searchResults.page === 1) ? null : state.searchResults.page - 1;
         fillArrayOfPages(state.searchResults.pages);
         pages = pageNumbers(state.searchResults.pages, state.searchResults.page);
         inDynamicMode = true;
-        previousStateHash = stateHash;
         filters = state.appliedFilters;
     });
 
@@ -97,7 +89,17 @@
             return;
         }
 
-        filters.page = pageNumber;
+        const foundIndex = filters.findIndex(f => {
+            const key = Object.keys(f)[0];
+            return  key === 'page';
+        })
+
+        if (foundIndex === -1) {
+            filters.push({page: pageNumber});
+        } else {
+            filters[foundIndex]['page'] = pageNumber;
+        }
+
         setSearchAction(await (new SearchService().search(filters)));
     }
 </script>

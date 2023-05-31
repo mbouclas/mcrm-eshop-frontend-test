@@ -1,6 +1,5 @@
 <script lang="ts">
     import type {IProductModel, IPropertyEs} from "@models/products.model";
-    import AddToCartButton from '@components/add-to-cart-button.component.svelte';
     import ColorSelector from '@components/product/color-selector.svelte';
     import {propertiesStore} from "@stores/search.store";
     import {getProductColors} from "@helpers/product";
@@ -26,7 +25,7 @@
     }
 </script>
 
-<div class=" relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+<div class=" relative flex flex-col overflow-hidden rounded-lg border border-sky border-opacity-50 bg-white">
     <div class=" sm:aspect-none group-hover:opacity-75 sm:h-96">
         <a href={`/product/${item.sku}/${item.slug}`} title={item.title}>
             <img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')} id={`item-${item.slug}`}
@@ -34,7 +33,7 @@
                   title={item.title}
                   width="158"
                   height="158"
-                  class="h-full object-contain w-full  sm:h-full sm:w-full">
+                  class="h-full object-contain w-full  sm:h-full sm:w-full transition duration-200 hover:scale-110">
         </a>
     </div>
     <div class="flex flex-1 flex-col space-y-2 p-4 bg-gray-50">
@@ -52,6 +51,6 @@
             <p class="text-base font-medium text-gray-900">{moneyFormat(item.price)}</p>
         </div>
 
-        <AddToCartButton item={slimDownProduct(item)} />
+
     </div>
 </div>
