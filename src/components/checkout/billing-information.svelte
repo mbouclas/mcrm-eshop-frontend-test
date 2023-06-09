@@ -2,41 +2,61 @@
     import AddressForm from '@components/user/address-form.svelte';
     // Accept a model from main. If selectedContact, autofill the form.
     import {createEventDispatcher} from "svelte";
-    import {checkoutStore} from "@stores/checkout.store";
+    import {checkoutStore, setBillingInformationAction, setUseSameAsShippingAction} from "@stores/checkout.store";
     import type {ICheckoutStore} from "@stores/checkout.store";
     import type {IAddress} from "@models/user.model";
     import AddressSelector from '@components/checkout/past-address-selector.svelte';
+    import {UserService} from "@services/user.service";
 
     const dispatch = createEventDispatcher();
-    export let model = {};
+    export let model: IAddress = {} as IAddress;
     let addresses: IAddress[] = [];
-    let store: ICheckoutStore;
-    $: useSameAsShipping = false;
+    let store: ICheckoutStore,
+        useSameAsShipping = false;
     checkoutStore.subscribe((state) => {
         store = state;
+
+        useSameAsShipping = state.useBillingInformation;
         if (store.guestUser && Array.isArray(store.guestUser.addresses) && store.guestUser.addresses.length > 0) {
             addresses = store.guestUser.addresses;
         }
 
         if (state.contactInformation) {
-            model = state.contactInformation;
+            model = state.contactInformation as IAddress;
+        }
+
+        if (state.useBillingInformation) {
+            model = state.shippingInformation;
         }
     });
-    function next() {
+    async function next() {
+        try {
+            const res = await (new UserService()).syncAddress(model, "billing");
+            model['uuid'] = res['uuid'];
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        setBillingInformationAction(model);
         dispatch('done', {
             stepId: 'billing',
             data: model
         });
     }
 
-    function useSameAsShippingToggle() {
+    async function useSameAsShippingToggle() {
+        setUseSameAsShippingAction(useSameAsShipping);
         if (useSameAsShipping) {
-            model = store.shippingInformation;
-            console.log(store)
+            return
         }
+
+        model = store.shippingInformation;
+
     }
 
 </script>
+<h2 class="text-lg font-medium text-gray-900">Billing Information</h2>
 {#if addresses.length > 0}
 
     <AddressSelector model={model} addresses={addresses} on:setAddress={(e) => {model = e.detail}} />

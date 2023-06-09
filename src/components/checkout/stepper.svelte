@@ -23,6 +23,8 @@
                 <a href={step.href}
                    on:click|preventDefault={handleClick.bind(this, step)}
                    class:border-indigo-600={step.status === 'complete'}
+                   class:border-red-600={step.status === 'complete' && step.current}
+                   class:hover:border-red-400={step.status === 'complete' && step.current}
                    class:hover:border-indigo-800={step.status === 'complete'}
                    class:border-gray-200={step.status === 'upcoming'}
                    class:border-gray-300={step.status === 'upcoming'}

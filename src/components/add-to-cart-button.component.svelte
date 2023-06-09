@@ -2,6 +2,7 @@
 import {addToCartAction} from "@stores/cart.store";
 import {isBagValid, productStore} from "@stores/product.store";
 
+
 export let item: any;
 export let quantity = 1;
 let valid = false,
@@ -25,6 +26,8 @@ async function handleClick() {
         variantId: selection.color && selection.color.variant && selection.color.variant.uuid,
         metaData
     });
+
+
 }
 </script>
 <button type="button" on:click={handleClick} disabled={!valid}

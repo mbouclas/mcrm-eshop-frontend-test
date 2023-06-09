@@ -1,4 +1,4 @@
-import {cloudinarySrcSet, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
+import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
 export const config = {
     seo: {
         defaults: {

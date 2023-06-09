@@ -5,13 +5,18 @@ import ShippingInformation from '@components/checkout/shipping-information.svelt
 import BillingInformation from '@components/checkout/billing-information.svelte';
 import PaymentMethodSelect from '@components/checkout/payment-method-select.svelte';
 import ContactInformation from '@components/checkout/contact-information.svelte';
+import EmptyCartMessage from '@components/checkout/cart-is-empty.svelte';
 import {
     checkoutStore,
-    handleStepChangeAction, setBillingInformationAction,
-    setContactInformationAction, setShippingInformationAction,
+    handleStepChangeAction, setCheckoutDoneAction,
     setStepsAction
 } from "@stores/checkout.store";
 import {userStore} from "@stores/user.store";
+import {CheckoutService} from "@services/checkout.service";
+import {cart} from "@stores/cart.store";
+import type {ICartItem} from "@stores/cart.store";
+
+
 
 let steps, config, paymentMethods, shippingMethods;
 
@@ -20,9 +25,15 @@ $: billingInformation = {};
 $: selectedShippingMethod = null;
 $: currentStep = null;
 
-let user;
-userStore.subscribe((user) => {
-    // console.log('user in main', user)
+let user, cartItems: ICartItem[] = [];
+
+cart.subscribe((cart) => {
+
+    if (!cart || !cart.items || cart.items.length === 0) {
+        return;
+    }
+
+    cartItems = cart.items;
 });
 
 checkoutStore.subscribe(async (state) => {
@@ -41,7 +52,7 @@ const onStepDone = (event) => {
     setStepsAction(event.detail.stepId, 'complete');
     const currentIdx = steps.findIndex(step => step.id === event.detail.stepId);
     const nextStep = steps[currentIdx + 1];
-    storeDataAfterStepChange(event.detail.stepId, event.detail.data)
+    // storeDataAfterStepChange(event.detail.stepId, event.detail.data)
     if (!nextStep) {
         return;
     }
@@ -51,71 +62,42 @@ const onStepDone = (event) => {
 
 }
 
-function storeDataAfterStepChange(stepId: string, payload: any) {
-    if (stepId === 'contact') {
-        handleContactStep(payload);
-    }
 
-    if (stepId === 'shipping') {
-        handleStepShipping(payload);
-    }
-
-    if (stepId === 'billing') {
-        handleStepBilling(payload);
-    }
-
-    // console.log(stepId, payload)
-}
-
-function handleContactStep(payload) {
-    // Came from login
-    if (payload.selectedContact) {
-        shippingInformation = payload.selectedContact;
-        setContactInformationAction(payload.selectedContact);
-        return;
-    }
-    // Guest
-
-    shippingInformation.phone = payload.contact.phone;
-    if (payload.contact.firstName) {
-        shippingInformation.firstName = payload.contact.firstName;
-    }
-
-    if (payload.contact.lastName) {
-        shippingInformation.lastName = payload.contact.lastName;
-    }
-
-    setContactInformationAction({phone: payload.contact.phone, firstName: payload.contact?.firstName, lastName: payload.contact?.lastName});
-}
-
-function handleStepShipping(payload) {
-    shippingInformation = payload;
-    setShippingInformationAction(payload);
-}
-
-function handleStepBilling(payload) {
-    billingInformation = payload;
-    setBillingInformationAction(payload);
-}
 
 async function handleStepChange(stepChanged) {
     // setStepsAction(stepChanged.id, 'complete')
-    console.log('stepChanged', stepChanged)
-    console.log(steps.find(step => step.status === 'complete'))
+    // console.log('stepChanged', stepChanged)
+    // console.log(steps.find(step => step.status === 'complete'))
     // handleStepChangeAction(null);
 }
 
-</script>
+async function checkoutDone() {
+    const order = checkoutStore.get();
+    const validator = CheckoutService.orderIsValid(order);
 
+    if (!validator.isValid) {
+        console.log('order is not valid', validator.errors)
+        return;
+
+    }
+    const res = await (new CheckoutService()).done(order);
+    await setCheckoutDoneAction(res);
+    window.location.href ='/thank-you';
+}
+
+</script>
+{#if cartItems.length === 0}
+    <EmptyCartMessage />
+{:else}
 <div class="mb-6 lg:mb-10 bg-white p-6">
 
 <Stepper steps={steps} />
 </div>
 
-<div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+<div class="lg:grid md:grid-cols-12 lg:gap-x-12 xl:gap-x-16">
 
 
-    <div class="bg-white p-6">
+    <div class="bg-white p-6 md:col-span-6 lg:col-span-7">
 
         {#if currentStep && currentStep.id === 'contact'}
             <ContactInformation on:done={onStepDone} />
@@ -134,14 +116,15 @@ async function handleStepChange(stepChanged) {
 
         {#if currentStep && currentStep.id === 'payment'}
 
-            <PaymentMethodSelect paymentMethods={paymentMethods} on:done={onStepDone} />
+            <PaymentMethodSelect paymentMethods={paymentMethods} on:done={onStepDone} on:checkoutDone={checkoutDone} />
         {/if}
 
 
     </div><!-- END LEFT -->
 
-    <div class="mt-10 lg:mt-0">
+    <div class="mt-10 lg:mt-0 md:col-span-6 lg:col-span-5">
         <OrderSummary />
     </div>
 
 </div><!-- END GRID -->
+    {/if}

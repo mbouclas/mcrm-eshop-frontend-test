@@ -1,18 +1,21 @@
 <script lang="ts">
-    import type {IPaymentMethod, IShippingMethod} from "@models/general";
+    import type {IEvent, IPaymentMethod, IShippingMethod} from "@models/general";
     import ShippingMethodSelect from "@components/checkout/shipping-method-select.svelte";
     import CC from '@components/checkout/provider-cc.svelte';
     import Quote from '@components/checkout/provider-quote.svelte';
     import FormErrors from "@components/form-errors.svelte";
     import Button from "@components/buttons.component.svelte";
-    import {onMount} from "svelte";
+    import {createEventDispatcher, onMount} from "svelte";
+    import {setPaymentMethodAction} from "@stores/checkout.store";
     export let paymentMethods: IPaymentMethod[] = [];
     export let selectedShippingMethod: IShippingMethod|null = null;
     export let selectedPaymentMethod: IPaymentMethod|null = null;
     let errors = {};
+    const dispatch = createEventDispatcher();
 
     onMount(() => {
         selectedPaymentMethod = paymentMethods[0];
+        setPaymentMethodAction(selectedPaymentMethod);
     });
 
     function setPaymentMethod(item) {
@@ -36,6 +39,13 @@
             errors['shippingMethod'] = 'Please select a shipping method';
             return;
         }
+
+        dispatch('checkoutDone');
+    }
+
+    function setShippingMethod(e: IEvent<IShippingMethod>) {
+        selectedPaymentMethod.selectedShippingMethod = e.detail;
+        setPaymentMethodAction(selectedPaymentMethod);
     }
 
 </script>
@@ -45,7 +55,7 @@
 {/if}
 
 <div class=" border-t border-gray-200 pt-10">
-    <h2 class="text-lg font-medium text-gray-900">Finalize your order</h2>
+    <h2 class="text-lg font-medium text-gray-900">Finalize your quotation</h2>
 
 <!--    <fieldset class="mt-4">
         <legend class="sr-only">Payment type</legend>
@@ -72,8 +82,9 @@
 
 
 {#if selectedPaymentMethod && selectedPaymentMethod.shippingMethod.length > 0}
-    <ShippingMethodSelect shippingMethods={selectedPaymentMethod.shippingMethod} bind:selectedShippingMethod={selectedPaymentMethod.selectedShippingMethod} />
+    <ShippingMethodSelect on:selection={setShippingMethod}
+            shippingMethods={selectedPaymentMethod.shippingMethod} bind:selectedShippingMethod={selectedPaymentMethod.selectedShippingMethod} />
 {/if}
 
 
-<Button color="black" type="button" onClickHandler={validate}>Place Order</Button>
+<Button color="cta" type="button" onClickHandler={validate}>Finish</Button>

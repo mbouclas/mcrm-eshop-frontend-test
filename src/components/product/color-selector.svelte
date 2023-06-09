@@ -3,6 +3,7 @@
     import {cloudinarySrcSet, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {createEventDispatcher, onMount} from 'svelte';
     import {setColorAction} from "@stores/product.store";
+    import {appliedFiltersStore} from "@stores/search.store";
     const dispatch = createEventDispatcher();
 
     export let colors: IProductColorForSelector[] = [];
@@ -12,6 +13,7 @@
     let outerRing = 6,
         innerRing = 3,
     selectedColor = colors[0];
+    export let targetImage: string;
 
     switch (size) {
         case "small": outerRing = 6; innerRing = 3;
@@ -22,14 +24,49 @@
         break;
     }
 
+    appliedFiltersStore.subscribe(filters => {
+        const filter = filters.find(f => {
+            const key = Object.keys(f)[0];
+            return key === 'colors';
+        })
+
+        if (!filter) {return;}
+
+        // no point trying to set a default color when there are multiple colors as filters
+        if (Array.isArray(filter) && filter.length > 1) {
+
+            return;
+        }
+
+        // find the color
+
+        selectedColor = colors.find(c => {
+            return c.slug === filter.colors[0]
+        });
+
+        if (!selectedColor) {
+            return;
+        }
+
+        selectVariant(selectedColor);
+    });
+
     onMount(() => {
         setColorAction(selectedColor);
     })
 
-    export let targetImage: string;
-    function selectVariant(color: IProductColorForSelector) {
+
+    function selectVariant(color: IProductColorForSelector, attempt = 1) {
         const target = document.querySelector(targetImage);
-        if (!target) {return;}
+        // In case the DOM is not ready, retry
+        if (!target && attempt < 3) {
+            // retry after 100ms
+            setTimeout(() => {
+                selectVariant(color, attempt + 1);
+            }, 100);
+
+            return;
+        }
 
         dispatch('color.selected', color);
         setColorAction(color);

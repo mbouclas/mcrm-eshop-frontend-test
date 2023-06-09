@@ -1,9 +1,9 @@
 import {atom, action, task, onMount} from 'nanostores';
-import {setHttpLoading} from "@stores/http.store";
-import type {IStep} from "@models/checkout";
+import type {IGuestContactInformation, IOrderMetaData, IOrderResponse, IStep} from "@models/checkout";
 import {CheckoutService} from "@services/checkout.service";
 import type {IPaymentMethod, IShippingMethod, IStoreConfig} from "@models/general";
 import type {IAddress, IUser} from "@models/user.model";
+import {cart, clearCart, ICartItem} from "@stores/cart.store";
 export const cartQuantities = [1,2,3,4,5,6,7,8,9,10]
 const checkoutService = new CheckoutService();
 
@@ -46,10 +46,8 @@ const steps = [
     }
 ] as IStep[];
 
-export interface IGuestContactInformation {
-    email: string;
-    phone: string;
-}
+
+
 
 export interface ICheckoutStore {
     steps: IStep[];
@@ -62,9 +60,12 @@ export interface ICheckoutStore {
     paymentMethod: IPaymentMethod;
     config: IStoreConfig;
     guestUser?: IUser;
+    orderMetaData?: IOrderMetaData;
+    useBillingInformation: boolean;
+    latestOrder?: IOrderResponse;
 }
 
-export const checkoutStore = atom<ICheckoutStore>({
+const checkoutStoreDefaults = {
     steps,
     stepChanged: null,
     paymentMethods: [],
@@ -75,9 +76,22 @@ export const checkoutStore = atom<ICheckoutStore>({
     paymentMethod: {} as IPaymentMethod,
     config: {} as IStoreConfig,
     guestUser: {} as IUser,
-});
+    useBillingInformation: false,
+    orderMetaData: {} as IOrderMetaData,
+    latestOrder: {} as IOrderResponse,
+};
+export const checkoutStore = atom<ICheckoutStore>(checkoutStoreDefaults);
 
 onMount(checkoutStore, () => {
+    let cached = localStorage.getItem('checkout');
+    if (cached) {
+        try {
+            const data = JSON.parse(cached);
+            checkoutStore.set(data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
     // go get the config
     task(async () => {
         const res = await checkoutService.get();
@@ -137,6 +151,14 @@ export const setPaymentMethodAction = action(checkoutStore, 'setPaymentMethod', 
     return store.get();
 });
 
+
+export const setUseSameAsShippingAction = action(checkoutStore, 'setUseBillingInformation', (store, useBillingInformation) => {
+    const s = store.get();
+    s.useBillingInformation = useBillingInformation;
+    store.set(s);
+    return store.get();
+})
+
 export const setGuestUserAction = action(checkoutStore, 'setGuestUser', (store, guestUser) => {
     const s = store.get();
     s.guestUser = guestUser;
@@ -164,6 +186,27 @@ export const handleStepChangeAction = action(checkoutStore, 'handleStepChange', 
     s.steps.forEach(x => x.current = false);
     s.stepChanged = step;
     st.current = true;
+    store.set(s);
+    return store.get();
+});
+
+export const resetCheckoutAction = action(checkoutStore, 'resetCheckout', (store) => {
+    store.set(checkoutStoreDefaults);
+    return store.get();
+});
+
+export const setCheckoutDoneAction = action(checkoutStore, 'setCheckoutDone', async (store, latestOrder: IOrderResponse) => {
+    latestOrder.items = cart.get().items as ICartItem[];
+    store.set({ ...checkoutStoreDefaults, ...{latestOrder}});
+
+    await clearCart();
+
+    return store.get();
+});
+
+export const setOrderMetaDataAction = action(checkoutStore, 'setOrderMetaData', (store, orderMetaData: IOrderMetaData) => {
+    const s = store.get();
+    s.orderMetaData = orderMetaData;
     store.set(s);
     return store.get();
 });

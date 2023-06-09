@@ -43,7 +43,7 @@
                 {item.title}
             </a>
         </h3>
-        <ColorSelector colors={colors} targetImage={`#item-${item.slug}`} />
+        <ColorSelector colors={productColors} targetImage={`#item-${item.slug}`} />
         <div class="flex flex-1 flex-col justify-end">
             {#if productColors.length > 0}
                 <p class="text-sm italic text-gray-500">{productColors.length} {productColors.length === 1 ? 'color' : 'colors'}</p>

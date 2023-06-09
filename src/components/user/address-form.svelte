@@ -7,11 +7,17 @@ import {createEventDispatcher} from "svelte";
 const dispatch = createEventDispatcher();
 
 export let formTitle = 'Add new address';
+const countries = [
+    {name: 'Cyprus', slug: 'cyprus'},
+    {name: 'Greece', slug: 'greece'},
+    {name: 'United Kingdom', slug: 'uk'},
+];
 const schema = object({
     firstName: string().required(),
     lastName: string().required(),
     street: string().required(),
     city: string().required(),
+    company: string().required(),
     country: string().required(),
     region: string().required(),
     postCode: string().required(),
@@ -25,18 +31,18 @@ const defaultModel = {
     street: '',
     apartment: '',
     city: '',
-    country: '',
+    country: countries[0].slug,
     region: '',
     postCode: '',
     phone: '',
 };
 export let model = {};
-model = {...defaultModel, ...model};
+model = {...model, ...defaultModel};
 
 async function validate() {
+    errors = {};
     try {
         await schema.validate(model, {abortEarly: false});
-        console.log('valid')
     } catch (e) {
         errors = extractValidationErrors(e);
         return;
@@ -71,7 +77,7 @@ async function validate() {
             <div class="sm:col-span-2">
                 <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
                 <div class="mt-1">
-                    <input bind:value={model.company} placeholder="Company name"
+                    <input bind:value={model.company} placeholder="Company name" class:border-red-600={errors.company}
                            type="text" name="company" id="company" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
             </div>
@@ -105,9 +111,9 @@ async function validate() {
                 <div class="mt-1">
                     <select class:border-red-600={errors.country} bind:value={model.country}
                             id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Mexico</option>
+                        {#each countries as country}
+                        <option value={country.slug}>{country.name}</option>
+                            {/each}
                     </select>
                 </div>
             </div>

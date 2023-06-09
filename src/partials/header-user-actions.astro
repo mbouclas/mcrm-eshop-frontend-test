@@ -1,11 +1,11 @@
 ---
 import TopBarSearch from '@components/search/top-search-bar.svelte';
 import Cart from '@components/mini-cart.component.svelte';
-const isLoginPage = Astro.url.pathname === '/login'
-const isRegisterPage = Astro.url.pathname === '/register'
-const isForgotPassword = Astro.url.pathname === '/forgot-password'
----
+import MobileMenu from '@components/mobile-menu.svelte'
+import UserIcon from '@components/header-user-icon.svelte'
 
+---
+<MobileMenu client:idle />
 <!-- START HEADER -->
 <header class="hidden lg:block">
   <nav class="w-full py-2 bg-sky">
@@ -26,7 +26,7 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
       </ul>
     </div>
   </nav>
-{!isLoginPage && !isRegisterPage && !isForgotPassword && (
+
   <nav class="py-4">
     <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
       <div class="logo">
@@ -80,128 +80,20 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
           </div>
           <a class="text-xs cursor-pointer hover:underline">
             <p class="text-sm">Help is Here</p>
-            <span>1.866.507.7454</span>
+            <span>+357 22 38 2000</span>
           </a>
         </div>
         <!-- END LINK ITEM -->
         <!-- START LINK ITEM -->
         <div class="relative flex items-center gap-2 dropdown" tabindex="1">
-          <div>
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="13.4197"
-                cy="10.8738"
-                r="4.37382"
-                stroke="black"
-                stroke-width="1.5"></circle>
-              <path
-                d="M5.75586 22.5005C5.75586 21.5482 5.9541 20.6053 6.33925 19.7255C6.7244 18.8457 7.28893 18.0463 8.0006 17.3729C8.71227 16.6996 9.55715 16.1654 10.487 15.801C11.4168 15.4366 12.4134 15.249 13.4199 15.249C14.4263 15.249 15.4229 15.4366 16.3528 15.801C17.2826 16.1654 18.1275 16.6996 18.8392 17.3729C19.5509 18.0463 20.1154 18.8457 20.5005 19.7255C20.8857 20.6053 21.0839 21.5482 21.0839 22.5005"
-                stroke="black"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </div>
-          <a class="text-xs cursor-pointer hover:underline">
-            <p class="text-sm">Link</p>
-          </a>
-          <div
-            class="absolute w-full bg-transparent bg-white dropdown-item top-4 h-80"
-          >
-            <div
-              class="absolute z-40 w-full h-auto bg-white border border-gray-200 shadow top-10 -left-28"
-            >
-              <div class="relative w-full">
-                <div
-                  class="absolute h-5 w-5 transform rotate-45 bg-white left-1/2 -translate-x-1/2 -top-2.5 border-t border-l"
-                >
-                </div>
+        <UserIcon client:idle />
 
-                <div class="p-8">
-                  <p>
-                    Save your designs, easily track your orders, and get access
-                    to exclusive member benefits.
-                  </p>
 
-                  <div class="flex w-full py-3">
-                    <a
-                      href=""
-                      class="w-full px-5 py-3 text-lg text-center text-white bg-primary rounded-3xl"
-                      >Sign in
-                    </a>
-                  </div>
-
-                  <div class="flex w-full py-3">
-                    <a
-                      href=""
-                      class="w-full px-5 py-3 text-lg text-center border border-primary text-primary rounded-3xl"
-                      >Sign in
-                    </a>
-                  </div>
-
-                  <div class="w-full py-3 border-b border-gray-200"></div>
-
-                  <div
-                    class="flex items-center justify-between w-full py-3 pt-6"
-                  >
-                    <img
-                      src="data:image/svg+xml;utf8,%3Csvg%20width%3D%2233%22%20height%3D%2232%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M15.745%203.791a.75.75%200%200%200-.49%200l-12.997%204.5a.752.752%200%200%200-.508.7V23.5c0%20.32.203.604.505.709l12.993%204.497a.747.747%200%200%200%20.492.005l5.997-2a.75.75%200%200%200-.474-1.422l-5.013%201.67V13.874l11.5-3.833V17a.75.75%200%200%200%201.5%200V9a.75.75%200%200%200-.521-.714L15.745%203.79ZM3.25%2010.067l11.496%204.139.004.001v12.74l-11.5-3.981V10.067Zm19.027.217%203.892-1.297L15.5%205.294l-3.873%201.34%209.94%203.406.71.243Zm-2.345.781-4.673%201.558L4.793%209l4.531-1.569.228.079%2010.38%203.555Zm5.883%208.9a2.37%202.37%200%201%200%20.523%204.71%202.37%202.37%200%200%200-.523-4.71Zm-3.585%202.782a3.87%203.87%200%201%201%207.28%201.36l1.54%201.232a.75.75%200%201%201-.937%201.17l-1.54-1.231a3.87%203.87%200%200%201-6.343-2.53Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E"
-                      alt=""
-                    />
-                    <span class="text-sm font-bold"
-                      >Find and track your order</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- END LINK ITEM -->
 
         <!-- START LINK ITEM -->
         <div class="flex items-center gap-2">
-          <div>
-            <svg
-              width="28"
-              height="29"
-              viewBox="0 0 28 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              ><g clip-path="url(#clip0)"
-                ><path
-                  d="M22 8.09863H6V24.7986H22V8.09863Z"
-                  stroke="black"
-                  stroke-width="1.5"
-                  stroke-miterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path><path
-                  d="M11.5 10.6002V5.5002C11.5 4.8002 12.1 4.2002 12.8 4.2002H15.4C16.1 4.2002 16.7 4.8002 16.7 5.5002V10.7002"
-                  stroke="black"
-                  stroke-width="1.5"
-                  stroke-miterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </g><defs
-                ><clipPath id="clip0"
-                  ><rect
-                    width="24"
-                    height="24"
-                    fill="white"
-                    transform="translate(2 2.5)"></rect>
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-          <a class="text-xs cursor-pointer hover:underline">
-            <p class="text-sm">Cart</p>
-          </a>
           <Cart client:idle />
         </div>
         <!-- END LINK ITEM -->
@@ -360,135 +252,19 @@ const isForgotPassword = Astro.url.pathname === '/forgot-password'
     </div>
   </nav>
   <!-- END CATEGORIES NAV -->
-  )
-}
+
 
 </header>
-<!-- END HEADER -->
 
-<!-- START MOBILE -->
-<header class="py-3 lg:hidden">
-  <div class="container flex items-center justify-between px-4">
-    <div class="flex items-center gap-3">
-      <span class="navburger"
-        ><svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="5.75"
-            y1="9.25"
-            x2="18.25"
-            y2="9.25"
-            stroke="black"
-            stroke-width="1.5"
-            stroke-linecap="round"></line>
-          <line
-            x1="5.75"
-            y1="15.25"
-            x2="18.25"
-            y2="15.25"
-            stroke="black"
-            stroke-width="1.5"
-            stroke-linecap="round"></line>
-        </svg>
-      </span>
-      <span class="text-black">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-      </span>
-    </div>
-    <div class="">
-      <div class="logo">
-        <img
-          src="/logo.png"
-          alt=""
-          class="object-contain w-20 h-20 -ml-6"
-          srcset=""
-        />
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="">
-        <span class="site-header-link-icon"
-          ><svg
-            width="28"
-            height="28"
-            viewBox="0 0 28 28"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M14.5472 4C9.31915 4 5.04166 8.27749 5.04166 13.5055C5.04166 15.4066 5.59615 17.2285 6.62592 18.7336L5.04166 22.4566C4.88324 22.7734 5.20009 23.0903 5.59615 23.0111L9.31915 21.4268C10.8242 22.4566 12.6461 23.0111 14.5472 23.0111C19.7752 23.0111 24.0527 18.7336 24.0527 13.5055C24.0527 8.27749 19.7752 4 14.5472 4Z"
-              stroke="black"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-            <ellipse
-              cx="14.548"
-              cy="17.4679"
-              rx="0.792128"
-              ry="0.792127"
-              fill="black"></ellipse>
-            <path
-              d="M14.5474 15.4073L14.4682 13.8231C15.7356 13.8231 16.8446 12.7933 16.8446 11.4467C16.8446 10.1001 15.8148 9.07031 14.4682 9.07031C13.1216 9.07031 12.0918 10.1001 12.0918 11.4467H12.171C12.171 10.1001 13.28 9.07031 14.5474 9.07031C15.8148 9.07031 16.9238 10.1793 16.9238 11.4467C16.9238 12.7933 15.894 13.8231 14.5474 13.8231V15.4073Z"
-              stroke="black"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-        </span>
-      </a>
 
-      <a href="">
-        <svg
-          width="28"
-          height="29"
-          viewBox="0 0 28 29"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          ><g clip-path="url(#clip0)"
-            ><path
-              d="M22 8.09863H6V24.7986H22V8.09863Z"
-              stroke="black"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path><path
-              d="M11.5 10.6002V5.5002C11.5 4.8002 12.1 4.2002 12.8 4.2002H15.4C16.1 4.2002 16.7 4.8002 16.7 5.5002V10.7002"
-              stroke="black"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </g><defs
-            ><clipPath id="clip0"
-              ><rect
-                width="24"
-                height="24"
-                fill="white"
-                transform="translate(2 2.5)"></rect>
-            </clipPath>
-          </defs>
-        </svg>
-      </a>
-    </div>
+<header class="block lg:hidden z-20 w-full h-16 px-4 text-gray-700 transition duration-200 ease-in-out bg-white innerSticky body-font sm:h-20 lg:h-24 md:px-8 lg:px-6">
+  <div class="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
+    <a class="inline-flex focus:outline-none" href="/" title="home">
+      <span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 95px; height: 70px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
+        <img alt="ChawkBazar" srcset="/logo.png 1x, /logo.png 2x" src="/logo.png"
+             decoding="async" data-nimg="fixed"
+>
+      </span>
+    </a>
   </div>
 </header>
-<!-- END MOBILE -->

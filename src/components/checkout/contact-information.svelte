@@ -7,19 +7,31 @@
     import PleaseRegisterSection from '@components/checkout/convert-guest-to-user.svelte';
     import Button from '@components/buttons.component.svelte';
     import UserAddresses from '@components/checkout/user-addresses.svelte';
-    import type {IUserStore} from "@models/user.model";
+    import type {IUser, IUserStore} from "@models/user.model";
     import {createEventDispatcher} from "svelte";
-    import {checkoutStore} from "@stores/checkout.store";
+    import {checkoutStore, setContactInformationAction} from "@stores/checkout.store";
     import type {IEvent, IStoreConfig} from "@models/general";
     import {UserService} from "@services/user.service";
     import type {IConvertGuestToUserEvent} from "@models/checkout";
     const dispatch = createEventDispatcher();
 
     let user: IUserStore, existingGuest = false,
-    config: IStoreConfig, showLoginForm = false, showPleaseRegisterSection = false;
+    config: IStoreConfig, showLoginForm = false,
+        showPleaseRegisterSection = false,
+        contactInformation;
     export let selectedContact = null;
+    const model = {
+        email: '',
+        phone: '',
+        firstName: '',
+        lastName: '',
+        terms: true,
+    };
+
     userStore.subscribe((value) => {
+        if (!value || Object.keys(value).length === 0) {return;}
         user = value;
+
         if (user && user.email) {
             showLoginForm = false;
         }
@@ -29,24 +41,24 @@
             selectedContact = defaultAddress ? defaultAddress : null;
         }
         // console.log('user in contact-information', value)
+        onLoginSuccess({detail: value} as any);
     });
 
     checkoutStore.subscribe(async (state) => {
         config = state.config;
+        contactInformation = state.contactInformation;
     });
 
     let errors = {};
     const schema = object({
         email: string().email("Email doesn't look right").required('Please provide your email'),
         phone: string().required(),
+        firstName: string().required(),
+        lastName: string().required(),
         terms: boolean().oneOf([true]),
     });
 
-    const model = {
-        email: 'bobo@gmail.com',
-        phone: '97855782',
-        terms: true,
-    };
+
 
     async function submit() {
         errors = {};
@@ -61,7 +73,8 @@
 
 
 
-        const res  = await (new UserService()).checkUserEmail(model.email);
+        const res  = await (new UserService()).checkUserEmail(model.email, model);
+
         // If so, show the login form
         if (res.exists && res.type === 'user') {
             showLoginForm = true;
@@ -76,6 +89,8 @@
         }
 
         // otherwise set it on the store and move on
+
+        setContactInformationAction(model);
         dispatch('done', {
             stepId: 'contact',
             data: {selectedContact: null, contact: model}
@@ -87,11 +102,17 @@
     }
 
     function validate() {
+        if (user) {
+            onLoginSuccess({detail: user} as any);
+            return;
+        }
+
         if (!selectedContact) {
             errors['contact'] = ['Please select a delivery address to continue'];
             return;
         }
 
+        setContactInformationAction(selectedContact);
         dispatch('done', {
             stepId: 'contact',
             data: {selectedContact}
@@ -103,13 +124,37 @@
         const payload = e.detail;
 
         if (payload.decision === 'guest') {
+            setContactInformationAction({...payload.data, ...model});
             dispatch('done', {
                 stepId: 'contact',
-                data: {contact: {...model, ...payload.data}}
+                data: {contact: {...payload.data, ...model}}
             });
+
             return;
         }
         // open the register form
+    }
+
+    function changeContactInformation() {
+        contactInformation = {};
+        // setContactInformationAction({});
+    }
+
+    function onLoginError(e) {
+        console.log('login error', e.detail);
+    }
+
+    function onLoginSuccess(e: IEvent<IUserStore>) {
+        setContactInformationAction({
+            firstName: e.detail.firstName,
+            lastName: e.detail.lastName,
+            email: e.detail.email,
+            phone: e.detail['phone'],
+        });
+        dispatch('done', {
+            stepId: 'contact',
+            data: {selectedContact: null, contact: model}
+        });
     }
 
 </script>
@@ -122,8 +167,28 @@
 <PleaseRegisterSection contact={model} on:done={handleGuestDecision} />
 {/if}
 
+{#if Object.keys(contactInformation).length > 0}
+    <div class=" min-w-0 break-words bg-white w-full mb-6 shadow-2xl rounded-lg p-6">
+        <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">{contactInformation.firstName} {contactInformation.lastName}</h3>
+        <p class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+            {contactInformation.email}
+        </p>
+        {#if contactInformation.phone}
+        <p class="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+            {contactInformation.phone}
+        </p>
+        {/if}
+        {#if !user}
+        <div class="inline-flex justify-center w-full">
+            <button on:click={changeContactInformation}
+                    class="bg-sky text-white p-2 rounded items-center">Change Contact Information</button>
+        </div>
+        {/if}
+    </div>
+{/if}
+
 {#if showLoginForm}
-    <Login initialModel={model} />
+    <Login initialModel={model} on:loginSuccess={onLoginSuccess} on:loginError={onLoginError} />
 {/if}
 {#if user && user.email}
     {#if Array.isArray(user.addresses)}
@@ -133,28 +198,49 @@
 
 {:else}
     {#if config.guestCheckout }
-        {#if !showLoginForm && !showPleaseRegisterSection}
+        {#if !showLoginForm && !showPleaseRegisterSection && Object.keys(contactInformation).length === 0}
 
         <form class="mt-6" on:submit|preventDefault={submit}>
 
 
             <h2 class="text-lg font-medium text-gray-900">Contact information</h2>
-
             <div class="mt-6">
-                <label for="email-address" class="block text-sm font-medium text-gray-700">Email address</label>
+                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
                 <div class="mt-1">
-                    <input bind:value={model.email} class:border-red-600={errors.email}
-                           type="email" id="email-address" name="email-address" autocomplete="email"
-                           placeholder="email address"
+                    <input bind:value={model.firstName} class:border-red-600={errors.firstName}
+                           type="text" id="firstName" name="firstName" autocomplete="firstName"
+                           placeholder="First Name"
                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
             </div>
 
             <div class="mt-6">
+                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                <div class="mt-1">
+                    <input bind:value={model.lastName} class:border-red-600={errors.lastName}
+                           type="text" id="lastName" name="lastName" autocomplete="lastName"
+                           placeholder="First Name"
+                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                <div class="mt-1">
+                    <input bind:value={model.email} class:border-red-600={errors.email}
+                           type="email" id="email" name="email" autocomplete="email"
+                           placeholder="Last Name"
+                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+            </div>
+
+
+            <div class="mt-6">
                 <label for="phone" class="block text-sm font-medium text-gray-700">Phone number</label>
                 <div class="mt-1">
                     <input bind:value={model.phone} class:border-red-600={errors.phone}
-                           type="text" name="phone" id="phone" autocomplete="tel" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                           placeholder="Phone number"
+                           type="tel" name="phone" id="phone" autocomplete="phone" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
             </div>
 

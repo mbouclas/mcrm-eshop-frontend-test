@@ -1,8 +1,7 @@
 <script lang="ts">
     import {moneyFormat} from "@helpers/money-format";
-    import {cartQuantities} from "@stores/checkout.store";
     import {CartHandlers} from '@services/cart-component.service';
-    import {cart} from "@stores/cart.store";
+    import {cart, clearCart} from "@stores/cart.store";
     import type {ICart} from "@stores/cart.store";
     import {httpLoading} from "@stores/http.store";
     import NumberPad from "@components/number-pad.svelte";
@@ -10,7 +9,8 @@
     import AttachFiles from "@components/checkout/quote/attach-files.svelte";
     import Modal from "@components/full-screen-modal.svelte";
     import {setModalShownAction} from "@stores/search.store";
-
+    import EmptyCartMessage from '@components/checkout/cart-is-empty.svelte';
+    import Button from "@components/buttons.component.svelte";
 
     const cartHandlers = new CartHandlers({
         items: [],
@@ -34,11 +34,18 @@
         setModalShownAction(modalIsShown);
 
     }
+
+    function clear() {
+        clearCart();
+    }
 </script>
 {#if loading}
 <div class="rounded-md shadow-md bg-white absolute left-1/2 items-center -bottom-18 mt-3 p-3 z-10">
     <Spinner />
 </div>
+{/if}
+{#if cartHandlers.Cart.items.length === 0}
+    <EmptyCartMessage />
 {/if}
 
 <Modal title="Attach Files to Order">
@@ -81,9 +88,9 @@
                                             </p>
                                         </div>
                                         {:else}
-                                        <button type="button" on:click={toggleModal} title="Attach Files"
+                                        <button type="button" on:click={toggleModal} title="Attach Logo"
                                                 class="mt-4 inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                            Attach files
+                                            Attach Logo
                                             <svg class="h-5 w-5 text-white"
                                                  xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M15 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7l-5-5zM6 20V4h8v4h4v12H6zm10-10v5c0 2.21-1.79 4-4 4s-4-1.79-4-4V8.5a2.5 2.5 0 0 1 2.76-2.49c1.3.13 2.24 1.32 2.24 2.63V15h-2V8.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V15c0 1.1.9 2 2 2s2-.9 2-2v-5h2z"/></svg>
                                         </button>
@@ -119,6 +126,7 @@
         </section>
 
         <!-- Order summary -->
+        {#if cartHandlers.Cart.items.length > 0}
         <section aria-labelledby="summary-heading" class="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
             <h2 id="summary-heading" class="text-lg font-medium text-gray-900">Order summary</h2>
 
@@ -135,7 +143,10 @@
             </dl>
 
             <div class="mt-6 flex text-center">
-                <a href="/checkout" class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">Checkout</a>
+                <a href="/checkout" class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">Proceed</a>
+
             </div>
+            <Button color="error" type="button" onClickHandler={clear}>Clear Cart</Button>
         </section>
+            {/if}
     </form>

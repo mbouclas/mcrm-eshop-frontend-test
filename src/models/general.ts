@@ -42,3 +42,11 @@ export interface IOtp {
 export interface IEvent<T> extends Event {
     detail: T;
 }
+
+export interface IAlertsStore {
+    title?: string;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+    timeout?: number;
+    position?:  'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+}

@@ -88,6 +88,7 @@ export interface IPropertyValue {
     image?: string;
     color?: string;
     code?: string;
+    slug?: string;
     value?: string;
 }
 
@@ -103,6 +104,7 @@ export interface IProductColorForSelector {
     variant: IProductColorForSelectorVariant;
     code: string;
     name: string;
+    slug: string;
 }
 
 export interface IAggregation {

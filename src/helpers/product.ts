@@ -10,6 +10,7 @@ export function getProductColors(propertyValues: IPropertyValue[], variants: IVa
                 image: found.image,
                 code: found.code as string,
                 name: found.name,
+                slug: found.slug as string,
                 variant: {
                     uuid: variant.uuid,
                     variantId: variant.variantId,

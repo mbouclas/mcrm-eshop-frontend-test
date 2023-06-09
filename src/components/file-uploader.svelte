@@ -30,7 +30,8 @@
             'picture'
         ],
         closeAfterFinish = false,
-        autoProceed = true
+        autoProceed = true,
+        meta = {}
     ;
 
     export function close() {
@@ -43,13 +44,17 @@
         const companionUrl = `${import.meta.env.PUBLIC_BASE_URL}companion`;
         uppyDashboard = new Uppy({
                 logger: debugLogger,
-
+                meta,
                 id,
                 autoProceed,
                 restrictions: {
                     maxNumberOfFiles: 10,
                     allowedFileTypes: ['image/*', '.pdf']
-                }
+                },
+                onBeforeUpload: (files) => {
+                    uppyDashboard.setFileMeta({...{}, ...meta});
+                    return files;
+                },
             });
 
         uppyDashboard.use(Dashboard, {
@@ -70,6 +75,7 @@
                     limit: 6,
                     bundle: true,
                     withCredentials: true,
+                    formData: true,
                 });
 
         uppyDashboard.use(GoldenRetriever);

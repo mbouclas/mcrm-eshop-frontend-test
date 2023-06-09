@@ -1,9 +1,16 @@
 <script lang="ts">
     import type {IShippingMethod} from "@models/general";
     import {moneyFormat} from "@helpers/money-format";
+    import {createEventDispatcher} from "svelte";
+    const dispatch = createEventDispatcher();
 
     export let shippingMethods: IShippingMethod[] = [];
     export let selectedShippingMethod: IShippingMethod = shippingMethods[0];
+
+    function onSelection(item) {
+        selectedShippingMethod = item;
+        dispatch('selection', item);
+    }
 </script>
 
 
@@ -14,7 +21,7 @@
         <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
 
             {#each shippingMethods as item}
-            <label on:click={() => selectedShippingMethod = item}
+            <label on:click={() => onSelection(item)}
                    class:border-transparent={selectedShippingMethod === item}
                    class:ring-2={selectedShippingMethod === item}
                    class:ring-indigo-500={selectedShippingMethod === item}

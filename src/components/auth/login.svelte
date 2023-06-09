@@ -3,7 +3,9 @@
     import {object, string} from 'yup';
     import {extractValidationErrors, loginErrorHandler} from "@helpers/validation";
     import {setUserStore} from "@stores/user.store";
+    import {createEventDispatcher} from "svelte";
     const userService = new UserService();
+    const dispatch = createEventDispatcher();
     let loginError = null;
     export let initialModel;
 
@@ -29,14 +31,17 @@
         }
         catch (e) {
             errors = extractValidationErrors(e);
+            return;
         }
 
         try {
             const res = await userService.login(model.email, model.password, model.rememberMe);
             setUserStore(res);
+            dispatch('loginSuccess', res);
         }
         catch (e) {
-            loginError = loginErrorHandler(e.message)
+            loginError = loginErrorHandler(e.message);
+            dispatch('loginError', e);
         }
 
     }
@@ -52,8 +57,6 @@
 
 <form
         class="space-y-6"
-        x-ref="loginForm"
-        action=""
         method="POST"
         on:submit|preventDefault={submit}
 

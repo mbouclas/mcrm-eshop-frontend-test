@@ -1,7 +1,8 @@
 import {BaseHttpService} from "@services/base-http.service";
-import * as process from "process";
 import {setHttpLoading} from "@stores/http.store";
-import type {ICheckUserEmailResult, IUser} from "@models/user.model";
+import type {IAddress, ICheckUserEmailResult, IUser} from "@models/user.model";
+import type {IGenericObject} from "@models/general";
+import {logoutUserAction} from "@stores/user.store";
 
 
 export class UserService extends BaseHttpService {
@@ -45,13 +46,36 @@ export class UserService extends BaseHttpService {
         return response;
     }
 
-    async checkUserEmail(email: string): Promise<ICheckUserEmailResult> {
+    async logout() {
+        setHttpLoading(true);
+        const url = `${this.baseUrl}logout`;
+        const res = await fetch(url, {
+            method: 'DELETE',
+            headers: this.setHeaders(),
+        });
+        setHttpLoading(false);
+
+        const response = await res.json();
+
+        if (response.error) {
+            throw new Error(JSON.stringify(response));
+        }
+
+        logoutUserAction();
+        return response;
+    }
+
+    async checkUserEmail(email: string, userInfo?: IGenericObject): Promise<ICheckUserEmailResult> {
         const url = `${this.baseUrl}check-email`;
         setHttpLoading(true);
+        const otp = await this.getOtp();
         const res = await fetch(url, {
             method: 'POST',
-            headers: this.setHeaders(),
-            body: JSON.stringify({email}),
+            headers: this.setHeaders(otp),
+            body: JSON.stringify({
+                email,
+                userInfo,
+            }),
         });
 
         const response = await res.json();
@@ -64,9 +88,7 @@ export class UserService extends BaseHttpService {
     public async getGuestDetails(email: string): Promise<IUser> {
         setHttpLoading(true);
         const otp = await this.getOtp();
-        const headers = this.setHeaders();
-        headers['x-otp-id'] = otp.id;
-        headers['x-otp'] = otp.otp;
+        const headers = this.setHeaders(otp);
 
         const url = `${this.baseUrl}details`;
 
@@ -80,4 +102,19 @@ export class UserService extends BaseHttpService {
         return await res.json();
     }
 
+    async syncAddress(address: IAddress, type: 'shipping'|'billing') {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const headers = this.setHeaders(otp);
+        const url = `${this.baseUrl}address/sync`;
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({address, type}),
+        });
+
+        setHttpLoading(false);
+        return await res.json();
+    }
 }

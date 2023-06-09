@@ -63,9 +63,9 @@
                                     </p>
                                 </div>
                             {:else}
-                                <button type="button" on:click={toggleModal} title="Attach Files"
+                                <button type="button" on:click={toggleModal} title="Attach Logo"
                                         class="mt-4 inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    Attach files
+                                    Attach Logo
                                     <svg class="h-5 w-5 text-white"
                                          xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M15 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7l-5-5zM6 20V4h8v4h4v12H6zm10-10v5c0 2.21-1.79 4-4 4s-4-1.79-4-4V8.5a2.5 2.5 0 0 1 2.76-2.49c1.3.13 2.24 1.32 2.24 2.63V15h-2V8.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V15c0 1.1.9 2 2 2s2-.9 2-2v-5h2z"/></svg>
                                 </button>
@@ -84,20 +84,22 @@
                         </button>
                     </div>
                 </div>
+                <div class="ml-4 items-center justify-center">
+                    <label for={`quantity-${idx}`} class="sr-only">Quantity</label>
+                    <NumberPad min={1} max={10000} counter={item.quantity} on:numberPadChange={(e) => onQuantityChange(idx, e.detail)} />
 
-                <div class="flex flex-1 items-end justify-between pt-2">
-                    <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)} x {item.quantity} = {moneyFormat(item.price * item.quantity)}</p>
-
-                    <div class="ml-4">
-                        <label for={`quantity-${idx}`} class="sr-only">Quantity</label>
-                        <NumberPad min={1} max={10000} counter={item.quantity} on:numberPadChange={(e) => onQuantityChange(idx, e.detail)} />
-
-                    </div>
                 </div>
+
+                <div class="flex flex-1 items-end justify-between pt-2 bg-gray-100 p-2">
+                    <p class="mt-1 text-sm  text-gray-900"><span class="font-medium">Total:</span> {moneyFormat(item.price * item.quantity)}</p>
+
+
+                </div>
+
             </div>
         </li>
         {/each}
-        <!-- More products... -->
+
     </ul>
 
     <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">

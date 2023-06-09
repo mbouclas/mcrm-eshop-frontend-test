@@ -1,6 +1,6 @@
-import {atom, action, task, onMount} from 'nanostores';
-import {setHttpLoading} from "@stores/http.store";
+import {atom, action} from 'nanostores';
 import type {IUserStore} from "@models/user.model";
+import {resetCheckoutAction} from "@stores/checkout.store";
 
 const cachedUser = localStorage.getItem('user');
 
@@ -16,4 +16,10 @@ export const setUserStore = action(userStore, 'setUserStore', (store, user) => {
     store.set(user);
     localStorage.setItem('user', JSON.stringify(user));
     return store.get();
+});
+
+export const logoutUserAction = action(userStore, 'logoutUserAction', (store) => {
+    store.set({} as IUserStore);
+    localStorage.setItem('user', JSON.stringify({}));
+    resetCheckoutAction();
 });

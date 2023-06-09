@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {cart, saveCartToServerAction, setMetaDataAction} from "@stores/cart.store";
+    import {cart, saveCartToServerAction, setCartItems, setMetaDataAction} from "@stores/cart.store";
     import type {ICartItem} from "@stores/cart.store";
     import type {IEvent} from "@models/general";
     import type {SuccessResponse, UploadResult, UppyFile} from "@uppy/core";
@@ -40,7 +40,15 @@
             cartItems[idx].metaData.uploadedFiles = [];
         }
 
-        const file = {...{description: '', ...e.detail.file}}
+        const uploadResponse = e.detail.response.body.find((item) => item.originalName === e.detail.file.name);
+
+        const file = {
+            description: '',
+            filename: uploadResponse.filename,
+            originalName: uploadResponse.originalName,
+            id: e.detail.file.id,
+
+        }
 
         cartItems[idx].metaData.uploadedFiles.push(file);
         validationErrors[`${idx}-${cartItems[idx].metaData.uploadedFiles.length - 1}`] = '';
@@ -78,6 +86,11 @@
             });
         });
 
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
+        setCartItems(cartItems);
         //update cart with the new metadata
         await saveCartToServerAction();
         dispatch('attachFilesDone');
@@ -104,7 +117,7 @@
         <div class="mt-2 flex items-center gap-x-3">
             <img src={item.thumb} alt={item.title} class="w-20 rounded-md">
             <FileUploader id={`${cartItemUploadIdPrefix}${idx}`} on:uploadComplete={uploadComplete} on:allUploadsComplete={onAllUploadsComplete} on:uploadFailed={onUploadFailed}
-                webCamModes={['picture']} uploaders={['webcam']} bind:this={uploaders[idx]} buttonTitle="Attach Files"  />
+                webCamModes={['picture']} uploaders={['webcam']} bind:this={uploaders[idx]} buttonTitle="Attach Logo"  />
         </div>
 
         {#if Array.isArray(item.metaData.uploadedFiles) && item.metaData.uploadedFiles.length > 0}

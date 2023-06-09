@@ -1,11 +1,14 @@
 <script lang="ts">
     import {isBagValid, setQuantityAction} from "@stores/product.store";
     import NumberPad from "@components/number-pad.svelte";
-
-    export let quantity = 1;
+    import {cart} from "@stores/cart.store";
+    const defaultQuantity = 1;
+    export let quantity = defaultQuantity;
     let valid = false,
     dirty = false;
+
     setQuantityAction(quantity);
+
 
     isBagValid.subscribe(state => {
         if (!state && quantity === 0) {

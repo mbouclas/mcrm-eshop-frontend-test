@@ -1,6 +1,6 @@
 import {atom, task, onMount, action} from 'nanostores'
 import {CartService, IAddToCartDto} from "@services/cart.service";
-import {setHttpLoading} from "@stores/http.store";
+import {setAlertAction, setHttpLoading} from "@stores/http.store";
 import type {IGenericObject} from "@models/general";
 
 const cartService = new CartService();
@@ -77,6 +77,7 @@ export const addToCartAction = async (item: IAddToCartDto, overwriteQuantity = f
     res.qty = res.items.length;
 
     cart.set(res);
+    setAlertAction({type: 'success', message: `Item added to cart`, position: 'top', timeout: 3000});
 }
 
 export const saveCartToServerAction = async () => {
@@ -100,12 +101,21 @@ export const setMetaDataAction = action(cart, 'setMetaDataAction', (store, idx: 
     return store.get();
 });
 
+export const setCartItems = action(cart, 'setCartItems', (store, items: ICartItem[]) => {
+    const state = store.get();
+    state.items = items;
+    store.set(state);
+
+    return store.get();
+});
+
 export async function removeFromCart(item: IAddToCartDto) {
     item.quantity = 0;
     const res = await cartService.removeFromCart(item);
     res.qty = res.items.length;
 
     cart.set(res);
+    setAlertAction({type: 'info', message: `Item removed from cart`, position: 'top', timeout: 3000});
 }
 
 export const clearCart = async () => {
@@ -113,6 +123,7 @@ export const clearCart = async () => {
     res.qty = 0;
 
     cart.set(res);
+    setAlertAction({type: 'info', message: `Cart cleared`, position: 'top', timeout: 3000});
 }
 
 export function getCart() {
