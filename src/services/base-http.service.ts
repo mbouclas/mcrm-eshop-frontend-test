@@ -22,9 +22,11 @@ export class BaseHttpService {
     protected setHeaders(otp?: IOtp): any {
         const headers: IGenericObject = {
             "Content-Type": "application/json",
-            mode: "cors",
-            credentials: "include",
+            'Access-Control-Allow-Origin': '*',
+            mode: 'cors',
+            credentials: "same-origin",
         }
+
 
         if (this.sessId && this.sessId.length > 0) {
             headers['x-sess-id'] = this.sessId;

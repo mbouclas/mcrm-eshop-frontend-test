@@ -125,7 +125,7 @@
         <div class="grid grid-cols-2">
             {#each item.metaData.uploadedFiles as file, index}
                 <div class="">
-                    <label for="username" class="block text-sm font-medium leading-6 text-gray-900">{file.name}</label>
+                    <label for="username" class="block text-sm font-medium leading-6 text-gray-900">{file.originalName}</label>
                     <div class="mt-2">
                         <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                             <input name={`description-${index}`} bind:value={file.description}

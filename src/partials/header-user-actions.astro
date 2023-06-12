@@ -3,6 +3,11 @@ import TopBarSearch from '@components/search/top-search-bar.svelte';
 import Cart from '@components/mini-cart.component.svelte';
 import MobileMenu from '@components/mobile-menu.svelte'
 import UserIcon from '@components/header-user-icon.svelte'
+import DesktopMenu from '@components/desktop-menu.svelte'
+import DesktopMenuItem from '@components/desktop-menu-item.svelte'
+import {MenusBackendService} from "@services/menus-backend.service";
+const menuService = new MenusBackendService()
+const menu = await menuService.getMenu('top-menu')
 
 ---
 <MobileMenu client:idle />
@@ -104,151 +109,9 @@ import UserIcon from '@components/header-user-icon.svelte'
   <!-- START CATEGORIES NAV -->
   <nav class="w-full py-4">
     <div class="container px-3 mx-auto 2xl:px-20">
-      <ul class="flex items-center w-full border-b">
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-          tabindex="1"
-        >
-          <a href="">All Categories</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b list-menu hover:border-primary"
-        >
-          <a href="">Clothing</a>
-          <div
-            class="absolute left-0 top-auto z-50 w-full h-64 mt-5 text-black bg-white megamenu"
-          >
-            <div class="container px-4 py-4 mx-auto lg:px-20">
-              <div class="grid grid-cols-1 lg:grid-cols-6">
-                <!-- START ITEM       -->
-                <div class="">
-                  <h4 class="mb-4 font-medium">Shirts & Tops</h4>
-                  <ul class="flex flex-col gap-4 text-sm">
-                    <li>
-                      <a href="#" class="hover:text-primary">T-shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Polo shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Dress Shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Tank Tops</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- END ITEM -->
+    <DesktopMenu  client:idle menuItems={menu.menuItem}>
 
-                <!-- START ITEM       -->
-                <div class="">
-                  <h4 class="mb-4 font-medium">Outer wear</h4>
-                  <ul class="flex flex-col gap-4 text-sm">
-                    <li>
-                      <a href="#" class="hover:text-primary">T-shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Polo shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Dress Shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Tank Tops</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- END ITEM -->
-
-                <!-- START ITEM       -->
-                <div class="">
-                  <h4 class="mb-4 font-medium">Hats</h4>
-                  <ul class="flex flex-col gap-4 text-sm">
-                    <li>
-                      <a href="#" class="hover:text-primary">T-shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Polo shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Dress Shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Tank Tops</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- END ITEM -->
-
-                <!-- START ITEM       -->
-                <div class="">
-                  <h4 class="mb-4 font-medium">Other Clothing</h4>
-                  <ul class="flex flex-col gap-4 text-sm">
-                    <li>
-                      <a href="#" class="hover:text-primary">T-shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Polo shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Dress Shirts</a>
-                    </li>
-                    <li>
-                      <a href="#">Tank Tops</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- END ITEM -->
-              </div>
-            </div>
-          </div>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Bags</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Drinkware</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Writing & Office</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Technology</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">HouseHold & Auto</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Sports & Leisure</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Treats</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Deals</a>
-        </li>
-        <li
-          class="flex-grow px-4 py-3 hover:text-gray-500 hover:border-b hover:border-primary"
-        >
-          <a href="">Collections</a>
-        </li>
-      </ul>
+    </DesktopMenu>
     </div>
   </nav>
   <!-- END CATEGORIES NAV -->

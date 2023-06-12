@@ -83,6 +83,7 @@ temp['categories'] = [category.slug];
 const appliedFilters = category.slug === 'all' ? [] : [temp];
 const propertiesService = new PropertiesService();
 const allColors = await propertiesService.getPropertyValues({slug: 'color'});
+
 const allMaterials = await propertiesService.getPropertyValues({slug: 'material'});
 
 ---

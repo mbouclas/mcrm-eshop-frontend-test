@@ -35,9 +35,15 @@
 
     appliedFiltersStore.subscribe(state => {
         filterCount = 0;
-        state.forEach(filter => {
-            const key = Object.keys(filter)[0];
 
+        state
+            .filter(filter => {
+                const key = Object.keys(filter)[0];
+
+                return ['page', 'sort', 'way', 'categories'].indexOf(key) === -1;
+            })
+            .forEach(filter => {
+            const key = Object.keys(filter)[0];
 
             if (!Array.isArray(filter[key]) && ['page', 'sort', 'way'].indexOf(key) !== -1) {
                 return;
@@ -120,6 +126,7 @@
 </script>
 <section class="grid grid-cols-2 mb-6">
     <div class=" ">
+        {#if filterCount > 0}
         <div class="flex w-full justify-start">
             <button type="button" on:click={toggle}
                     class="group flex items-center font-medium text-gray-700 ">
@@ -133,9 +140,12 @@
             </button>
 
             <div class="pl-6">
+
                 <button on:click={clear} type="button"  class="text-gray-500">Clear all</button>
+
             </div>
         </div>
+                {/if}
     </div>
 
     <div class=" ">

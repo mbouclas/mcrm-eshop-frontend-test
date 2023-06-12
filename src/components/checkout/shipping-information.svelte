@@ -7,6 +7,7 @@
     import type {IAddress} from "@models/user.model";
     import AddressSelector from '@components/checkout/past-address-selector.svelte';
     import {UserService} from "@services/user.service";
+    import {setAlertAction} from "@stores/http.store";
 
 
     const dispatch = createEventDispatcher();
@@ -35,6 +36,9 @@
         }
         catch (e) {
             console.log(e);
+            setAlertAction({type: 'error', message: `Something went wrong`, position: 'top', timeout: 3000});
+
+            return;
         }
 
 

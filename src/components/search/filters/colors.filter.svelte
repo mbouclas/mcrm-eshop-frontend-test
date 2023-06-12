@@ -116,6 +116,7 @@
     </div>
 </div>
 {/if}
+
     <fieldset>
         <legend class="block text-sm font-medium text-gray-900">Color</legend>
         <div class="border-b  border-gray-200 mb-4 my-2"></div>
@@ -127,8 +128,8 @@
             {#each res as item}
             <a href="#" on:click|preventDefault={filter.bind(this, item)} title={`${item.name} (${item.doc_count})`}>
                 {#if !item.image}
-                    <div class={`h-6 w-6 border border-[${item.color}] flex rounded-full items-center justify-center`}
-                         style={`border-color:${item.color}`}>
+                    <div class={`h-6 w-6 border border-[${item.color === '#ffffff' ? '#000' : item.color}] flex rounded-full items-center justify-center`}
+                         style={`border-color:${item.color === '#ffffff' ? '#000' : item.color}`}>
                         <div class={`h-3 w-3 rounded-full`} style={`background-color:${item.color}`}></div>
                     </div>
                 {:else}

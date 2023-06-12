@@ -50,3 +50,13 @@ export interface IAlertsStore {
     timeout?: number;
     position?:  'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }
+
+
+export interface IMenuItem {
+    title: string;
+    slug: string;
+    icon?: string;
+    permalink?: string;
+    link?: string;
+    children?: IMenuItem[];
+}

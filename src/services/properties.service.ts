@@ -12,6 +12,7 @@ export class PropertiesService {
         const {key, value} = extractSingleFilterFromObject(filter);
 
         const data = await this.load();
+
         return data.find((d: any) => d[key] === value);
     }
 

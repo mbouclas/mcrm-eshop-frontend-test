@@ -25,6 +25,7 @@ export class CartService extends BaseHttpService {
 
     async addToCart(item: IAddToCartDto, overwriteQuantity = false) {
         setHttpLoading(true);
+
         const res = await fetch(`${import.meta.env.PUBLIC_CART_ENDPOINT}add`, {
             method: 'POST',
             headers: this.setHeaders(),

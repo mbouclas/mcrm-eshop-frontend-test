@@ -3,7 +3,7 @@ import {BaseService} from "./base.service.mjs";
 export class PropertiesService extends BaseService {
     async get(limit = 10)  {
         let all = [];
-        const rels = `rels[]=propertyValues`;
+        const rels = `rels[]=propertyValue`;
         const res = await fetch(`${this.apiUrl}properties?limit=${limit}&${rels}`);
 
         const data = await res.json();

@@ -7,6 +7,7 @@
     import type {IAddress} from "@models/user.model";
     import AddressSelector from '@components/checkout/past-address-selector.svelte';
     import {UserService} from "@services/user.service";
+    import {setAlertAction} from "@stores/http.store";
 
     const dispatch = createEventDispatcher();
     export let model: IAddress = {} as IAddress;
@@ -22,12 +23,13 @@
         }
 
         if (state.contactInformation) {
-            model = state.contactInformation as IAddress;
+            // model = state.contactInformation as IAddress;
         }
 
         if (state.useBillingInformation) {
             model = state.shippingInformation;
         }
+
     });
     async function next() {
         try {
@@ -35,7 +37,8 @@
             model['uuid'] = res['uuid'];
         }
         catch (e) {
-            console.log(e);
+            setAlertAction({type: 'error', message: `Something went wrong`, position: 'top', timeout: 3000});
+            return;
         }
 
         setBillingInformationAction(model);

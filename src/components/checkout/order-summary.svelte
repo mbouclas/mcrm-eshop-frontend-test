@@ -7,6 +7,8 @@
     import type {ICart} from "@stores/cart.store";
     import {httpLoading} from "@stores/http.store";
     import {setModalShownAction} from "@stores/search.store";
+    import Modal from "@components/full-screen-modal.svelte";
+    import AttachFiles from "@components/checkout/quote/attach-files.svelte";
     const cartHandlers = new CartHandlers({
         items: [],
         total: 0,
@@ -29,7 +31,11 @@
         setModalShownAction(modalIsShown);
 
     }
+
 </script>
+<Modal title="Attach Files to Order">
+    <AttachFiles  on:attachFilesDone={toggleModal}/>
+</Modal>
 <h2 class="text-lg font-medium text-gray-900">Order summary</h2>
 
 <div class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">

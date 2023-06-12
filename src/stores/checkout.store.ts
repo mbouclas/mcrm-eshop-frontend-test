@@ -132,6 +132,7 @@ export const setContactInformationAction = action(checkoutStore, 'setContactInfo
 
 export const setShippingInformationAction = action(checkoutStore, 'setShippingInformation', (store, shippingInformation) => {
     const s = store.get();
+
     s.shippingInformation = shippingInformation;
     store.set(s);
     return store.get();
@@ -139,6 +140,7 @@ export const setShippingInformationAction = action(checkoutStore, 'setShippingIn
 
 export const setBillingInformationAction = action(checkoutStore, 'setBillingInformation', (store, billingInformation) => {
     const s = store.get();
+
     s.billingInformation = billingInformation;
     store.set(s);
     return store.get();

@@ -1,6 +1,9 @@
 import type {IProductColorForSelector, IPropertyValue, IVariantEs} from "@models/products.model";
 
 export function getProductColors(propertyValues: IPropertyValue[], variants: IVariantEs[] = []) {
+    if (!propertyValues || !variants) {
+        return [];
+    }
     const colors: IProductColorForSelector[] = [];
     variants.forEach(variant => {
         const found = propertyValues.find(v => v.code === variant.color);

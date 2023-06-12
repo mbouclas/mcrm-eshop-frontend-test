@@ -15,6 +15,7 @@ import {userStore} from "@stores/user.store";
 import {CheckoutService} from "@services/checkout.service";
 import {cart} from "@stores/cart.store";
 import type {ICartItem} from "@stores/cart.store";
+import {setAlertAction} from "@stores/http.store";
 
 
 
@@ -80,7 +81,12 @@ async function checkoutDone() {
         return;
 
     }
+
     const res = await (new CheckoutService()).done(order);
+    if (!res.success) {
+        setAlertAction({type: 'error', message: `Something went wrong, contact the store`, position: 'top', timeout: 3000});
+        return;
+    }
     await setCheckoutDoneAction(res);
     window.location.href ='/thank-you';
 }

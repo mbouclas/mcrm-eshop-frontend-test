@@ -8,6 +8,7 @@ import { join, dirname } from "path"
 import { fileURLToPath } from "url"
 import {ProductsService} from "./products.service.mjs";
 import {PropertiesService} from "./properties.service.mjs";
+import {MenuService} from "./menu.service.mjs";
 const __filename = fileURLToPath(import.meta.url)
 const { API_BASE_URL, ASTRO_KEY } = loadEnv("production", process.cwd(), "")
 const __dirname = dirname(__filename)
@@ -110,6 +111,16 @@ async function saveProductPerCategories() {
 }
 
 async function saveMenus() {
+    const s = new MenuService();
+    const items = await s.getMenus();
+    try {
+        await writeFile(
+            join(cacheFolderLocation, `menus.json`),
+            JSON.stringify(items.data)
+        )
+    } catch (e) {
+        console.log(e)
+    }
     console.log(`* Saving All menus complete`)
 }
 
