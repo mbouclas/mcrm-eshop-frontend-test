@@ -1,3 +1,12 @@
+---
+import {IEditableRegion} from "../models/editable-regions.model";
+import {optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
+interface IHeroProps {
+  item: IEditableRegion;
+}
+const {item} = Astro.props as IHeroProps;
+
+---
 <section class="w-full">
   <div class="container px-4 2xl:px-20">
     <div class="flex flex-col items-center lg:flex-row">
@@ -5,18 +14,17 @@
         <h4
           class="mb-6 text-5xl font-bold text-center lg:text-5xl lg:text-left"
         >
-          Your logo.Endless<br />
-          Possibilities
+          {item.items[0].item.title}
         </h4>
         <p class="mt-4 text-lg text-center lg:text-left">
-          Discover the promotional products to set your business apart
+          {item.items[0].item.metaData['subTitle']}
         </p>
         <div class="my-4 text-center">
           <a
-            href=""
+            href={item.items[0].item.metaData['cta']['url']}
             class="flex items-center justify-center w-full lg:justify-start"
           >
-            <span>shop now</span>
+            <span>{item.items[0].item.metaData['cta']['title']}</span>
             <span class="ml-1"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +45,9 @@
       </div>
       <div class="w-full lg:w-1/2">
         <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,fl_progressive,w_auto:50:1920/site%20images/homepage/home-page-marquee-2"
-          alt=""
+          src={optimizeCloudinaryImage(item.items[0].item.metaData['image']['url'], 680)}
+          alt={optimizeCloudinaryImage(item.items[0].item.metaData['image']['alt'])}
+          title={optimizeCloudinaryImage(item.items[0].item.metaData['image']['caption'])}
           srcset=""
         />
       </div>

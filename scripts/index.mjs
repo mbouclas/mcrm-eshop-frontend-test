@@ -9,6 +9,7 @@ import { fileURLToPath } from "url"
 import {ProductsService} from "./products.service.mjs";
 import {PropertiesService} from "./properties.service.mjs";
 import {MenuService} from "./menu.service.mjs";
+import {EditableRegionsService} from "./editable-regions.service.mjs";
 const __filename = fileURLToPath(import.meta.url)
 const { API_BASE_URL, ASTRO_KEY } = loadEnv("production", process.cwd(), "")
 const __dirname = dirname(__filename)
@@ -37,6 +38,7 @@ await saveProductPerCategories();
 await saveMenus();
 await saveContent();
 await saveContentCategories();
+await saveEditableRegions();
 
 async function saveAllProducts() {
     const s = new ProductsService();
@@ -129,4 +131,18 @@ async function saveContent() {
 }
 async function saveContentCategories() {
     console.log(`* Saving All content categories complete`)
+}
+
+async function saveEditableRegions() {
+    const s = new EditableRegionsService();
+    const items = await s.getEditableRegions();
+    try {
+        await writeFile(
+            join(cacheFolderLocation, `editable-regions.json`),
+            JSON.stringify(items)
+        )
+    } catch (e) {
+        console.log(e)
+    }
+    console.log(`* Saving All Editable Regions complete`)
 }

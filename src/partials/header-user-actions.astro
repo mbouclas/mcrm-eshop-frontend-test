@@ -109,8 +109,10 @@ const menu = await menuService.getMenu('top-menu')
   <!-- START CATEGORIES NAV -->
   <nav class="w-full py-4">
     <div class="container px-3 mx-auto 2xl:px-20">
-    <DesktopMenu  client:idle menuItems={menu.menuItem}>
-
+    <DesktopMenu>
+      {menu.menuItem.map(item => (
+          <DesktopMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle />
+      ))}
     </DesktopMenu>
     </div>
   </nav>

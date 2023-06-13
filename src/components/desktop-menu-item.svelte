@@ -2,26 +2,31 @@
     import { fade, fly } from 'svelte/transition';
     import type {IMenuItem} from "@models/menus.model";
     let showMenu = false;
-    export let menuItem: IMenuItem;
-
+    export let link: string;
+    export let children: IMenuItem[];
+    export let title;
     function toggleMenu() {
         showMenu = !showMenu;
     }
+
+
 </script>
 
-<div class="flex" on:mouseenter={toggleMenu} on:mouseleave={toggleMenu}>
+<div class="flex h-full mr-8" on:mouseenter={toggleMenu} on:mouseleave={toggleMenu}>
     <div class="relative flex">
-        <!-- Item active: "border-indigo-600 text-indigo-600", Item inactive: "border-transparent text-gray-700 hover:text-gray-800" -->
-        <a href={menuItem.link || menuItem.permalink}
-                class="border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">{menuItem.title}</a>
+        <a href={link}
+           class:border-indigo-600={showMenu}
+           class:text-indigo-600={showMenu}
+           class:border-transparent={!showMenu}
+                class=" text-gray-700  relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">{title}</a>
     </div>
 
-    {#if showMenu}
+
         <div in:fly="{{ duration: 500 }}" out:fade="{{duration: 100}}"
+             class:hidden="{!showMenu}"
              class="absolute inset-x-0 top-full z-10 text-sm shadow-2xl text-gray-500">
-            <!-- Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow -->
             <div class="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true"></div>
-            {#if Array.isArray(menuItem.children)}
+            {#if Array.isArray(children) && children.length > 0}
             <div class="relative bg-white">
                 <div class="mx-auto max-w-7xl px-8">
                     <div class="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
@@ -49,17 +54,14 @@
                         </div>
                         <div class="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
                             <div>
+
                                 <ul role="list" aria-labelledby="Clothing-heading" class="mt-6 space-y-6 sm:mt-4 sm:space-y-4">
-                                    {#each menuItem.children as item}
+                                    {#each children as item}
                                         <li class="flex">
                                             <a href={item.link || item.permalink} class="hover:text-gray-800">{item.title}</a>
                                         </li>
                                     {/each}
-                                    <li class="flex">
-                                        <a href="#" class="hover:text-gray-800">Tops</a>
-                                    </li>
-
-                                </ul>
+                                     </ul>
                             </div>
 
                         </div>
@@ -69,5 +71,5 @@
             {/if}
         </div>
 
-    {/if}
+
 </div>

@@ -1,6 +1,5 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import ProductList from "@components/ProductList.astro"
 import Hero from "@components/Hero.astro"
 import PromotionalProducts from "@components/PromotionalProducts.astro"
 import WelcomeSection from "@components/WelcomeSection.astro"
@@ -8,10 +7,17 @@ import BestsellingItems from "@components/BestsellingItems.astro"
 import NeedHelp from "@components/NeedHelp.astro"
 import CategoryCards from "@components/CategoryCards.astro"
 import CustomPromo from "@components/CustomPromo.astro"
+import {EditableRegionsBackendService} from "@services/editable-regions-backend.service";
+
+const editableRegionsService = new EditableRegionsBackendService();
+const homepageRegions = await editableRegionsService.getLayout("homepage");
+const hero = editableRegionsService.getRegionFromLayout(homepageRegions, "hero");
+const latestProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "latest-products");
+
 ---
 
 <Layout title="E-shop">
-    <Hero />
+    <Hero item={hero} />
     <PromotionalProducts />
     <WelcomeSection />
     <BestsellingItems />
