@@ -6,6 +6,7 @@ import {highlighter} from "@helpers/general";
 import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
 import {appConfig, httpLoading} from "@stores/http.store";
 import Spinner from '@components/loading-spiner.svelte';
+import {setModalShownAction} from "@stores/search.store";
 
 let query = '';
 let timer;
@@ -44,10 +45,18 @@ function onKeyPressed(e) {
         reset();
     }
 }
+
+function handleBackdropClick(event) {
+    console.log(event.target.id)
+    if (event.target.id == 'sub-backdrop' || event.target.id === 'backdrop') {
+        reset()
+    }
+}
+
 </script>
 
-
-    <div class="relative" onWindowKeyDown={onKeyPressed}>
+<svelte:window on:keydown={onKeyPressed}/>
+    <div class="relative">
         <!-- INPUT -->
         <div class="relative">
             <div class="absolute top-0 bottom-0 left-0 flex items-center px-5">
@@ -66,8 +75,8 @@ function onKeyPressed(e) {
             </div>
         {/if}
         {#if results.length > 0}
-
-        <ul class="rounded-md shadow-md bg-white absolute left-0 right-0 -bottom-18 mt-3 p-3 z-10">
+            <div id="backdrop" class="fixed z-30 inset-0 bg-gray-500 bg-opacity-25 transition-opacity" on:click={handleBackdropClick}></div>
+        <ul class="rounded-md shadow-md bg-white absolute left-0 right-0 -bottom-18 mt-3 p-3 z-30 max-h-[500px] overflow-y-auto">
             <li class="text-xs uppercase text-gray-400 border-b border-gray border-solid py-2 px-5 mb-2">
                 Results
             </li>

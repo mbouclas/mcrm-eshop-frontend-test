@@ -15,6 +15,7 @@
 <div class="flex h-full mr-8" on:mouseenter={toggleMenu} on:mouseleave={toggleMenu}>
     <div class="relative flex">
         <a href={link}
+           title={title}
            class:border-indigo-600={showMenu}
            class:text-indigo-600={showMenu}
            class:border-transparent={!showMenu}

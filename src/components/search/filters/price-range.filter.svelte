@@ -27,7 +27,7 @@
         if (!found || !found.results) {return;}
 
         loading = false;
-        priceRanges = found.results.map(r => {
+        priceRanges = found.results.filter(r => r.doc_count > 0).map(r => {
             r['checked'] = filterIsApplied(state.appliedFilters, r);
             return r;
         });

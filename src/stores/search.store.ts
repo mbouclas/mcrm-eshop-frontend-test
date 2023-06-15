@@ -23,6 +23,7 @@ export const searchStore = atom<ISearchResult>({
 });
 
 export const modalStore = atom<IModalStore>({
+    id: 'default',
     shown: false,
 });
 
@@ -175,9 +176,12 @@ export const setFiltersAction = action(appliedFiltersStore, 'setFiltersAction', 
     return store.get();
 })
 
-export const setModalShownAction = action(modalStore, 'setModalShownAction', (store, value) => {
+export const setModalShownAction = action(modalStore, 'setModalShownAction', (store, value, id) => {
    const state = store.get();
    state.shown = value;
+   if (id) {
+       state.id = id;
+   }
 
    store.set(state);
 

@@ -14,6 +14,9 @@
         filterCount = 0;
        state.forEach(filter => {
            const key = Object.keys(filter)[0];
+           if (['page', 'categories', 'orderBy', 'way'].indexOf(key) !== -1) {
+               return;
+           }
 
            if (!Array.isArray(filter[key]) && ['page'].indexOf(key) !== -1) {
                return;
@@ -28,17 +31,21 @@
     });
 
     function toggle() {
-        setModalShownAction(!modalIsShown);
+        setModalShownAction(!modalIsShown, 'filters');
     }
 
     function clear() {
         clearAllFiltersAction();
     }
 </script>
-<Modal title="filters">
+
+<Modal title="filters" id="filters">
+
+    {#if filterCount > 0}
     <div class="pb-6 ">
     <TotalResultCounter />
     </div>
+        {/if}
     <div class=" ">
     <SortBy type="modal" />
     </div>

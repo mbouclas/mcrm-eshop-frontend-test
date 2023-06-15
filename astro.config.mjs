@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import critters from "astro-critters";
 import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
-import compress from "astro-compress";
 import partytown from "@astrojs/partytown";
 
 import svelte from "@astrojs/svelte";

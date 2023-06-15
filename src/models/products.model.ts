@@ -182,6 +182,7 @@ export interface IPropertiesStore {
 }
 
 export interface IModalStore {
+    id: string;
     shown: boolean;
 }
 

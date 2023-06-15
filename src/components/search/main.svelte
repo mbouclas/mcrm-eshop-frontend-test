@@ -116,7 +116,7 @@
     });
 
     function toggle() {
-        setModalShownAction(!modalIsShown);
+        setModalShownAction(!modalIsShown, 'filters');
     }
 
     function clear() {
@@ -126,8 +126,7 @@
 </script>
 <section class="grid grid-cols-2 mb-6">
     <div class=" ">
-        {#if filterCount > 0}
-        <div class="flex w-full justify-start">
+        <div class="block lg:hidden">
             <button type="button" on:click={toggle}
                     class="group flex items-center font-medium text-gray-700 ">
                 <svg class="mr-2 h-5 w-5 flex-none text-accent group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
@@ -138,11 +137,26 @@
                 {/if}
                 Filters
             </button>
+        </div>
+        {#if filterCount > 0}
+        <div class="hidden lg:block">
+            <div class="flex w-full justify-start">
+            <div type="button"
+                    class="group flex items-center font-medium text-gray-700 ">
+                <svg class="mr-2 h-5 w-5 flex-none text-accent group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd" />
+                </svg>
+                {#if filterCount > 0}
+                    {filterCount}
+                {/if}
+                Filters
+            </div>
 
             <div class="pl-6">
 
                 <button on:click={clear} type="button"  class="text-gray-500">Clear all</button>
 
+            </div>
             </div>
         </div>
                 {/if}
@@ -151,6 +165,7 @@
     <div class=" ">
         <div class="flex w-full justify-end">
             <div class="grid grid-cols-2 hidden sm:block">
+
             <SortBy />
             </div>
         </div>

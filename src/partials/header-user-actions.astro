@@ -1,16 +1,24 @@
 ---
 import TopBarSearch from '@components/search/top-search-bar.svelte';
+import MobileSearchBar from '@components/search/mobile-search.svelte';
 import Cart from '@components/mini-cart.component.svelte';
 import MobileMenu from '@components/mobile-menu.svelte'
 import UserIcon from '@components/header-user-icon.svelte'
 import DesktopMenu from '@components/desktop-menu.svelte'
 import DesktopMenuItem from '@components/desktop-menu-item.svelte'
+import MobileMenuItem from '@components/mobile-menu-item.svelte'
 import {MenusBackendService} from "@services/menus-backend.service";
+import {logoMobileUrl, logoUrl} from "../data/defaults";
 const menuService = new MenusBackendService()
 const menu = await menuService.getMenu('top-menu')
 
 ---
-<MobileMenu client:idle />
+<MobileMenu client:idle>
+  {menu.menuItem.map(item => (
+      <MobileMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle />
+  ))}
+</MobileMenu>
+<MobileSearchBar client:idle />
 <!-- START HEADER -->
 <header class="hidden lg:block">
   <nav class="w-full py-2 bg-sky">
@@ -37,8 +45,8 @@ const menu = await menuService.getMenu('top-menu')
       <div class="logo">
         <a href="/"
           ><img
-            src="/logo.png"
-            alt=""
+            src={logoUrl}
+            alt="Home"
             class="w-40 h-24 -ml-5"
             srcset=""
           />
@@ -126,7 +134,8 @@ const menu = await menuService.getMenu('top-menu')
   <div class="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
     <a class="inline-flex focus:outline-none" href="/" title="home">
       <span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 95px; height: 70px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
-        <img alt="ChawkBazar" srcset="/logo.png 1x, /logo.png 2x" src="/logo.png"
+        <img alt="Home"
+             src={logoMobileUrl}
              decoding="async" data-nimg="fixed"
 >
       </span>
