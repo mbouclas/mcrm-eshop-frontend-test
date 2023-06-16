@@ -72,7 +72,7 @@
         addFilterAction({colors: item.slug}  as any);
         removeFilterAction('page');
         if (type === 'modal'){
-            setModalShownAction(false);
+            // setModalShownAction(false);
         }
 
     }
@@ -81,7 +81,7 @@
         removeFilterValueAction('colors', filter.slug);
         removeFilterAction('page');
         if (type === 'modal'){
-            setModalShownAction(false);
+            // setModalShownAction(false);
         }
 
     }
@@ -91,7 +91,7 @@
 {#if colorFilters.length > 0}
 <div class="bg-gray-100">
     <div class="mx-auto max-w-7xl px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
-        <h3 class="text-sm font-medium text-gray-500">Filters</h3>
+        <h3 class="text-sm font-medium text-gray-500 dark:text-white">Filters</h3>
 
         <div aria-hidden="true" class="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block"></div>
 
@@ -118,7 +118,7 @@
 {/if}
 
     <fieldset>
-        <legend class="block text-sm font-medium text-gray-900">Color</legend>
+        <legend class="block text-sm font-medium text-gray-900 dark:text-white">Color</legend>
         <div class="border-b  border-gray-200 mb-4 my-2"></div>
         <div class="space-y-3 pt-6 max-h-[400px] overflow-y-auto">
             {#if loading}

@@ -39,7 +39,7 @@
     <div class="relative z-40" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black bg-opacity-25" on:click={close}></div>
 
-        <div class={`fixed inset-0  z-40 flex ${sizeClass}`} in:fly="{{ duration: 1000 }}" out:fade="{{duration: 100}}">
+        <div class={`fixed inset-0  z-40 flex ${sizeClass}`} >
 
             <div class="relative  flex h-full w-full  flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                 <div class="flex items-center justify-between px-4 ">

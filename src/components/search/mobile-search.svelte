@@ -1,7 +1,7 @@
 <script lang="ts">
     import {fly, fade} from 'svelte/transition';
     import MediaQuery from '@components/media-query.svelte';
-    import {modalStore, setModalShownAction} from "@stores/search.store";
+    import {modalStore, setModalToggleAction} from "@stores/search.store";
     import type {Data} from "@models/products.model";
     import {SearchService} from "@services/search.service";
     import {appConfig, httpLoading} from "@stores/http.store";
@@ -20,11 +20,8 @@
     $: nothingFound = query.length > 2 && results.length === 0;
 
     modalStore.subscribe(state => {
-        if (state.id !== modalId) {
-            return;
-        }
+        isShown = state.items[modalId];
 
-        isShown = state.shown;
     });
 
     async function onInputChanged() {
@@ -59,7 +56,7 @@
 
 function handleBackdropClick(event) {
     if (event.target.id == 'sub-backdrop' || event.target.id === 'backdrop') {
-        return setModalShownAction(false, modalId);
+        return setModalToggleAction(modalId);
     }
 }
 

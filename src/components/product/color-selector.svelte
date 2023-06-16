@@ -58,6 +58,9 @@
 
     function selectVariant(color: IProductColorForSelector, attempt = 1) {
         const target = document.querySelector(targetImage);
+        if (!target) {
+            return;
+        }
         // In case the DOM is not ready, retry
         if (!target && attempt < 3) {
             // retry after 100ms

@@ -184,6 +184,7 @@ export interface IPropertiesStore {
 export interface IModalStore {
     id: string;
     shown: boolean;
+    items: {[key: string]: boolean};
 }
 
 export interface ISort {

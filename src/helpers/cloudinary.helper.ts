@@ -2,6 +2,11 @@ export function optimizeCloudinaryImage(src: string, w: number|null = null, h: n
     if (!src) {
         return ``;
     }
+
+    src = src
+        .replace('.jpg', '.webp')
+        .replace('.png', '.webp');
+
     const width = (w) ? `w_${w},` : 'w_auto,';
     const height = (h) ? `h_${h},` : '';
     let crop = (w || h) ? 'c_fit,' : '';

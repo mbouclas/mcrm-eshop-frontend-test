@@ -58,7 +58,7 @@
             removeFilterValueAction('price', item.slug);
             removeFilterAction('page');
             if (type === 'modal'){
-                setModalShownAction(false);
+                // setModalShownAction(false);
             }
             return;
         }
@@ -66,7 +66,7 @@
             addFilterAction({price: item.slug} as any);
             removeFilterAction('page');
             if (type === 'modal'){
-                setModalShownAction(false);
+                // setModalShownAction(false);
             }
         }
     }
@@ -93,7 +93,7 @@
 
 
 <fieldset>
-    <legend class="block text-sm font-medium text-gray-900 ">Price</legend>
+    <legend class="block text-sm font-medium text-gray-900 dark:text-white">Price</legend>
     <div class="border-b  border-gray-200 mb-4 my-2"></div>
     <div class="space-y-3 pt-6">
         {#if loading}
@@ -104,7 +104,7 @@
                 <input on:change={filter.bind(this, item)} bind:checked={item['checked']}
                        id={`price-${idx}`} name="price[]" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                 <label
-                        for={`price-${idx}`} class="ml-3 text-sm text-gray-600">{formatRange(item.key, '', '€')} ({item.doc_count})</label>
+                        for={`price-${idx}`} class="ml-3 text-sm text-gray-600 dark:text-white/70">{formatRange(item.key, '', '€')} ({item.doc_count})</label>
             </div>
         {/each}
     </div>

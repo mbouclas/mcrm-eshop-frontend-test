@@ -40,13 +40,15 @@ const menu = await menuService.getMenu('top-menu')
     </div>
   </nav>
 
-  <nav class="py-4">
+  <nav class="py-4 ">
     <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
       <div class="logo">
         <a href="/"
           ><img
             src={logoUrl}
             alt="Home"
+            width="140"
+            height="96"
             class="w-40 h-24 -ml-5"
             srcset=""
           />
@@ -91,7 +93,7 @@ const menu = await menuService.getMenu('top-menu')
                 stroke-linejoin="round"></path>
             </svg>
           </div>
-          <a class="text-xs cursor-pointer hover:underline">
+          <a href="tel:+35722382000" class="text-xs cursor-pointer hover:underline">
             <p class="text-sm">Help is Here</p>
             <span>+357 22 38 2000</span>
           </a>
@@ -115,13 +117,15 @@ const menu = await menuService.getMenu('top-menu')
   </nav>
 
   <!-- START CATEGORIES NAV -->
-  <nav class="w-full py-4">
+  <nav class="w-full py-4 border b-2 border-black/30 bg-gray-50 shadow-xl">
     <div class="container px-3 mx-auto 2xl:px-20">
     <DesktopMenu>
       {menu.menuItem.map(item => (
-          <DesktopMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle />
+          <DesktopMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle
+          metaData={item.metaData}/>
       ))}
     </DesktopMenu>
+
     </div>
   </nav>
   <!-- END CATEGORIES NAV -->
@@ -130,12 +134,14 @@ const menu = await menuService.getMenu('top-menu')
 </header>
 
 
-<header class="block lg:hidden z-20 w-full h-16 px-4 text-gray-700 transition duration-200 ease-in-out bg-white innerSticky body-font sm:h-20 lg:h-24 md:px-8 lg:px-6">
+<header class="block lg:hidden z-20 w-full h-16 px-4 text-gray-700 dark:text-white transition duration-200 ease-in-out bg-white innerSticky body-font sm:h-20 lg:h-24 md:px-8 lg:px-6">
   <div class="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
     <a class="inline-flex focus:outline-none" href="/" title="home">
       <span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 95px; height: 70px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
         <img alt="Home"
              src={logoMobileUrl}
+             width="95"
+             height="67"
              decoding="async" data-nimg="fixed"
 >
       </span>

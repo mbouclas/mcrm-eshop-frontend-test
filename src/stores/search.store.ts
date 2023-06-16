@@ -25,6 +25,7 @@ export const searchStore = atom<ISearchResult>({
 export const modalStore = atom<IModalStore>({
     id: 'default',
     shown: false,
+    items: {}
 });
 
 export const sortOrderStore = atom<ISort>({} as ISort);
@@ -183,9 +184,20 @@ export const setModalShownAction = action(modalStore, 'setModalShownAction', (st
        state.id = id;
    }
 
+   state.items[id] = value;
+
    store.set(state);
 
    return store.get();
+});
+
+export const setModalToggleAction = action(modalStore, 'setModalToggleAction', (store, id) => {
+    const state = store.get();
+    state.items[id] = !state.items[id];
+
+    store.set(state);
+
+    return store.get();
 });
 
 export const setSortAction = action(sortOrderStore, 'setSortAction', (store, sortBy: ISort) => {

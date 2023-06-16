@@ -47,7 +47,6 @@ function onKeyPressed(e) {
 }
 
 function handleBackdropClick(event) {
-    console.log(event.target.id)
     if (event.target.id == 'sub-backdrop' || event.target.id === 'backdrop') {
         reset()
     }

@@ -19,10 +19,10 @@ const { title } = Astro.props;
 		<title>{title}</title>
 		<link rel="sitemap" href="/sitemap-index.xml">
 	</head>
-	<body x-data="app" class="antialiased font-sans">
+	<body class="antialiased font-sans">
 	<Alerts client:idle />
 		<HeaderUserActions/>
-		<main>
+		<main class="bg-gray-50">
 		<slot />
 
 	</main>

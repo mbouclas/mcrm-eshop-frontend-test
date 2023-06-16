@@ -13,15 +13,15 @@ const countries = [
     {name: 'United Kingdom', slug: 'uk'},
 ];
 const schema = object({
-    firstName: string().required(),
-    lastName: string().required(),
-    street: string().required(),
-    city: string().required(),
-    company: string().required(),
-    country: string().required(),
-    region: string().required(),
-    postCode: string().required(),
-    phone: string().required(),
+    firstName: string().required('First name is required.'),
+    lastName: string().required('Last name is required.'),
+    street: string().required('Street is required.'),
+    city: string().required('City is required.'),
+    company: string().required('Company is required.'),
+    country: string().required('Country is required.'),
+    region: string().required('Region is required.'),
+    postCode: string().required('Post code is required.'),
+    phone: string().required('Phone is required.'),
 });
 let errors = {};
 const defaultModel = {

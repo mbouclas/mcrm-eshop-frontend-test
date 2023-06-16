@@ -52,9 +52,9 @@
     let errors = {};
     const schema = object({
         email: string().email("Email doesn't look right").required('Please provide your email'),
-        phone: string().required(),
-        firstName: string().required(),
-        lastName: string().required(),
+        phone: string().required('Please provide your phone number'),
+        firstName: string().required('Please provide your first name'),
+        lastName: string().required('Please provide your last name'),
         terms: boolean().oneOf([true]),
     });
 

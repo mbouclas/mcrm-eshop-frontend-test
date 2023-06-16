@@ -1,3 +1,5 @@
+import type {IGenericObject} from "@models/general";
+
 export interface IMenu {
     title: string;
     uuid: string;
@@ -14,5 +16,6 @@ export interface IMenuItem {
     order: number;
     children?: IMenuItem[]
     link: string;
+    metaData?: IGenericObject;
 }
 

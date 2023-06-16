@@ -1,4 +1,4 @@
-export const slugify = ( text ) => {
+export const slugify = ( text: string ) => {
     return text
     .toString()
     .normalize( 'NFD' )                   // split an accented letter in the base letter and the acent
@@ -7,5 +7,5 @@ export const slugify = ( text ) => {
     .trim()
     .replace(/\s+/g, '-')
     .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-'); 
+    .replace(/\-\-+/g, '-');
   };
