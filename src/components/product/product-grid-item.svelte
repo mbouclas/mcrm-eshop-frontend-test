@@ -16,20 +16,12 @@
         colors: IPropertyEs[] = [];
 
     propertiesStore.subscribe(state => {
-
+        productColors = getProductColors(propertiesStore.get().colors, item.variants.filter(variant => variant.color || variant.image));
     });
 
     onMount(() => {
         productColors = getProductColors(propertiesStore.get().colors, item.variants.filter(variant => variant.color || variant.image));
     })
-
-
-    function slimDownProduct(item: IProductModel) {
-        return {
-            id: item.id,
-            title: item.title,
-        }
-    }
 
 
 </script>

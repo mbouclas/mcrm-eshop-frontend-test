@@ -2,7 +2,7 @@
     import type {IProductColorForSelector} from "@models/products.model";
     import {cloudinarySrcSet, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {createEventDispatcher, onMount} from 'svelte';
-    import {setColorAction} from "@stores/product.store";
+    import {productStore, setColorAction} from "@stores/product.store";
     import {appliedFiltersStore} from "@stores/search.store";
     import {appConfig} from "@stores/http.store";
     import {scrollToEl} from "@helpers/general";
@@ -56,6 +56,10 @@
         selectVariant(selectedColor);
     });
 
+    productStore.subscribe(state => {
+        // console.log(state)
+    })
+
     onMount(() => {
         setColorAction(selectedColor);
         container = document.querySelector(targetImage);
@@ -95,8 +99,6 @@
 
             return;
         }
-
-
 
         if (!target) {
             return;
