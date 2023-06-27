@@ -43,7 +43,7 @@
         setModalToggleAction(cartModalId);
     }
 </script>
-<Sidebar title="Cart" id={cartModalId} size="half">
+<Sidebar title="Cart" id={cartModalId}>
     <MobileCart />
 </Sidebar>
 

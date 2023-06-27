@@ -7,7 +7,7 @@
     const userService = new UserService();
     const dispatch = createEventDispatcher();
     let loginError = null;
-    export let initialModel;
+    export let initialModel = {};
 
     let errors = {};
     const model = {
@@ -113,7 +113,7 @@
 
         <div class="text-sm">
             <a
-                    href="/forgot-password"
+                    href="/user/reset-password"
                     class="font-medium text-black hover:text-gray-900"
             >Forgot your password?</a
             >

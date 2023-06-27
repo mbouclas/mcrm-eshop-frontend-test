@@ -21,3 +21,5 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 bakcups
+wrangler-build.ps1
+__cache

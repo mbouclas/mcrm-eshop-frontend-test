@@ -4,7 +4,7 @@
 
     export let counter = 1,
     min = 1,
-    max;
+    max: number;
 
     function up() {
         if (counter + 1 >= max) {
@@ -18,6 +18,9 @@
     function down() {
         if (counter - 1 <= min) {
             counter = min;
+
+            dispatch('numberPadChange', counter);
+            return;
         }
 
         counter = counter - 1;
@@ -28,6 +31,9 @@
     function change() {
         if (counter >= max) {
             counter = max;
+
+            dispatch('numberPadChange', counter);
+            return;
         }
 
         if (counter <= min) {
@@ -56,7 +62,7 @@
     padding: 0 5px;
     min-width: 32px;
     text-align: center;
-    border: none;
+    border: 1px solid gray;
     background: transparent;"
            class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border border-gray-300 text-left text-base font-medium text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
     />

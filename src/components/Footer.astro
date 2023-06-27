@@ -1,3 +1,50 @@
+---
+import {MenusBackendService} from "@services/menus-backend.service";
+const menuService = new MenusBackendService()
+const menu = await menuService.getMenu('bottom-menu')
+// const extrasMenu = await menuService.getMenu('extras-menu')
+const extrasMenu = {
+  menuItem: [
+    {
+      title: 'Terms & Conditions',
+      permalink: '/page/terms-and-conditions'
+    },
+    {
+      title: 'Privacy Policy',
+      permalink: '/page/privacy-policy'
+    },
+    {
+      title: 'Cookie Policy',
+      permalink: '/page/cookie-policy'
+    },
+    {
+      title: 'Returns Policy',
+      permalink: '/page/returns-policy'
+    },
+    {
+      title: 'Delivery Policy',
+      permalink: '/page/delivery-policy'
+    },
+    {
+      title: 'Contact Us',
+      permalink: '/page/contact-us'
+    },
+    {
+      title: 'About Us',
+      permalink: '/page/about-us'
+    },
+    {
+      title: 'FAQ',
+      permalink: '/page/faq'
+    },
+    {
+      title: 'Affiliates',
+      permalink: '/page/affiliates'
+    },
+
+  ]
+}
+---
 <footer class="w-full pt-10 bg-dark">
   <section class="w-full pb-10">
     <div class="px-4 mx-auto 2xl:px-20">
@@ -18,44 +65,17 @@
           <div
             class="flex flex-col w-full gap-4 px-4 text-white lg:flex-row lg:gap-20"
           >
-            <div class="">
+            <div class="w-full lg:w-1/2">
               <h4 class="mb-4 font-bold">Let us Help</h4>
-              <ul class="flex flex-col gap-4 text-sm">
-                <li>
-                  <a href="#" class="hover:text-primary">My Account</a>
-                </li>
-                <li>
-                  <a href="#">Help Center</a>
-                </li>
-                <li>
-                  <a href="#">Guide to Personalization</a>
-                </li>
-                <li>
-                  <a href="#">Contact us</a>
-                </li>
-                <li>
-                  <a href="#">Shipping</a>
-                </li>
-              </ul>
+              <div class="  grid grid-cols-2 gap-2 text-sm justify-start">
+                {extrasMenu.menuItem.map(item => (
+                <p>
+                  <a href={item.link || item.permalink} class="hover:text-primary">{item.title}</a>
+                </p>
+                ))}
+              </div>
             </div>
 
-            <div class="">
-              <h4 class="mb-4 font-bold">Our Company</h4>
-              <ul class="flex flex-col gap-4 text-sm">
-                <li>
-                  <a href="#" class="hover:text-primary">Careers</a>
-                </li>
-                <li>
-                  <a href="#">For Investors</a>
-                </li>
-                <li>
-                  <a href="#">For Media</a>
-                </li>
-                <li>
-                  <a href="#">Sustainability</a>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -71,54 +91,51 @@
             class="flex items-center text-[12px] justify-between text-white text-sm"
           >
             <li>
-              <a href="">1 866 507 7454</a>
+              <a href="">+357 22 38 2000</a>
             </li>
+            {menu.menuItem.map(item => (
             <li>
-              <a href="">Home</a>
+              <a href={item.link || item.permalink} title={item.title}>{item.title}</a>
             </li>
-            <li>
-              <a href="">Privacy</a>
-            </li>
-            <li>
-              <a href=""> Policy</a>
-            </li>
-            <li>
-              <a href=""> Terms of Use</a>
-            </li>
-            <li>
-              <a href=""> Legal Notice</a>
-            </li>
+            ))}
           </ul>
           <p class="text-gray-500 text-[12px] font-bold mt-2">
-            A CIMPRESS company © 2001-2021 VistaPrint. All rights reserved.<br
-            />
+            RPS Promotions PLC {new Date().getFullYear()}<br/>
             Unless stated otherwise, prices are exclusive of delivery and product
             options.
+          </p>
+          <p class="text-gray-500 text-[12px] font-bold mt-2">
+            Powered by <a href="https://m-crm.io/">MCRM</a>
           </p>
         </div>
 
         <div class="flex items-center gap-4">
-          <a href="#">
+
             <img
-              src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,w_auto/site%20images/credit%20cards/mastercard.svg"
+              src="https://res.cloudinary.com/dqehxczmc/image/upload/c_scale,dpr_auto,w_auto/v1687245987/assets/mastercard_mtznn3.svg"
+              width="5"
+              height="5"
               class="w-12 h-10"
-              alt=""
+              alt="Pay with Mastercard"
             />
-          </a>
-          <a href="#">
+
             <img
-              src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,w_auto/site%20images/credit%20cards/pay_pal.svg"
+              src="https://res.cloudinary.com/dqehxczmc/image/upload/c_scale,dpr_auto,w_auto/v1687246009/assets/pay_pal_zowwlz.svg"
               class="w-12 h-10"
-              alt=""
+              width="5"
+              height="5"
+              alt="Pay with Paypal"
             />
-          </a>
-          <a href="#">
+
+
             <img
-              src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,w_auto/site%20images/credit%20cards/visa.svg"
+              src="https://res.cloudinary.com/dqehxczmc/image/upload/c_scale,dpr_auto,w_auto/v1687246127/assets/visa_abak4h.svg"
               class="w-12 h-10"
-              alt=""
+              alt="Pay with Visa"
+              width="5"
+              height="5"
             />
-          </a>
+
         </div>
 
 

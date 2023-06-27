@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content"
+import Layout from "@layouts/Layout.astro"
+
+export async function getStaticPaths() {
+    const entries = await getCollection("page");
+
+    return entries.map((entry) => {
+        return {
+            params: { slug: entry.slug },
+            props: { entry },
+        }
+    })
+}
+
+const { entry } = Astro.props
+const { Content } = await entry.render();
+
+const seo = {
+    title: entry.data.title,
+
+}
+
+---
+<Layout seo={seo}>
+    <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+            <div class="max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
+            <div class="prose leading:loose prose-headings:underline prose-a:text-accent max-w-none">
+                <Content />
+            </div>
+    </div>
+            </div>
+    </section>
+</Layout>

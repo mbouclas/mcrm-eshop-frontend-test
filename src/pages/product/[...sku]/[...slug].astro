@@ -12,6 +12,7 @@ import QuantitySelector from "@components/product/quantity-selector.svelte";
 import {cloudinarySrcSet} from "../../../helpers/cloudinary.helper";
 import {config} from "@data/config";
 import Breadcrumbs from "@partials/breadcrumbs.astro";
+import Spinner from '@components/loading-spiner.svelte';
 
 interface IProductPageProps {
     item: IProductModel;
@@ -41,7 +42,9 @@ const {item} = Astro.props as IProductPageProps;
 const propertiesService = new PropertiesService();
 const allColors = await propertiesService.getPropertyValues({slug: 'color'});
 const allMaterials = await propertiesService.getPropertyValues({slug: 'material'});
-const colors = getProductColors(allColors, item.variants.filter(variant => variant.color && variant.image));
+const id = Math.random();
+
+const colors = getProductColors(allColors, item.variants.filter(variant => variant.color || variant.image));
 const categories = await (new ProductsService).categories(true);
 function slimDownProduct(item) {
     return {
@@ -51,10 +54,15 @@ function slimDownProduct(item) {
 }
 
 const srcSet = cloudinarySrcSet(item.thumb || config.defaultNoImage);
+const breadCrumbs = [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
+const seo = {
+    title: `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
+    description: item.description,
+}
 
 ---
-<Layout title={item.title}>
-    <Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...item.categories.reverse()]}
+<Layout seo={seo}>
+    <Breadcrumbs items={breadCrumbs}
                  current={item.title}
                  slug={`products`} />
     <main class="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
@@ -64,11 +72,14 @@ const srcSet = cloudinarySrcSet(item.thumb || config.defaultNoImage);
                 <!-- Image gallery -->
                 <div class="flex flex-col-reverse">
 
-                    <div class="aspect-h-1 aspect-w-1 w-full">
-<!--                            <img src={optimizeCloudinaryImage(item.thumb, 900)} alt={item.title} id="main" width="640" height="480"
-                                 class="h-full w-full object-cover object-center sm:rounded-lg">-->
+                    <div class="aspect-h-1 aspect-w-1 w-full relative" id="main">
+                        <div class="hidden absolute bg-black/70 h-full w-full z-50 loading-mask">
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <Spinner w={24} h={24} />
+                            </div>
+                        </div>
                         {srcSet && (
-                        <picture id="main">
+                        <picture class="product-image">
                             <source media="(max-width: 767px)"
                                     srcset={`${srcSet.copies[0].url}  768w`}
                                     sizes={`(max-width: 767px) 100vw`}>

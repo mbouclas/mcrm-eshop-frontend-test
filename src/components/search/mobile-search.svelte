@@ -86,7 +86,6 @@ function selectResult(result) {
                 <div class="max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4 sm:h-96">
                     <h2 class="mb-4 mt-2 text-xs font-semibold text-gray-500">Search Results</h2>
 
-                    <!-- Results, show/hide based on command palette state. -->
                     <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
 
                         {#each results as result}

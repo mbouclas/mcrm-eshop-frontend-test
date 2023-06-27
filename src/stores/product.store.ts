@@ -1,6 +1,6 @@
 import {action, atom, computed} from "nanostores";
 import type {IProductColorForSelector} from "@models/products.model";
-import {object, string} from 'yup';
+import {object} from 'yup';
 
 export interface IProductStore {
     quantity: number;

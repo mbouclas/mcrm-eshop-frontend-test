@@ -51,7 +51,7 @@
     }
 </script>
 
-<Sidebar title="filters" id="filters" size="half">
+<Sidebar title="filters" id="filters">
 
     {#if filterCount > 0}
     <div class="pb-6 ">

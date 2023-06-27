@@ -35,3 +35,10 @@ export interface ICheckUserEmailResult {
     exists: boolean;
     type?: 'guest' | 'user';
 }
+
+export interface IUserDto {
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+}

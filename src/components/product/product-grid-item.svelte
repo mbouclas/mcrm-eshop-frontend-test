@@ -6,16 +6,18 @@
     import {moneyFormat} from "@helpers/money-format";
     import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {appConfig} from "@stores/http.store";
-    let productColors = [];
+    import Spinner from "@components/loading-spiner.svelte";
+    import {onMount} from "svelte";
+
+    let productColors = [],
+        target: Element|null,
+        mask: Element|null;
     export let item: IProductModel,
         colors: IPropertyEs[] = [];
 
     propertiesStore.subscribe(state => {
-        productColors = getProductColors(state.colors, item.variants.filter(variant => variant.color && variant.image));
+        productColors = getProductColors(state.colors, item.variants.filter(variant => variant.color || variant.image));
     });
-
-
-
 
     function slimDownProduct(item: IProductModel) {
         return {
@@ -23,17 +25,25 @@
             title: item.title,
         }
     }
+
+
 </script>
 
-<div class=" relative flex flex-col overflow-hidden rounded border hover:rounded-xl hover:shadow-2xl border border-black/20  border-opacity-50 bg-white">
-    <div class=" sm:aspect-none group-hover:opacity-75 sm:h-96">
+<div class="product-item relative flex flex-col overflow-hidden rounded border hover:rounded-xl hover:shadow-2xl border border-black/20  border-opacity-50 bg-white" id={`item-${item.slug}`}>
+    <div class="hidden absolute bg-black/70 h-full w-full z-50 loading-mask">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Spinner w={24} h={24} />
+        </div>
+    </div>
+    <div class=" sm:aspect-none group-hover:opacity-75 sm:h-96 relative">
+
         <a href={`/product/${item.sku}/${item.slug}`} title={item.title}>
-            <img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')} id={`item-${item.slug}`}
+            <img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')}
                   alt={item.title}
                   title={item.title}
                   width="158"
                   height="158"
-                  class="h-full object-contain w-full  sm:h-full sm:w-full transition duration-200 hover:scale-110">
+                  class="product-image h-full object-contain w-full  sm:h-full sm:w-full transition duration-200 hover:scale-110">
         </a>
     </div>
     <div class="flex flex-1 flex-col space-y-2 p-4 ">

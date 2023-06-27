@@ -68,7 +68,7 @@
 </script>
 
 {#if alert && alert.message}
-<div class={`absolute  z-10 ${positionClass}`}>
+<div class={`fixed  z-10 ${positionClass}`}>
     <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div class={`flex items-center justify-center w-12 ${defaults[alert.type].bgColor}`}>
             {#if alert.type === "success"}

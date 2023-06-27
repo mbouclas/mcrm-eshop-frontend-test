@@ -1,21 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import RegisterForm from "@partials/register-form.astro"
-import Success from "@partials/user-register-success.astro"
+import Register from '@components/register-user.svelte';
 ---
 
-<Layout title="Register">
-  <div
-    class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8"
-    x-data="user"
-  >
-    <template x-if="!$store.user.user && !$store.user.success">
-      <RegisterForm />
-    </template>
-    <template x-if="$store.user.success">
-      <Success />
-    </template>
-  </div>
-
-  <script src="../js/user.js"></script>
+<Layout title="Register for free">
+<Register client:idle />
 </Layout>

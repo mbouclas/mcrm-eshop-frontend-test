@@ -1,12 +1,18 @@
 ---
+import {config} from "@data/config";
 export interface Props {
 	title: string;
 }
 import "../input.css"
+import { SEO } from "astro-seo"
 import Footer from '@components/Footer.astro';
 import HeaderUserActions from '@partials/header-user-actions.astro';
 import Alerts from '@components/alerts-popup.component.svelte';
-const { title } = Astro.props;
+const { title, seo = {} } = Astro.props;
+
+if (!seo.title) {
+	seo.title = title
+}
 ---
 
 <!DOCTYPE html>
@@ -16,8 +22,14 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+
 		<link rel="sitemap" href="/sitemap-index.xml">
+		<SEO
+			extend={seo}
+			description={seo.description || config.seo.defaults.description}
+			title={seo.title || title}
+			canonical={seo.canonical || config.seo.defaults.canonical}
+		/>
 	</head>
 	<body class="antialiased font-sans">
 	<Alerts client:idle />

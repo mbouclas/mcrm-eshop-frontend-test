@@ -2,7 +2,7 @@ import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
 export const config = {
     seo: {
         defaults: {
-            title: '',
+            title: 'RPS Promotions | Custom prints and embroidery',
             description: '',
             canonical: import.meta.env.BASE_URL,
         }

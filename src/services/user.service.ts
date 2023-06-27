@@ -1,6 +1,6 @@
 import {BaseHttpService} from "@services/base-http.service";
 import {setHttpLoading} from "@stores/http.store";
-import type {IAddress, ICheckUserEmailResult, IUser} from "@models/user.model";
+import type {IAddress, ICheckUserEmailResult, IUser, IUserDto} from "@models/user.model";
 import type {IGenericObject} from "@models/general";
 import {logoutUserAction} from "@stores/user.store";
 
@@ -65,7 +65,7 @@ export class UserService extends BaseHttpService {
         return response;
     }
 
-    async checkUserEmail(email: string, userInfo?: IGenericObject): Promise<ICheckUserEmailResult> {
+    async checkUserEmail(email: string, userInfo?: IGenericObject, justCheckIfUserExists = false ): Promise<ICheckUserEmailResult> {
         const url = `${this.baseUrl}check-email`;
         setHttpLoading(true);
         const otp = await this.getOtp();
@@ -75,6 +75,7 @@ export class UserService extends BaseHttpService {
             body: JSON.stringify({
                 email,
                 userInfo,
+                jciue: justCheckIfUserExists,
             }),
         });
 
@@ -116,5 +117,90 @@ export class UserService extends BaseHttpService {
 
         setHttpLoading(false);
         return await res.json();
+    }
+
+    async register(user: IUserDto) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const url = `${this.baseUrl}register`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: this.setHeaders(otp),
+            body: JSON.stringify(user),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async verifyToken(token: string) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const url = `${this.baseUrl}verify/${token}`;
+
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: this.setHeaders(otp),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async askForPasswordReset(email: string) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const url = `${this.baseUrl}password-reset?email=${email}`;
+
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: this.setHeaders(otp),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async verifyPasswordResetCode(email: string, otpCode: string) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const url = `${this.baseUrl}verify-reset-otp?email=${email}&otp=${otpCode}`;
+
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: this.setHeaders(otp),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async changePassword(email: string, password: string) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const url = `${this.baseUrl}change-password`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: this.setHeaders(otp),
+            body: JSON.stringify({email, password}),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
     }
 }

@@ -4,6 +4,8 @@
     import {createEventDispatcher, onMount} from 'svelte';
     import {setColorAction} from "@stores/product.store";
     import {appliedFiltersStore} from "@stores/search.store";
+    import {appConfig} from "@stores/http.store";
+    import {scrollToEl} from "@helpers/general";
     const dispatch = createEventDispatcher();
 
     export let colors: IProductColorForSelector[] = [];
@@ -14,6 +16,9 @@
         innerRing = 3,
     selectedColor = colors[0];
     export let targetImage: string;
+    let container: Element|null,
+    target: Element|null,
+    mask: Element|null;
 
     switch (size) {
         case "small": outerRing = 6; innerRing = 3;
@@ -53,14 +58,50 @@
 
     onMount(() => {
         setColorAction(selectedColor);
+        container = document.querySelector(targetImage);
+
+        if (!container) {
+            return;
+        }
+
+        target = container.querySelector('.product-image');
+        mask = container.querySelector('.loading-mask');
+
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const el = (mode === 'image') ? target : target.querySelector('img');
+
+        el.addEventListener("load", event => {
+            if (el && el.complete && el.naturalHeight !== 0) {
+                mask.classList.add('hidden');
+            }
+        });
+
+        el.addEventListener("error", event => {
+            el.src = appConfig.defaultNoImage
+            mask.classList.add('hidden');
+        });
     })
 
 
     function selectVariant(color: IProductColorForSelector, attempt = 1) {
-        const target = document.querySelector(targetImage);
+        if (!container && attempt < 3) {
+            // retry after 100ms
+            setTimeout(() => {
+                selectVariant(color, attempt + 1);
+            }, 100);
+
+            return;
+        }
+
+
+
         if (!target) {
             return;
         }
+
         // In case the DOM is not ready, retry
         if (!target && attempt < 3) {
             // retry after 100ms
@@ -69,6 +110,10 @@
             }, 100);
 
             return;
+        }
+
+        if (mask) {
+            mask.classList.remove('hidden');
         }
 
         dispatch('color.selected', color);
@@ -89,7 +134,11 @@
             parts[0] = srcSet.copies[idx].url;
             node.srcset = parts.join(' ');
 
-        })
+        });
+
+        if (mode === 'picture') {
+            scrollToEl(null);
+        }
     }
 
 </script>
@@ -102,8 +151,8 @@
     {#each colors as color}
         <a href="#" title={color.name}
             on:click|preventDefault={selectVariant.bind(this, color)}>
-            <div class={`h-${outerRing} w-${outerRing} border border-[${color.color}] flex rounded-full items-center justify-center`}
-                 style={`border-color:${color.color}`}>
+            <div class={`h-${outerRing} w-${outerRing} border border-[${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}] flex rounded-full items-center justify-center`}
+                 style={`border-color:${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}`}>
                 {#if color.image}
                     <div class={`h-${innerRing} w-${innerRing} rounded-full`} style={`background:url('${color.image}')`}></div>
                 {:else}
