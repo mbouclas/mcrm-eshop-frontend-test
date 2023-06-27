@@ -100,7 +100,7 @@ const allMaterials = await propertiesService.getPropertyValues({slug: 'material'
         </p>
     </div>
     <main class="mx-auto  px-4 lg:max-w-none lg:px-8">
-<div class="pb-24 pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+<div class="pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
     <aside>
 
 <div class="block lg:hidden">
@@ -141,17 +141,22 @@ const allMaterials = await propertiesService.getPropertyValues({slug: 'material'
                         client:idle>
 
                 <ProductGrid products={products} />
+
+
             </MainSearch>
 
+        <div class="mt-8">
+            <Pagination
+                    totalPages={paginated.totalPages}
+                    baseURL={`/products/${category.slug}`}
+                    currentPage={paginated.currentPage}
+                    client:idle
+            />
 
+        </div>
     </section>{/* End of products area */}
 </div>{/* End of products grid */}
     </main>
-    <Pagination
-            totalPages={paginated.totalPages}
-            baseURL={`/products/${category.slug}`}
-            currentPage={paginated.currentPage}
-            client:idle
-    />
+
 
 </Layout>
