@@ -25,10 +25,10 @@ const menu = await menuService.getMenu('top-menu')
     <div class="container mx-auto 2xl:px-20">
       <ul class="flex gap-4">
         <li class="font-light text-white">
-          <a href="">Home</a>
+          <a href="/">Home</a>
         </li>
         <li class="font-light text-white">
-          <a href="">Digital Marketing</a>
+          <a href="/page/about-us" title="About RPS promotions">About RPS</a>
         </li>
         <li class="font-light text-white">
           <a href="">Corporate Pricing</a>
@@ -134,10 +134,28 @@ const menu = await menuService.getMenu('top-menu')
 </header>
 
 
-<header class="block lg:hidden z-20 w-full h-16 px-4 text-gray-700 dark:text-white transition duration-200 ease-in-out bg-white innerSticky body-font sm:h-20 lg:h-24 md:px-8 lg:px-6">
-  <div class="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
+<header class=" lg:hidden z-20 w-full h-24  text-gray-700  body-font sm:h-20 mb-12 md:px-8 bg-sky bg-gradient-to-b from-blue-600 via-blue-300 to-white">
+  <nav class="w-full py-2 mb-4 pl-4 ">
+
+      <ul class="flex gap-4">
+        <li class="font-light text-white">
+          <a href="/">Home</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="/page/about-us" title="About RPS promotions">About RPS</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="">Corporate Pricing</a>
+        </li>
+        <li class="ml-auto">
+
+        </li>
+      </ul>
+
+  </nav>
+  <div class="flex items-center  justify-center mx-auto   h-full w-full ">
     <a class="inline-flex focus:outline-none" href="/" title="home">
-      <span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 95px; height: 70px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
+      <span >
         <img alt="Home"
              src={logoMobileUrl}
              width="95"

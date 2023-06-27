@@ -7,7 +7,7 @@
     import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {appConfig} from "@stores/http.store";
     import Spinner from "@components/loading-spiner.svelte";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
 
     let productColors = [],
         target: Element|null,
@@ -16,8 +16,13 @@
         colors: IPropertyEs[] = [];
 
     propertiesStore.subscribe(state => {
-        productColors = getProductColors(state.colors, item.variants.filter(variant => variant.color || variant.image));
+
     });
+
+    onMount(() => {
+        productColors = getProductColors(propertiesStore.get().colors, item.variants.filter(variant => variant.color || variant.image));
+    })
+
 
     function slimDownProduct(item: IProductModel) {
         return {

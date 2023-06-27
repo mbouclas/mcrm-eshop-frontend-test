@@ -86,7 +86,6 @@
 
     onMount(async () => {
         const filtersFromUrl = loadFiltersFromUrl(location.search[0] === '?' ? location.search.substring(1) : location.search);
-
         setPropertiesAction('colors', colors);
         setPropertiesAction('materials', materials);
         if (filtersFromUrl.length > 0) {

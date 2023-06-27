@@ -1,9 +1,20 @@
 <script lang="ts">
-    import {addFilterAction, removeFilterAction} from "@stores/search.store";
+    import {addFilterAction, appliedFiltersStore, removeFilterAction} from "@stores/search.store";
     import {removeFilterValueAction} from "@stores/search.store.js";
 
     let query = '',
         timer;
+
+    appliedFiltersStore.subscribe(state => {
+        const existing = state.filter(f => {
+            const key = Object.keys(f)[0];
+            return key === 'q';
+        });
+
+        if (Array.isArray(existing) && existing.length > 0){
+            query = existing[0].q;
+        }
+    });
 
     function onInputChanged() {
         clearTimeout(timer);

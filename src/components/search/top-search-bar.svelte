@@ -62,9 +62,14 @@ function handleBackdropClick(event) {
     }
 }
 
+function submit() {
+    window.location.href = `/products/all/?q=${query}`;
+}
+
 </script>
 
 <svelte:window on:keydown={onKeyPressed}/>
+<form on:submit|preventDefault={submit}>
     <div class="relative">
         <!-- INPUT -->
         <div class="relative">
@@ -107,3 +112,4 @@ function handleBackdropClick(event) {
         </ul>
             {/if}
     </div>
+</form>
