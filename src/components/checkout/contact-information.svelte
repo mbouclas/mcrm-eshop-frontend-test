@@ -190,6 +190,8 @@
 {#if showLoginForm}
     <Login initialModel={model} on:loginSuccess={onLoginSuccess} on:loginError={onLoginError} />
 {/if}
+
+
 {#if user && user.email}
     {#if Array.isArray(user.addresses)}
         <UserAddresses bind:selectedContact={selectedContact}  addresses={user.addresses} />

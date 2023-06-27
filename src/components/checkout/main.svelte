@@ -11,7 +11,7 @@ import {
     handleStepChangeAction, setCheckoutDoneAction,
     setStepsAction
 } from "@stores/checkout.store";
-import {userStore} from "@stores/user.store";
+
 import {CheckoutService} from "@services/checkout.service";
 import {cart} from "@stores/cart.store";
 import type {ICartItem} from "@stores/cart.store";
