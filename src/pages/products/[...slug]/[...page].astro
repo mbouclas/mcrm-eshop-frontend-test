@@ -1,0 +1,157 @@
+---
+import {PropertiesService} from "@services/properties.service";
+import {ProductsService} from "@services/products.service";
+import {arrayPaginator} from "@helpers/paginate-array";
+import Layout from "@layouts/Layout.astro";
+import ProductGrid from '@partials/product-grid.astro';
+import Breadcrumbs from "@partials/breadcrumbs.astro";
+import CategoriesList from '@components/search/filters/categories.filter.svelte';
+import ColorsList from "@components/search/filters/colors.filter.svelte";
+import TextFilter from '@components/search/filters/text.filter.svelte';
+import MobileFilters from '@components/search/filters/mobile.filters.svelte';
+import MaterialsList from "@components/search/filters/materials.filter.svelte";
+import PriceRange from "@components/search/filters/price-range.filter.svelte";
+import TotalResultCounter from "@components/search/total-results.svelte";
+import Pagination from "@components/search/pagination.svelte";
+import MainSearch from '@components/search/main.svelte';
+export async function getStaticPaths() {
+    const allProducts = await (new ProductsService).load();
+    const categories = await (new ProductsService).categories(true);
+    const per_page = 12;
+
+    const all = [];
+
+    for (let i = 0; categories.length > i; i++) {
+        // const products = (new ProductsService).filterProductsByCategory({slug: categories[i].slug}, allProducts);
+        const products = await (new ProductsService).getCategoryProductsWithAggregations(categories[i].slug);
+
+        const firstPage = arrayPaginator(products.data, 1, per_page);
+        for (let idx = 0; idx < firstPage.totalPages; idx++) {
+            all.push({
+                params: {
+                    page: idx === 0 ? undefined : (idx + 1).toString(),
+                    slug: categories[i].slug,
+                },
+                props: {
+                    paginated: arrayPaginator(products.data, idx + 1, per_page),
+                    category: categories[i],
+                    latest: products.data.slice(0, 4),
+                    aggregations: products.aggregations,
+                    categories: [categories[i]],
+                }
+            });
+        }
+    }
+
+    // now push a version without any set category, so /products
+
+    const firstPage = arrayPaginator(allProducts, 1);
+    for (let idx = 0; idx < firstPage.totalPages; idx++) {
+        all.push({
+            params: {
+                page: idx === 0 ? undefined : (idx + 1).toString(),
+                slug: 'all',
+            },
+            props: {
+                paginated: arrayPaginator(allProducts, idx + 1, per_page),
+                latest: allProducts.slice(0, 4),
+                aggregations: await (new ProductsService).loadAllAggregations(),
+                categories: await (new ProductsService).categories(),
+                category: {
+                    title: 'All Products',
+                    slug: 'all',
+                    parents: [],
+                }
+            }
+        });
+    }
+
+    return all;
+}
+
+const {page = 1, slug} = Astro.params;
+const { paginated, latest, category, aggregations, categories } = Astro.props;
+
+
+const products = paginated.data;
+if (category && !category.parents) {
+    category.parents = [];
+}
+const temp = {};
+temp['categories'] = [category.slug];
+
+const appliedFilters = category.slug === 'all' ? [] : [temp];
+const propertiesService = new PropertiesService();
+const allColors = await propertiesService.getPropertyValues({slug: 'color'});
+
+const allMaterials = await propertiesService.getPropertyValues({slug: 'material'});
+
+---
+<Layout title="Products">
+<Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...category?.parents]}
+             current={category.slug !== 'all' ? category.title : ''}
+             slug={`products`} />
+
+    <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-700 text-shadow shadow-gray-500/50">{category && category.title || 'All Products'}</h1>
+
+        <p class="mx-auto mt-4 max-w-3xl text-base text-gray-500">
+            <TotalResultCounter count={paginated.total} suffix="Products" client:idle />
+        </p>
+    </div>
+    <main class="mx-auto  px-4 lg:max-w-none lg:px-8">
+<div class="pb-24 pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+    <aside>
+
+<div class="block lg:hidden">
+
+        <MobileFilters client:idle>
+            <div slot="categories">
+                <CategoriesList categories={categories} category={category}  agg={aggregations.find(a => a.key === 'categories')} />
+            </div>
+        </MobileFilters>
+</div>
+
+        <div class="flex items-center flex-wrap  hidden lg:block">
+            <TextFilter client:idle />
+        </div>
+
+
+        <div class="hidden lg:block">
+            <form class="space-y-10 divide-y divide-gray-200">
+                <div class="py-6" id="categoriesList">
+                    <CategoriesList categories={categories} category={category}  agg={aggregations.find(a => a.key === 'categories')} />
+                </div>
+                <div class="py-6">
+                    <PriceRange client:idle />
+                </div>
+                <div class="py-6">
+                    <ColorsList client:idle  />
+                </div>
+                <div class="py-6">
+                <MaterialsList client:idle  />
+                </div>
+
+            </form>
+        </div>{/* End of desktop */}
+    </aside>{/* End of sidebar */}
+    <section class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
+
+            <MainSearch appliedFilters={appliedFilters} colors={allColors} materials={allMaterials}
+                        client:idle>
+
+                <ProductGrid products={products} />
+            </MainSearch>
+
+
+    </section>{/* End of products area */}
+</div>{/* End of products grid */}
+    </main>
+    <Pagination
+            totalPages={paginated.totalPages}
+            baseURL={`/products/${category.slug}`}
+            currentPage={paginated.currentPage}
+            client:idle
+    />
+
+</Layout>

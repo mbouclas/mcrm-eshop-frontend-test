@@ -1,0 +1,41 @@
+---
+import {IAggregationBucket} from "@models/products.model";
+import {IProductCategoryEs} from "@models/products.model";
+export interface IFiltersBarListCategoriesProps {
+    agg: IAggregationBucket;
+    categories: IProductCategoryEs[];
+    category: IProductCategoryEs;
+    idx: number;
+}
+let {agg, categories, category, idx = 0} = Astro.props as IFiltersBarListCategoriesProps;
+
+const mergeCategoriesWithAggs = (items: IProductCategoryEs[], aggs: IAggregationBucket) => {
+    if (!items) {return []}
+    return items.map(item => {
+        const agg = aggs.results.find(agg => agg.slug === item.slug);
+
+        if (agg) {
+            return {
+                ...item,
+                doc_count: agg.doc_count,
+                children: mergeCategoriesWithAggs(item.children, aggs)
+            }
+        }
+        return item;
+    })
+}
+
+---
+
+<ul  x-idx={idx} class:list={[{'ml-4': idx > 0}]}>
+    {mergeCategoriesWithAggs(categories, agg).map(item => (
+    <li class="" >
+        <a href={`/products/${item.slug}`} class:list={[{'font-bold': item.slug === category?.slug}]} class="ml-3 text-sm text-gray-600">{item.title} <span>({item.doc_count || 0})</span></a>
+        {Array.isArray(item.children) && (
+                <Astro.self categories={item.children} agg={agg} idx={idx = idx + 1} />
+        )}
+    </li>
+
+    ))}
+
+</ul>

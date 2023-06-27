@@ -13,6 +13,7 @@
       "@helpers/*": ["src/helpers/*"],
       "@data/*": ["src/data/*"],
       "@models/*": ["src/models/*"],
+      "@stores/*": ["src/stores/*"],
       "@scripts/*": ["src/scripts/*"]
     }
   }

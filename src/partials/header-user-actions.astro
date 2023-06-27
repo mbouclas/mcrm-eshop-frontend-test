@@ -1,11 +1,168 @@
 ---
+import TopBarSearch from '@components/search/top-search-bar.svelte';
+import MobileSearchBar from '@components/search/mobile-search.svelte';
+import Cart from '@components/mini-cart.component.svelte';
+import MobileMenu from '@components/mobile-menu.svelte'
+import UserIcon from '@components/header-user-icon.svelte'
+import DesktopMenu from '@components/desktop-menu.svelte'
+import DesktopMenuItem from '@components/desktop-menu-item.svelte'
+import MobileMenuItem from '@components/mobile-menu-item.svelte'
+import {MenusBackendService} from "@services/menus-backend.service";
+import {logoMobileUrl, logoUrl} from "../data/defaults";
+const menuService = new MenusBackendService()
+const menu = await menuService.getMenu('top-menu')
 
 ---
-<div x-data="app">
-<template x-if="$store.user.user">
-    <a href="" @click.prevent="logout()"><span x-text="$store.user.user.firstName"></span> Logout</a>
-</template>
-<template x-if="!$store.user.user">
-<a href="/login">Login</a>
-</template>
-</div>
+<MobileMenu client:idle>
+  {menu.menuItem.map(item => (
+      <MobileMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle />
+  ))}
+</MobileMenu>
+<MobileSearchBar client:idle />
+<!-- START HEADER -->
+<header class="hidden lg:block">
+  <nav class="w-full py-2 bg-sky">
+    <div class="container mx-auto 2xl:px-20">
+      <ul class="flex gap-4">
+        <li class="font-light text-white">
+          <a href="/">Home</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="/page/about-us" title="About RPS promotions">About RPS</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="">Corporate Pricing</a>
+        </li>
+        <li class="ml-auto">
+
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="py-4 ">
+    <div class="container flex items-center gap-4 px-12 mx-auto 2xl:px-20">
+      <div class="logo">
+        <a href="/"
+          ><img
+            src={logoUrl}
+            alt="Home"
+            width="140"
+            height="96"
+            class="w-40 h-24 -ml-5"
+            srcset=""
+          />
+        </a>
+      </div>
+
+      <div class="flex-grow">
+        <div class="relative">
+          <TopBarSearch client:idle />
+        </div>
+      </div>
+      <div class="flex items-center flex-none gap-4">
+        <!-- START LINK ITEM -->
+        <div class="flex items-center gap-2">
+          <div>
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.5472 4C9.31915 4 5.04166 8.27749 5.04166 13.5055C5.04166 15.4066 5.59615 17.2285 6.62592 18.7336L5.04166 22.4566C4.88324 22.7734 5.20009 23.0903 5.59615 23.0111L9.31915 21.4268C10.8242 22.4566 12.6461 23.0111 14.5472 23.0111C19.7752 23.0111 24.0527 18.7336 24.0527 13.5055C24.0527 8.27749 19.7752 4 14.5472 4Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <ellipse
+                cx="14.548"
+                cy="17.4679"
+                rx="0.792128"
+                ry="0.792127"
+                fill="black"></ellipse>
+              <path
+                d="M14.5474 15.4073L14.4682 13.8231C15.7356 13.8231 16.8446 12.7933 16.8446 11.4467C16.8446 10.1001 15.8148 9.07031 14.4682 9.07031C13.1216 9.07031 12.0918 10.1001 12.0918 11.4467H12.171C12.171 10.1001 13.28 9.07031 14.5474 9.07031C15.8148 9.07031 16.9238 10.1793 16.9238 11.4467C16.9238 12.7933 15.894 13.8231 14.5474 13.8231V15.4073Z"
+                stroke="black"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <a href="tel:+35722382000" class="text-xs cursor-pointer hover:underline">
+            <p class="text-sm">Help is Here</p>
+            <span>+357 22 38 2000</span>
+          </a>
+        </div>
+        <!-- END LINK ITEM -->
+        <!-- START LINK ITEM -->
+        <div class="relative flex items-center gap-2 dropdown" tabindex="1">
+        <UserIcon client:idle />
+
+
+        </div>
+        <!-- END LINK ITEM -->
+
+        <!-- START LINK ITEM -->
+        <div class="flex items-center gap-2">
+          <Cart client:idle />
+        </div>
+        <!-- END LINK ITEM -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- START CATEGORIES NAV -->
+  <nav class="w-full py-4 border b-2 border-black/30 bg-gray-50 shadow-xl">
+    <div class="container px-3 mx-auto 2xl:px-20">
+    <DesktopMenu>
+      {menu.menuItem.map(item => (
+          <DesktopMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle
+          metaData={item.metaData}/>
+      ))}
+    </DesktopMenu>
+
+    </div>
+  </nav>
+  <!-- END CATEGORIES NAV -->
+
+
+</header>
+
+
+<header class=" lg:hidden z-20 w-full h-24  text-gray-700  body-font sm:h-20 mb-12 md:px-8 bg-sky bg-gradient-to-b from-blue-600 via-blue-300 to-white">
+  <nav class="w-full py-2 mb-4 pl-4 ">
+
+      <ul class="flex gap-4">
+        <li class="font-light text-white">
+          <a href="/">Home</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="/page/about-us" title="About RPS promotions">About RPS</a>
+        </li>
+        <li class="font-light text-white">
+          <a href="">Corporate Pricing</a>
+        </li>
+        <li class="ml-auto">
+
+        </li>
+      </ul>
+
+  </nav>
+  <div class="flex items-center  justify-center mx-auto   h-full w-full ">
+    <a class="inline-flex focus:outline-none" href="/" title="home">
+      <span >
+        <img alt="Home"
+             src={logoMobileUrl}
+             width="95"
+             height="67"
+             decoding="async" data-nimg="fixed"
+>
+      </span>
+    </a>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+---
+import Layout from "@layouts/Layout.astro"
+import ThankYou from "@components/checkout/thank-you.svelte";
+const title = 'Thank you for your submission!'
+---
+<Layout title={title}>
+    <ThankYou client:idle title="Thank you for your interest in the following products:" />
+
+</Layout>

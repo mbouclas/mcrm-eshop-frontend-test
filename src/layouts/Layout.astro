@@ -1,15 +1,19 @@
 ---
+import {config} from "@data/config";
+import GDPR from "@components/gdpr-cookie.svelte";
 export interface Props {
 	title: string;
 }
-import CartIcon from '@partials/cart-icon.astro';
+import "../input.css"
+import { SEO } from "astro-seo"
+import Footer from '@components/Footer.astro';
 import HeaderUserActions from '@partials/header-user-actions.astro';
-const { title } = Astro.props;
+import Alerts from '@components/alerts-popup.component.svelte';
+const { title, seo = {} } = Astro.props;
 
-const initialState = JSON.stringify({
-	baseCartUrl: import.meta.env.PUBLIC_CART_ENDPOINT,
-	baseUrl: import.meta.env.PUBLIC_API_ENDPOINT
-});
+if (!seo.title) {
+	seo.title = title
+}
 ---
 
 <!DOCTYPE html>
@@ -17,26 +21,29 @@ const initialState = JSON.stringify({
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+
+		<link rel="sitemap" href="/sitemap-index.xml">
+		<SEO
+			extend={seo}
+			description={seo.description || config.seo.defaults.description}
+			title={seo.title || title}
+			canonical={seo.canonical || config.seo.defaults.canonical}
+		/>
 	</head>
-	<body x-data="app" class="antialiased font-sans bg-gray-200 ">
-		<main x-data="cart">
-		<header>
-			<HeaderUserActions></HeaderUserActions>
-			<CartIcon></CartIcon>
-		</header>
+	<body class="antialiased font-sans">
+	<Alerts client:idle />
+		<HeaderUserActions/>
+		<main class="bg-gray-50">
 		<slot />
 
 	</main>
+	<Footer/>
+	<GDPR client:idle />
 	</body>
 
-	<input type="hidden" value={initialState} x-ref="initialState" />
 
-	<script defer src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"></script>
-<script src="../js/global.js" ></script>
-<script src="../js/cart.js" ></script>
 </html>
 <style is:global>
 	:root {
@@ -45,7 +52,6 @@ const initialState = JSON.stringify({
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
 	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,

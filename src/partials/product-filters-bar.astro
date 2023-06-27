@@ -1,0 +1,19 @@
+---
+import CategoriesList from './filters-bar-list-categories.astro';
+import ColorsList from './filters-bar-list-colors.astro';
+const {aggregations, categories, category} = Astro.props;
+
+---
+<div>
+    <fieldset>
+        <legend class="block text-sm font-medium text-gray-900">Categories</legend>
+        <div class="space-y-3 pt-6">
+            <CategoriesList agg={aggregations.find(a => a.key === 'categories')} categories={categories} category={category} />
+
+
+
+        </div>
+    </fieldset>
+
+
+

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.list-menu .megamenu {
+    height: 0px;
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+}
+.list-menu:hover .megamenu{
+   @apply h-64;
+}
+
+.dropdown .dropdown-item{
+      display: none;
+      transition: all .3s ease-in;
+
+}
+.dropdown:hover .dropdown-item {
+    display: block;
+}
+/* Toggle A */
+.switch input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #48bb78;
+  }
+
+  /* Toggle B */
+.switch input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #48bb78;
+  }
+ .slide-down-item {
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+        transition: all .3s ease-in;
+  }
+  .slide-down:focus + .slide-down-item {
+    height: auto;
+}
+
+  mark {
+      @apply bg-yellow-300 text-black font-semibold;
+  }
