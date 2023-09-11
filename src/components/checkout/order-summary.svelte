@@ -97,7 +97,27 @@
                 </div>
 
                 <div class="flex flex-1 items-end justify-between pt-2 bg-gray-100 p-2">
-                    <p class="mt-1 text-sm  text-gray-900"><span class="font-medium">Total:</span> {moneyFormat(item.price * item.quantity)}</p>
+                    <p class="mt-1 text-sm  text-gray-900">
+                        {#if !item.conditions}
+                            {moneyFormat(item.price)}
+                        {:else}
+                                        <span class="line-through text-gray-400">
+                                            {moneyFormat(item.price)}
+                                        </span>
+                            {moneyFormat(item.price - item.conditions.reduce((acc, condition) => acc + condition.parsedRawValue, 0))}
+                            <span class="text-sm text-gray-400">
+                                            {#each item.conditions as cond}
+                                                <br>
+                                                {cond.title}:
+                                                {#if cond.parsedRawValueType.operator === 'add'}
+                                                    + {moneyFormat(cond.parsedRawValue)}
+                                                {:else}
+                                                    - {moneyFormat(cond.parsedRawValue)}
+                                                {/if}
+                                                    {/each}
+                                        </span>
+                        {/if}
+                    </p>
 
 
                 </div>
@@ -109,6 +129,25 @@
     </ul>
 
     <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
+        <div class="flex items-center justify-between">
+            {#if cartHandlers.Cart.appliedConditions}
+                <dl class="mt-6 space-y-4">
+                    {#each cartHandlers.Cart.appliedConditions as condition}
+                        <div class="flex items-center justify-between">
+                            <dt class="text-sm text-gray-600">{condition.title}</dt>
+                            <dd class="text-sm font-medium text-gray-900">
+                                {#if condition.parsedRawValueType.operator === 'add'}
+                                    +
+                                {:else}
+                                    -
+                                {/if}
+                                {moneyFormat(condition.parsedRawValue)}
+                            </dd>
+                        </div>
+                    {/each}
+                </dl>
+            {/if}
+        </div>
         <div class="flex items-center justify-between">
             <dt class="text-sm">Subtotal</dt>
             <dd class="text-sm font-medium text-gray-900">{moneyFormat(cartHandlers.Cart.subTotal)}</dd>

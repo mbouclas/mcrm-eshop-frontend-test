@@ -3,6 +3,7 @@
     import {createEventDispatcher} from "svelte";
 
     export let addresses: IAddress[] = [];
+
     export let model: IAddress = {} as IAddress;
     const dispatch = createEventDispatcher();
     function setAddress(address) {
@@ -10,6 +11,7 @@
         dispatch('setAddress', address)
     }
 </script>
+
 
 <fieldset>
     <legend class="text-sm font-semibold leading-6 text-gray-900">Use a Past Address</legend>
@@ -25,3 +27,5 @@
         {/each}
     </div>
 </fieldset>
+
+

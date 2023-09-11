@@ -3,6 +3,7 @@ import {setHttpLoading} from "@stores/http.store";
 import type {IAddress, ICheckUserEmailResult, IUser, IUserDto} from "@models/user.model";
 import type {IGenericObject} from "@models/general";
 import {logoutUserAction} from "@stores/user.store";
+import type {IOrderQueryResponse} from "@models/order.model";
 
 
 export class UserService extends BaseHttpService {
@@ -101,6 +102,26 @@ export class UserService extends BaseHttpService {
 
         setHttpLoading(false);
         return await res.json();
+    }
+
+    async getUserAccount(): Promise<IUser> {
+        setHttpLoading(true);
+        const headers = this.setHeaders();
+
+        const url = `${this.baseUrl}account`;
+
+        const res = await fetch(url, {
+            method: 'GET',
+            headers,
+        });
+
+        setHttpLoading(false);
+        const result = await res.json();
+        if (result.address && Array.isArray(result.address)) {
+            result.addresses = result.address;
+        }
+
+        return result as IUser;
     }
 
     async syncAddress(address: IAddress, type: 'shipping'|'billing') {
@@ -202,5 +223,69 @@ export class UserService extends BaseHttpService {
         setHttpLoading(false);
 
         return response
+    }
+
+    async getOrders(): Promise<IOrderQueryResponse> {
+        setHttpLoading(true);
+
+        const url = `${this.baseUrl}orders`;
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: this.setHeaders(),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async setAddressAsDefault(addressId: string) {
+        setHttpLoading(true);
+
+        const url = `${this.baseUrl}address/default/${addressId}`;
+        const res = await fetch(url, {
+            method: 'PATCH',
+            headers: this.setHeaders(),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async deleteAddress(addressId: string) {
+        setHttpLoading(true);
+
+        const url = `${this.baseUrl}address/${addressId}`;
+        const res = await fetch(url, {
+            method: 'DELETE',
+            headers: this.setHeaders(),
+        });
+
+        const response = await res.json();
+
+        setHttpLoading(false);
+
+        return response
+    }
+
+    async addNewAddress(address: IAddress) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const headers = this.setHeaders(otp);
+        const url = `${this.baseUrl}address`;
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({address, type: 'SHIPPING'}),
+        });
+
+        setHttpLoading(false);
+        return await res.json();
     }
 }

@@ -1,3 +1,5 @@
+import type {IOrderStatus} from "@models/order.model";
+
 export interface IGenericObject<T = any> {
     [key: string]: T;
 }
@@ -31,6 +33,10 @@ export interface IPaymentMethod {
 export interface IStoreConfig {
     quickCheckout: boolean;
     guestCheckout: boolean;
+    orderStatuses: IOrderStatus[];
+    storeLogo: string;
+    storeUrl: string;
+    name: string;
 }
 
 export interface IOtp {

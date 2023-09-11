@@ -4,6 +4,7 @@
     import {extractValidationErrors} from "@helpers/validation";
     import FormErrors from "@components/form-errors.svelte";
     import {createEventDispatcher} from "svelte";
+    import {setAlertAction} from "@stores/http.store";
     const dispatch = createEventDispatcher();
 
     export let email;
@@ -32,10 +33,15 @@
         const res = await userService.changePassword(email, model.password);
 
         if (res.success) {
+            setAlertAction({type: 'success', message: `Password Changed`, position: 'top', timeout: 5000});
             dispatch('success');
         }
     }
+
+
+
 </script>
+
 <FormErrors errors={errors}/>
 <form on:submit|preventDefault={submit}>
 <div class="mb-2">

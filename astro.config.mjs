@@ -16,20 +16,15 @@ const integrations = [
     sitemap(),
   critters({critters: process.env.ENV === 'production'}),
     ];
-if (process.env.ENV === 'production') {
+/*if (process.env.ENV === 'production') {
   integrations.push(partytown())
-}
+}*/
 // https://astro.build/config
 export default defineConfig({
   site: process.env.SITE_BASE_URL,
   vite: {
     plugins: [
-        VitePWA({
-            registerType: 'autoUpdate',
-            workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg}']
-            }
-        }),
+
     ],
     ssr: {
       external: ["svgo"]

@@ -35,7 +35,27 @@
                                 <h3>
                                     <a href={`/product/${item.sku}/${item.slug}`}>{item.title}</a>
                                 </h3>
-                                <p class="ml-4">{moneyFormat(item.price)}</p>
+                                <p class="ml-4">
+                                    {#if !item.conditions}
+                                        {moneyFormat(item.price)}
+                                    {:else}
+                                        <span class="line-through text-gray-400">
+                                            {moneyFormat(item.price)}
+                                        </span>
+                                        {moneyFormat(item.price - item.conditions.reduce((acc, condition) => acc + condition.parsedRawValue, 0))}
+                                        <span class="text-sm text-gray-400">
+                                            {#each item.conditions as cond}
+                                                <br>
+                                                {cond.title}:
+                                                {#if cond.parsedRawValueType.operator === 'add'}
+                                                    + {moneyFormat(cond.parsedRawValue)}
+                                                {:else}
+                                                    - {moneyFormat(cond.parsedRawValue)}
+                                                {/if}
+                                                    {/each}
+                                        </span>
+                                    {/if}
+                                </p>
                             </div>
                             {#if item.metaData}
                                 {#if item.metaData.color}
@@ -59,6 +79,23 @@
     </div>
 
     <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+        {#if cartHandlers.Cart.appliedConditions}
+            <dl class="mt-6 space-y-4">
+                {#each cartHandlers.Cart.appliedConditions as condition}
+                    <div class="flex items-center justify-between">
+                        <dt class="text-sm text-gray-600">{condition.title}</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            {#if condition.parsedRawValueType.operator === 'add'}
+                                +
+                            {:else}
+                                -
+                            {/if}
+                            {moneyFormat(condition.parsedRawValue)}
+                        </dd>
+                    </div>
+                {/each}
+            </dl>
+        {/if}
         <div class="flex justify-between text-base font-medium text-gray-900 dark:text-white/50">
             <p>Subtotal</p>
             <p>{moneyFormat($cart.total)}</p>

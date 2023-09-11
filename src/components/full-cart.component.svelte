@@ -99,7 +99,27 @@
 
                                 {/if}
 
-                                <p class="mt-1 text-sm font-medium text-gray-900">{moneyFormat(item.price)}</p>
+                                <p class="mt-1 text-sm font-medium text-gray-900">
+                                    {#if !item.conditions}
+                                    {moneyFormat(item.price)}
+                                    {:else}
+                                        <span class="line-through text-gray-400">
+                                            {moneyFormat(item.price)}
+                                        </span>
+                                    {moneyFormat(item.price - item.conditions.reduce((acc, condition) => acc + condition.parsedRawValue, 0))}
+                                        <span class="text-sm text-gray-400">
+                                            {#each item.conditions as cond}
+                                                <br>
+                                                {cond.title}:
+                                                {#if cond.parsedRawValueType.operator === 'add'}
+                                                    + {moneyFormat(cond.parsedRawValue)}
+                                                {:else}
+                                                    - {moneyFormat(cond.parsedRawValue)}
+                                                {/if}
+                                                    {/each}
+                                        </span>
+                                    {/if}
+                                </p>
                             </div>
 
                             <div class="mt-4 sm:mt-0 sm:pr-9">
@@ -129,6 +149,23 @@
         {#if cartHandlers.Cart.items.length > 0}
         <section aria-labelledby="summary-heading" class="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
             <h2 id="summary-heading" class="text-lg font-medium text-gray-900">Order summary</h2>
+            {#if cartHandlers.Cart.appliedConditions}
+            <dl class="mt-6 space-y-4">
+                {#each cartHandlers.Cart.appliedConditions as condition}
+                    <div class="flex items-center justify-between">
+                        <dt class="text-sm text-gray-600">{condition.title}</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            {#if condition.parsedRawValueType.operator === 'add'}
+                                +
+                            {:else}
+                                -
+                                {/if}
+                            {moneyFormat(condition.parsedRawValue)}
+                        </dd>
+                    </div>
+                    {/each}
+            </dl>
+                {/if}
 
             <dl class="mt-6 space-y-4">
                 <div class="flex items-center justify-between">

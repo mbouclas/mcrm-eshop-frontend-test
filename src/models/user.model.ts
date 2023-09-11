@@ -28,6 +28,7 @@ export interface IAddress {
     street: string;
     region: string;
     default: boolean;
+    uuid?: string;
 }
 
 export interface ICheckUserEmailResult {

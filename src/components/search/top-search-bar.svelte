@@ -6,7 +6,7 @@ import {highlighter} from "@helpers/general";
 import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
 import {appConfig, httpLoading} from "@stores/http.store";
 import Spinner from '@components/loading-spiner.svelte';
-import {setModalShownAction} from "@stores/search.store";
+
 
 let query = '';
 let timer;

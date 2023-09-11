@@ -3,9 +3,10 @@ export function optimizeCloudinaryImage(src: string, w: number|null = null, h: n
         return ``;
     }
 
-    src = src
-        .replace('.jpg', '.webp')
-        .replace('.png', '.webp');
+    const ext = src.split('.').pop()
+    if ([ 'jpg', 'png' ].indexOf(ext as string) !== -1) {
+        src = src.replace(/\.[^/.]+$/, ".webp")
+    }
 
     const width = (w) ? `w_${w},` : 'w_auto,';
     const height = (h) ? `h_${h},` : '';

@@ -17,6 +17,42 @@ export interface ICartItem {
     metaData?: IGenericObject;
 }
 
+export interface IConditionAttributes {
+    description: string;
+}
+
+export interface IConditionArgs {
+    kind: string;
+    active: boolean;
+    rules?: any[] | null;
+    attributes: IConditionAttributes;
+    type: string;
+    title: string;
+    uuid: string;
+    value: string;
+    slug: string;
+    updatedAt: string;
+    target: string;
+    order: number;
+}
+
+export interface ICartCondition {
+    args: IConditionArgs;
+    rules?: any[] | null;
+    attributes: IConditionAttributes;
+    kind: string;
+    active: boolean;
+    type: string;
+    title: string;
+    uuid: string;
+    value: string;
+    slug: string;
+    updatedAt: string;
+    target: string;
+    parsedRawValue: number;
+    parsedRawValueType: { type: 'fixed'|'percentage'; operator: 'add'|'subtract' };
+}
+
 export interface ICart {
     id?: string;
     items?: (ICartItem)[] | null;
@@ -25,7 +61,7 @@ export interface ICart {
     subTotal?: number;
     vatRate?: number;
     metaData?: ICartMetaData;
-    appliedConditions?: any[] | null;
+    appliedConditions?: ICartCondition[] | null;
     couponApplied?: ICartCoupon;
     qty: number;
 }

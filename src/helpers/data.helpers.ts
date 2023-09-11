@@ -6,3 +6,4 @@ export function extractSingleFilterFromObject(filter: IGenericObject) {
 
     return {key, value};
 }
+
