@@ -1,6 +1,7 @@
 import {atom, task, onMount, action} from 'nanostores'
-import {CartService, IAddToCartDto} from "@services/cart.service";
-import {setAlertAction, setHttpLoading} from "@stores/http.store";
+import {CartService} from "@services/cart.service";
+import type {IAddToCartDto} from "@services/cart.service";
+import {setAlertAction} from "@stores/http.store";
 import type {IGenericObject} from "@models/general";
 
 const cartService = new CartService();
@@ -57,6 +58,7 @@ export interface ICart {
     id?: string;
     items?: (ICartItem)[] | null;
     total: number;
+    shipping: number;
     numberOfItems?: number;
     subTotal?: number;
     vatRate?: number;
@@ -82,16 +84,21 @@ export interface ICartItem {
     uuid: string;
 }
 
-const cachedCart = localStorage.getItem('cart');
+const cachedCart = (typeof localStorage !== 'undefined') ? localStorage.getItem('cart') : null;
 
 export const cart = atom<ICart>({
     total: 0,
+    shipping: 0,
     qty: 0,
     items: [],
 });
 
 onMount(cart, () => {
     task(async () => {
+        if (typeof localStorage === 'undefined') {
+            return cart.get();
+        }
+
         const res = await cartService.getCart();
         res.qty = res.items.length;
         cart.set(res);
@@ -105,6 +112,7 @@ if (cachedCart) {
 }
 
 cart.subscribe(value => {
+    if (typeof localStorage === 'undefined') {return;}
     localStorage.setItem('cart', JSON.stringify(value));
 });
 
@@ -114,6 +122,12 @@ export const addToCartAction = async (item: IAddToCartDto, overwriteQuantity = f
 
     cart.set(res);
     setAlertAction({type: 'success', message: `Item added to cart`, position: 'top', timeout: 3000});
+}
+
+export const updateCartAction = (newCart: ICart) => {
+    cart.set(newCart)
+    setAlertAction({type: 'success', message: `Cart Updated`, position: 'top', timeout: 3000});
+    return cart.get();
 }
 
 export const saveCartToServerAction = async () => {

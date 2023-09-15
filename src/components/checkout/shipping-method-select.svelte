@@ -2,12 +2,23 @@
     import type {IShippingMethod} from "@models/general";
     import {moneyFormat} from "@helpers/money-format";
     import {createEventDispatcher} from "svelte";
+    import {CartService} from "@services/cart.service.ts";
+    import {updateCartAction} from "@stores/cart.store.ts";
     const dispatch = createEventDispatcher();
 
     export let shippingMethods: IShippingMethod[] = [];
     export let selectedShippingMethod: IShippingMethod = shippingMethods[0];
 
-    function onSelection(item) {
+    async function onSelection(item: IShippingMethod) {
+        let res;
+        try {
+            res = await new CartService().updateShippingMethod(item.uuid);
+        }
+        catch (e) {
+            console.log(e)
+        }
+
+        updateCartAction(res);
         selectedShippingMethod = item;
         dispatch('selection', item);
     }
@@ -21,7 +32,7 @@
         <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
 
             {#each shippingMethods as item}
-            <label on:click={() => onSelection(item)}
+            <label on:click|preventDefault={onSelection.bind(this, item)}
                    class:border-transparent={selectedShippingMethod === item}
                    class:ring-2={selectedShippingMethod === item}
                    class:ring-indigo-500={selectedShippingMethod === item}
@@ -30,7 +41,7 @@
                 <span class="flex flex-1">
                     <span class="flex flex-col">
                       <span id="delivery-method-0-label" class="block text-sm font-medium text-gray-900">{item.title}</span>
-                      <span id="delivery-method-0-description-0" class="mt-1 flex items-center text-sm text-gray-500">{item.shippingTime}</span>
+                      <span id="delivery-method-0-description-0" class="mt-1 flex items-center text-sm text-gray-500">{item.shippingTime} </span>
                         {#if item.baseCost}
                       <span id="delivery-method-0-description-1" class="mt-6 text-sm font-medium text-gray-900">{moneyFormat(item.baseCost)}</span>
                             {/if}

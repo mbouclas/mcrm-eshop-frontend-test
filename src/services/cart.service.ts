@@ -74,4 +74,18 @@ export class CartService extends BaseHttpService {
         setHttpLoading(false);
         return await res.json();
     }
+
+    async updateShippingMethod(id: string) {
+        setHttpLoading(true);
+
+        const res = await fetch(`${import.meta.env.PUBLIC_CART_ENDPOINT}update-shipping`, {
+            method: 'POST',
+            headers: this.setHeaders(),
+            credentials: "include",
+            body: JSON.stringify({id})
+        });
+
+        setHttpLoading(false);
+        return await res.json();
+    }
 }

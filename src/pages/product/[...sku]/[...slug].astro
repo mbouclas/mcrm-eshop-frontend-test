@@ -54,7 +54,7 @@ function slimDownProduct(item) {
     }
 }
 
-const srcSet = cloudinarySrcSet(item.thumb || config.defaultNoImage);
+const srcSet = cloudinarySrcSet(item.thumb.url || config.defaultNoImage);
 const breadCrumbs = [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
 const seo = {
     title: `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
@@ -87,7 +87,9 @@ const seo = {
 
                             <source srcset={`${srcSet.copies[1].url} 1700w`}>
                             <img src={srcSet.original} class="h-full w-full object-cover object-center sm:rounded-lg transition duration-200 lg:hover:scale-110"
-                                 alt={item.title}></picture>
+                                 alt={item.thumb.alt || item.title}
+                                 title={item.thumb.title || item.title}
+                            ></picture>
                         )}
                     </div>
                 </div>

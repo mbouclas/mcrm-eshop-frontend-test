@@ -49,17 +49,22 @@ export interface IProductManufacturerEs {
 }
 
 export interface IImageEs {
+    createdAt: string;
+    originalLocation: string;
+    active: boolean;
+    alt: string;
+    title: string;
+    caption: string;
     uuid: string;
     url: string;
-    caption?: string;
-    alt?: string;
-    title?: string;
+    updatedAt: string;
+    type: string;
 }
 
 export interface IProductModel extends IBaseModelEs  {
     price: number;
     sku: string;
-    thumb?: string;
+    thumb?: IImageEs;
     properties: IPropertyEs[];
     variants: IVariantEs[];
     tags: ITagEs[];

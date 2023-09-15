@@ -14,10 +14,12 @@
         total: 0,
     } as ICart);
     let loading = false,
-        modalIsShown = false;
+        modalIsShown = false,
+    shipping = null;
 
     cart.subscribe((val) => {
         cartHandlers.Cart = val;
+        getShipping();
     });
     httpLoading.subscribe(val => loading = val);
 
@@ -30,6 +32,10 @@
         modalIsShown = !modalIsShown;
         setModalShownAction(modalIsShown);
 
+    }
+
+    function getShipping() {
+        shipping = cartHandlers.Cart.appliedConditions.find(c => c.target === 'shipping');
     }
 
 </script>
@@ -132,7 +138,7 @@
         <div class="flex items-center justify-between">
             {#if cartHandlers.Cart.appliedConditions}
                 <dl class="mt-6 space-y-4">
-                    {#each cartHandlers.Cart.appliedConditions as condition}
+                    {#each cartHandlers.Cart.appliedConditions.filter(c => c.target !== 'shipping') as condition}
                         <div class="flex items-center justify-between">
                             <dt class="text-sm text-gray-600">{condition.title}</dt>
                             <dd class="text-sm font-medium text-gray-900">
@@ -147,7 +153,18 @@
                     {/each}
                 </dl>
             {/if}
+
         </div>
+        {#if shipping}
+            <dl class="mt-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <dt class="text-sm text-gray-600">{shipping.title}</dt>
+                    <dd class="text-sm font-medium text-gray-900">
+                        {moneyFormat(shipping.parsedRawValue)}
+                    </dd>
+                </div>
+            </dl>
+        {/if}
         <div class="flex items-center justify-between">
             <dt class="text-sm">Subtotal</dt>
             <dd class="text-sm font-medium text-gray-900">{moneyFormat(cartHandlers.Cart.subTotal)}</dd>

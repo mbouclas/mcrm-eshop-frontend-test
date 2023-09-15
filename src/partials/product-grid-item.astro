@@ -22,8 +22,8 @@ const colors = getProductColors(allColors, item.variants.filter(variant => varia
 
         <a href={`/product/${item.sku}/${item.slug}`} title={item.title}>
 <img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')}
-     alt={item.title}
-     title={item.title}
+     alt={item.thumb && item.thumb.alt || item.title}
+     title={item.thumb && item.thumb.title ||item.title}
      width="158"
      height="158"
              class="product-image h-full object-contain w-full  sm:h-full sm:w-full transition duration-200 hover:scale-110 product-image">

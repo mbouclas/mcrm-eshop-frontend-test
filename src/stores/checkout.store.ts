@@ -3,8 +3,9 @@ import type {IGuestContactInformation, IOrderMetaData, IOrderResponse, IStep} fr
 import {CheckoutService} from "@services/checkout.service";
 import type {IPaymentMethod, IShippingMethod, IStoreConfig} from "@models/general";
 import type {IAddress, IUser} from "@models/user.model";
-import {cart, clearCart, ICartItem} from "@stores/cart.store";
-export const cartQuantities = [1,2,3,4,5,6,7,8,9,10]
+import {cart, clearCart} from "@stores/cart.store";
+import type {ICartItem} from "@stores/cart.store";
+export const cartQuantities = [1,2,3,4,5,6,7,8,9,10];
 const checkoutService = new CheckoutService();
 
 const steps = [
@@ -83,7 +84,7 @@ const checkoutStoreDefaults = {
 export const checkoutStore = atom<ICheckoutStore>(checkoutStoreDefaults);
 
 onMount(checkoutStore, () => {
-    let cached = localStorage.getItem('checkout');
+    let cached = (typeof localStorage !== 'undefined') ? localStorage.getItem('checkout') : null;
     if (cached) {
         try {
             const data = JSON.parse(cached);
@@ -128,6 +129,7 @@ onMount(checkoutStore, () => {
 });
 
 checkoutStore.subscribe((state) => {
+    if (typeof localStorage === 'undefined') {return;}
     localStorage.setItem('checkout', JSON.stringify(state));
 });
 

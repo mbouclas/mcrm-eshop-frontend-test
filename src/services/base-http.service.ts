@@ -6,6 +6,7 @@ export class BaseHttpService {
     protected mainUrl = `${import.meta.env.PUBLIC_BASE_URL}`;
     protected user: IUserStore = {} as IUserStore;
     constructor() {
+        if (typeof localStorage === 'undefined') { return }
         this.sessId = localStorage.getItem('sessId');
         this.user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : {} as IUserStore;
     }

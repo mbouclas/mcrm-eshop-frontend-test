@@ -3,6 +3,10 @@ export function optimizeCloudinaryImage(src: string, w: number|null = null, h: n
         return ``;
     }
 
+    if (typeof src === 'object') {
+        src = src['url'];
+    }
+
     const ext = src.split('.').pop()
     if ([ 'jpg', 'png' ].indexOf(ext as string) !== -1) {
         src = src.replace(/\.[^/.]+$/, ".webp")

@@ -2,7 +2,7 @@ import {atom, action} from 'nanostores';
 import type {IUserStore} from "@models/user.model";
 import {resetCheckoutAction} from "@stores/checkout.store";
 
-const cachedUser = localStorage.getItem('user');
+const cachedUser = (typeof localStorage !== 'undefined') ?  localStorage.getItem('user') : null;
 
 export const userStore = atom<IUserStore>({
 
@@ -14,7 +14,10 @@ if (cachedUser) {
 
 export const setUserStore = action(userStore, 'setUserStore', (store, user) => {
     store.set(user);
-    localStorage.setItem('user', JSON.stringify(user));
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
     return store.get();
 });
 

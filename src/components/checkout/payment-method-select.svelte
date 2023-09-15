@@ -7,15 +7,26 @@
     import Button from "@components/buttons.component.svelte";
     import {createEventDispatcher, onMount} from "svelte";
     import {setPaymentMethodAction} from "@stores/checkout.store";
+    import {cart} from "@stores/cart.store.ts";
     export let paymentMethods: IPaymentMethod[] = [];
     export let selectedShippingMethod: IShippingMethod|null = null;
     export let selectedPaymentMethod: IPaymentMethod|null = null;
     let errors = {};
     const dispatch = createEventDispatcher();
 
+    cart.subscribe((val) => {
+        const shipping = val.appliedConditions.find(c => c.target === 'shipping');
+        if (shipping && shipping['args']) {
+            selectedShippingMethod = shipping['args'];
+        }
+    });
+
     onMount(() => {
         selectedPaymentMethod = paymentMethods[0];
         setPaymentMethodAction(selectedPaymentMethod);
+        if (selectedShippingMethod) {
+            setShippingMethod({detail: selectedShippingMethod});
+        }
     });
 
     function setPaymentMethod(item) {
@@ -44,6 +55,8 @@
     }
 
     function setShippingMethod(e: IEvent<IShippingMethod>) {
+        if (!selectedPaymentMethod) {return;}
+
         selectedPaymentMethod.selectedShippingMethod = e.detail;
         setPaymentMethodAction(selectedPaymentMethod);
     }
