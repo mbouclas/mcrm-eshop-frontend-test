@@ -15,7 +15,7 @@ export function cloudinaryRawSettings(src: string, settings: string) {
     return src.replace('upload/', `upload/${settings}/`);
 }
 export function optimizeCloudinaryImage(src: string, w: number|null = null, h: number|null = null, cropMode: 'fit'|'fill' = 'fit', q = 'auto:good') {
-    if (!src) {
+    if (typeof src == 'undefined' || !src) {
         return ``;
     }
 
