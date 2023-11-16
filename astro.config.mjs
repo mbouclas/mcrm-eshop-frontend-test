@@ -9,10 +9,15 @@ import mdx from "@astrojs/mdx"
 import svelte from "@astrojs/svelte";
 import { VitePWA } from 'vite-plugin-pwa'
 import {resolve} from "path";
+import {statSync} from "node:fs";
 let envPath = '.env';
-if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV !== 'development') {
-  envPath = `.env.${process.env.NODE_ENV}`;
+
+try {
+  envPath = (statSync(resolve(`.env.${process.env.NODE_ENV}`))) ?  `.env.${process.env.NODE_ENV}` : '.env';
 }
+ catch (e) {
+
+ }
 dotenv.config({ path: resolve(process.cwd(), envPath)});
 const integrations = [
     tailwind(),

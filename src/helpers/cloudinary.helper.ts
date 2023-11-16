@@ -1,3 +1,5 @@
+import {config} from "@data/config.ts";
+
 export function cloudinaryRawSettings(src: string, settings: string) {
     if (!src) {
         return ``;
@@ -14,9 +16,9 @@ export function cloudinaryRawSettings(src: string, settings: string) {
 
     return src.replace('upload/', `upload/${settings}/`);
 }
-export function optimizeCloudinaryImage(src: string, w: number|null = null, h: number|null = null, cropMode: 'fit'|'fill' = 'fit', q = 'auto:good') {
+export function optimizeCloudinaryImage(src: string, w: number|null = null, h: number|null = null, cropMode: 'fit'|'fill' = 'fit', q = 'auto:good'): string {
     if (typeof src == 'undefined' || !src) {
-        return ``;
+        return  config.defaultNoImage;
     }
 
     if (typeof src === 'object') {
@@ -38,8 +40,7 @@ export function optimizeCloudinaryImage(src: string, w: number|null = null, h: n
         return src.replace('upload/', `upload/${width}${height}${crop}q_${q},f_auto,dpr_auto/`);
     }
     catch (e) {
-        console.log('***', src)
-        return  ``;
+        return  config.defaultNoImage;
     }
 
 }

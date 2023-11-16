@@ -40,8 +40,8 @@
                         {#if metaData}
                                 <div class="group relative text-base sm:text-sm ">
                                 <div class=" overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                    <img src={metaData.cta.image} width="350" height="150"
-                                         alt="Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees."
+                                    <img src={metaData.cta.image} width="350" height="350"
+                                         alt={metaData.cta.alt} title={metaData.cta.title}
                                          class=" object-fill object-center">
                                 </div>
                                 <a href={metaData.cta.url} class="mt-6 block font-medium text-gray-900">

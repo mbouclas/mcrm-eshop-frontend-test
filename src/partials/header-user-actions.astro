@@ -7,16 +7,18 @@ import UserIcon from '@components/header-user-icon.svelte'
 import DesktopMenu from '@components/desktop-menu.svelte'
 import DesktopMenuItem from '@components/desktop-menu-item.svelte'
 import MobileMenuItem from '@components/mobile-menu-item.svelte'
+import AstroMobileMenuItem from '@components/mobile-menu-item.astro';
 import {MenusBackendService} from "@services/menus-backend.service";
 import {logoMobileUrl, logoUrl} from "../data/defaults";
 const menuService = new MenusBackendService()
 const menu = await menuService.getMenu('top-menu')
 
 ---
+
+
+
 <MobileMenu client:idle>
-  {menu.menuItem.map(item => (
-      <MobileMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle />
-  ))}
+  <AstroMobileMenuItem items={menu.menuItem} />
 </MobileMenu>
 <MobileSearchBar client:idle />
 <!-- START HEADER -->
@@ -48,7 +50,7 @@ const menu = await menuService.getMenu('top-menu')
             src={logoUrl}
             alt="Home"
             width="140"
-            height="96"
+            height="134"
             class="w-40 h-24 -ml-5"
             srcset=""
           />
