@@ -11,9 +11,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 import {resolve} from "path";
 import {statSync} from "node:fs";
 let envPath = '.env';
-
+const env = process.env.ENV ? process.env.ENV : process.env.NODE_ENV || 'development';
 try {
-  envPath = (statSync(resolve(`.env.${process.env.NODE_ENV}`))) ?  `.env.${process.env.NODE_ENV}` : '.env';
+  envPath = (statSync(resolve(`.env.${env}`))) ?  `.env.${env}` : '.env';
 }
  catch (e) {
 
@@ -24,7 +24,7 @@ const integrations = [
   svelte(),
     mdx(),
     sitemap(),
-  critters({critters: process.env.ENV === 'production'}),
+  critters({critters: env === 'production'}),
     ];
 /*if (process.env.ENV === 'production') {
   integrations.push(partytown())
