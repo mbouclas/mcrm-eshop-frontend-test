@@ -29,8 +29,11 @@ if (!fs.existsSync(cacheFolderLocation)) {
 // await saveAllProducts();
 // await saveProductCategories();
 // await saveProductPerCategories();
-// process.exit();
+// await saveHome();
 
+// await saveEditableRegions();
+// process.exit();
+await saveHome();
 await saveAllProducts();
 await saveAllProperties();
 await saveProductCategories();
@@ -135,6 +138,7 @@ async function saveContentCategories() {
 
 async function saveEditableRegions() {
     const s = new EditableRegionsService();
+
     const items = await s.getEditableRegions();
     try {
         await writeFile(
@@ -145,4 +149,22 @@ async function saveEditableRegions() {
         console.log(e)
     }
     console.log(`* Saving All Editable Regions complete`)
+}
+
+async function saveHome() {
+    const s = new ProductsService();
+    // const items = await s.getProducts(100);
+    const data = await s.getBestSellers(10);
+    try {
+        await writeFile(
+            join(cacheFolderLocation, `best-sellers.json`),
+            JSON.stringify(data)
+        )
+
+    } catch (e) {
+        console.log(e)
+    }
+
+
+    console.log(`* Saving Home complete`)
 }

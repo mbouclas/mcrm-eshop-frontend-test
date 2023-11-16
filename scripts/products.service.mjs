@@ -20,6 +20,17 @@ export class ProductsService extends BaseService {
         return allProducts;
     }
 
+    async getBestSellers(limit = 10) {
+        const query = await fetch(`${process.env.API_BASE_URL}products/best-sellers?limit=${limit}`, {
+            method: 'GET',
+            headers: {
+                "x-astro-key": process.env.ASTRO_KEY
+            },
+            redirect: 'follow'
+        });
+        return await query.json();
+    }
+
     async find(filters = {}, page = 1, limit = 1000) {
         let appliedFilters = '';
         if (Object.keys(filters).length > 0) {

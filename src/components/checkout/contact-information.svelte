@@ -194,6 +194,10 @@
 
 {#if user && user.email}
     {#if Array.isArray(user.addresses)}
+        <div class="my-4">
+            <h2 class="text-lg font-medium text-gray-900">Saved Addresses</h2>
+            <p class="mt-2 text-sm text-gray-500">Click to select a saved address</p>
+        </div>
         <UserAddresses bind:selectedContact={selectedContact}  addresses={user.addresses} />
         <Button color="black" onClickHandler={validate}>Continue</Button>
     {/if}

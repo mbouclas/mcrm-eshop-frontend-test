@@ -8,8 +8,11 @@ export interface IEditableRegion {
     uuid: string;
     layout: string;
     region: string;
+    label: string;
+    description: string;
     items: IEditableRegionItem[];
     settings: IGenericObject;
+    metaData: IGenericObject;
 }
 
 export interface IEditableRegionItem {

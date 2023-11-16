@@ -33,7 +33,8 @@ export interface IProductCategoryEs {
     uuid: string;
     title: string;
     slug: string;
-    children: IProductCategoryEs[];
+    thumb: Partial<IImageEs>;
+    children: Partial<IProductCategoryEs>[];
 }
 
 export interface ITagEs {
@@ -71,6 +72,8 @@ export interface IProductModel extends IBaseModelEs  {
     categories: IProductCategoryEs[];
     manufacturer: IProductManufacturerEs;
     images: IImageEs[];
+    related?: IProductModel[];
+    similar?: IProductModel[];
 }
 
 export interface IAggregationBucket {

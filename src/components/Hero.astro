@@ -5,11 +5,12 @@ interface IHeroProps {
   item: IEditableRegion;
 }
 const {item} = Astro.props as IHeroProps;
-const region = item.items[0].item;
+
+const region = item.items;
 
 ---
 <section class="w-full">
-  <div class=" px-4 ">
+  <div class=" px-4 my-4">
     <div class="flex flex-col items-center lg:flex-row">
       <div class="w-full px-6 pb-4 lg:pb-0 lg:w-1/2">
         <h4
@@ -18,7 +19,7 @@ const region = item.items[0].item;
           {region.title}
         </h4>
         <p class="mt-4 text-lg text-center lg:text-left">
-          {region['subTitle']}
+          {region['subtitle']}
         </p>
         <div class="my-4 text-center">
           <a
@@ -26,29 +27,15 @@ const region = item.items[0].item;
             class="flex items-center justify-center w-full lg:justify-start"
           >
             <span>{region['cta']['title']}</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
+
           </a>
         </div>
       </div>
       <div class="w-full lg:w-1/2">
         <img
-          src={optimizeCloudinaryImage(region['cta']['image']['url'], 680)}
-          alt={optimizeCloudinaryImage(region['cta']['image']['alt'])}
-          title={optimizeCloudinaryImage(region['cta']['image']['caption'])}
+          src={optimizeCloudinaryImage(region['image']['url'], 680, null, 'fill', 'auto:best')}
+          alt={optimizeCloudinaryImage(region['image']['alt'])}
+          title={optimizeCloudinaryImage(region['image']['caption'])}
           srcset=""
         />
       </div>

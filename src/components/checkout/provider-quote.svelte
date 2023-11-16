@@ -40,7 +40,7 @@ function setOrderMetaData() {
 <AttachFiles  on:attachFilesDone={toggleModal}/>
 </Modal>
 <div class="py-4">
-<Button color="black" type="button" onClickHandler={toggleModal}>Attach Logo</Button>
+<Button color="black" type="button" onClickHandler={toggleModal}>Attach files to the quote</Button>
 </div>
 
 <div class="py-4">

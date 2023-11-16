@@ -1,230 +1,71 @@
+---
+import {IEditableRegion} from "@models/editable-regions.model";
+import {ProductsService} from "@services/products.service";
+import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
+
+interface IProps {
+    region: IEditableRegion;
+    }
+
+const {region} = Astro.props as IProps;
+
+const regionItems = region.items.map(i => i.item);
+const categories = await new ProductsService().categories(true);
+const defaultNoImage = 'https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-clothing/Clothing';
+const items = regionItems.map(item => {
+    const category = categories.find(c => c.uuid === item.uuid);
+    if (typeof category.thumb === 'undefined' || (typeof category.thumb === 'string' && category.thumb.length > 0)) {
+      category.thumb = {};
+    }
+
+    if (Object.keys(category.thumb).length === 0) {
+      category.thumb.url = defaultNoImage;
+      category.thumb.alt = category.thumb && category.thumb.alt ? category.thumb.alt : undefined;
+      category.thumb.title = category.thumb && category.thumb.title ? category.thumb.title : undefined;
+    }
+
+    return category;
+});
+
+---
 <section class="pb-10 mt-10 lg:pt-20">
   <div class="container px-4 mx-auto 2xl:px-20">
     <h4 class="w-full mb-4 text-3xl font-bold leading-snug lg:text-5xl">
-      Start Browsing custom promotional<span class="inline ml-2 lg:block"
-        >products</span
-      >
+      {region.description}
     </h4>
 
     <div class="w-full mt-6 lg:mt-20">
       <div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-clothing/Clothing"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Clothing</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
+        {items.map(item => (
+            <div class="flex flex-col gap-4">
+              <a href={`/products/${item.slug}`} title={`${item.title} Products`}>
+              <img
+                  src={optimizeCloudinaryImage(item.thumb.url, 320)}
+                  title={item.thumb.title || `${item.title} Products`} alt={item.thumb.alt || `${item.title} Products`}
+              />
+              </a>
+              <a href={`/products/${item.slug}`} title={`${item.title} Products`} class="flex items-center">
+                <span>{item.title}</span>
+                <span class="ml-1"
+                ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
             </span>
-          </a>
-        </div>
+              </a>
+            </div>
+        ))}
 
-        <!-- END ITEM -->
 
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-bags/Bags"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Bags</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-drinkware"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Drinkware</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-writing"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Writing & Office</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-technology/Technology"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Technology</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-house/Home"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Household & Auto</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-sport/Leisure"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Leisure</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
-
-        <!-- END ITEM -->
-
-        <!-- START ITEM -->
-        <div class="flex flex-col gap-4">
-          <img
-            src="https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-candy/Candy"
-            alt=""
-          />
-          <a href="" class="flex items-center">
-            <span>Treats</span>
-            <span class="ml-1"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </span>
-          </a>
-        </div>
 
         <!-- END ITEM -->
       </div>

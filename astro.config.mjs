@@ -8,7 +8,12 @@ import mdx from "@astrojs/mdx"
 
 import svelte from "@astrojs/svelte";
 import { VitePWA } from 'vite-plugin-pwa'
-dotenv.config();
+import {resolve} from "path";
+let envPath = '.env';
+if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV !== 'development') {
+  envPath = `.env.${process.env.NODE_ENV}`;
+}
+dotenv.config({ path: resolve(process.cwd(), envPath)});
 const integrations = [
     tailwind(),
   svelte(),

@@ -4,10 +4,39 @@ import {sortBy} from "@helpers/general";
 import type {IGenericObject} from "@models/general";
 import {extractSingleFilterFromObject} from "@helpers/data.helpers";
 
+export interface IBestSeller {
+    product: IProductModel;
+    numberOfPurchases: number;
+    productId: string;
+}
+
 export class ProductsService {
     async load() {
         const cached = await readFile(`__cache/all_products.json`)
         return JSON.parse(cached.toString());
+    }
+
+    async bestSellers(limit = 5): Promise<IBestSeller[]> {
+        const buffer = await readFile(`__cache/best-sellers.json`);
+        const loaded = JSON.parse(buffer.toString());
+        const toReturn = loaded.slice(0, limit);
+        const all = await this.load();
+        for (const item of toReturn) {
+            const found = await this.findOne({id: item.productId}, all);
+            item.product = found;
+        }
+
+        return toReturn;
+    }
+
+    async findOne(filter: IGenericObject, all?: any[]) {
+        if (!all) {
+            all = await this.load();
+        }
+        const {key, value} = extractSingleFilterFromObject(filter);
+
+        // @ts-ignore
+        return all.find((p: IProductModel) => p[key] === value);
     }
 
     async loadAllAggregations() {
@@ -38,16 +67,16 @@ export class ProductsService {
         return res;
     }
 
-    async categories(flatten = false): Promise<IProductCategoryEs[]> {
+    async categories(flatten = false): Promise<Partial<IProductCategoryEs>[]> {
         const cached = await readFile(`__cache/all_categories.json`)
         if (!flatten) {
             return JSON.parse(cached.toString());
         }
 
         const data = JSON.parse(cached.toString());
-        const flattenData: IProductCategoryEs[] = [];
+        const flattenData: Partial<IProductCategoryEs>[] = [];
         // recursively flatten the data
-        const flattenCategories = (categories: IProductCategoryEs[]) => {
+        const flattenCategories = (categories: Partial<IProductCategoryEs>[]) => {
             categories.forEach((c) => {
                 flattenData.push(c);
                 if (c.children) {

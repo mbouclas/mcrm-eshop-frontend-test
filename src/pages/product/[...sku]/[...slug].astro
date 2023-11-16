@@ -14,6 +14,8 @@ import {config} from "@data/config";
 import Breadcrumbs from "@partials/breadcrumbs.astro";
 import Spinner from '@components/loading-spiner.svelte';
 import Schema from '@components/product-schema.svelte';
+import SimpleProductGridItem from '@components/product/simple-product-grid-item.svelte';
+import ProductGrid from '@partials/product-grid.astro';
 
 interface IProductPageProps {
     item: IProductModel;
@@ -54,11 +56,23 @@ function slimDownProduct(item) {
     }
 }
 
-const srcSet = cloudinarySrcSet(item.thumb.url || config.defaultNoImage);
+const srcSet = cloudinarySrcSet(item.thumb ? item.thumb.url : config.defaultNoImage);
 const breadCrumbs = [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
 const seo = {
     title: `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
     description: item.description,
+}
+
+if (Array.isArray(item.similar)) {
+    for (let i = 0; item.similar.length > i; i++) {
+        item.similar[i] = await (new ProductsService).findOne({slug: item.similar[i]['slug']});
+    }
+}
+
+if (Array.isArray(item.related)) {
+    for (let i = 0; item.related.length > i; i++) {
+        item.related[i] = await (new ProductsService).findOne({slug: item.related[i]['slug']});
+    }
 }
 
 ---
@@ -87,8 +101,8 @@ const seo = {
 
                             <source srcset={`${srcSet.copies[1].url} 1700w`}>
                             <img src={srcSet.original} class="h-full w-full object-cover object-center sm:rounded-lg transition duration-200 lg:hover:scale-110"
-                                 alt={item.thumb.alt || item.title}
-                                 title={item.thumb.title || item.title}
+                                 alt={item.thumb ? item.thumb.alt : item.title}
+                                 title={item.thumb ? item.thumb.title : item.title}
                             ></picture>
                         )}
                     </div>
@@ -183,6 +197,22 @@ const seo = {
                 </div>
             </div>
 
+            {Array.isArray(item.related) && item.related.length > 0 && (
+                    <div class="mt-12">
+                        <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Recommended items</h2>
+                        <ProductGrid products={item.related} />
+                    </div>
+            )}
+
+            {Array.isArray(item.similar) && item.similar.length > 0 && (
+                    <div class="mt-12">
+                        <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Similar items</h2>
+                    <ProductGrid products={item.similar} />
+                    </div>
+            )}
+
+
+            <div class="py-4"></div>
         </div>
     </main>
 
