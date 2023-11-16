@@ -30,6 +30,7 @@ const integrations = [
   integrations.push(partytown())
 }*/
 // https://astro.build/config
+console.log(env, process.env.SITE_BASE_URL)
 export default defineConfig({
   site: process.env.SITE_BASE_URL,
   vite: {
