@@ -198,14 +198,14 @@ if (Array.isArray(item.related)) {
             </div>
 
             {Array.isArray(item.related) && item.related.length > 0 && (
-                    <div class="mt-12">
+                    <div class="mt-12 px-4">
                         <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Recommended items</h2>
                         <ProductGrid products={item.related} />
                     </div>
             )}
 
             {Array.isArray(item.similar) && item.similar.length > 0 && (
-                    <div class="mt-12">
+                    <div class="mt-12 px-4">
                         <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Similar items</h2>
                     <ProductGrid products={item.similar} />
                     </div>

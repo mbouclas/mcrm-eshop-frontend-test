@@ -9,7 +9,7 @@
     "start": "astro dev --experimental-integrations",
     "build": "npm run dump:data && astro build --experimental-integrations",
     "build:local": "astro build --experimental-integrations",
-    "build:local:prod": "cross-env MODE=production astro build --experimental-integrations --mode production",
+    "build:local:prod": "cross-env NODE_ENV=production astro build --experimental-integrations --mode production",
     "preview": "astro preview",
     "astro": "astro"
   },

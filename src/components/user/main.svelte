@@ -32,7 +32,6 @@
     ];
 
     userStore.subscribe((state) => {
-        console.log(state)
         user = state;
     });
 
@@ -56,7 +55,7 @@
 
 
 {#if !user || !user.accessToken}
-    <div class="mx-auto max-w-7xl my-6">
+    <div class="mx-auto max-w-7xl my-6 px-4">
         <h1 class="text-2xl font-bold mb-8">Login</h1>
         <Login on:loginSuccess={onLoginSuccess} on:loginError={onLoginError} />
     </div>

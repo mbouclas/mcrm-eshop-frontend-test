@@ -155,7 +155,7 @@
         </div>
     </div>
         <div class="col-span-4 hidden lg:block">
-            <img class="object-cover object-center" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/authentication/illustration.svg" alt="illustration">
+            <img class="object-cover object-center" src="https://res.cloudinary.com/dqehxczmc/image/upload/v1700649016/assets/illustration_pnmtxh.svg" alt="illustration">
         </div>
     </div>
 </section>

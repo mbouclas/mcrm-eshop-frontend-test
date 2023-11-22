@@ -14,13 +14,14 @@ const homepageRegions = await editableRegionsService.getLayout("homepage");
 const hero = editableRegionsService.getRegionFromLayout(homepageRegions, "hero");
 const latestProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "latest-products");
 const promotionalProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "promotional-categories");
+const bestSelling = editableRegionsService.getRegionFromLayout(homepageRegions, "best-selling");
 ---
 
 <Layout title="E-shop">
     <Hero item={hero} />
     <PromotionalProducts region={promotionalProducts} />
     <WelcomeSection />
-    <BestsellingItems />
+    <BestsellingItems region={bestSelling} />
     <NeedHelp />
     <CategoryCards />
     <CustomPromo />

@@ -1,22 +1,40 @@
 ---
 import {ProductsService} from "@services/products.service";
+import {IEditableRegion} from "../models/editable-regions.model";
+import {cloudinaryRawSettings, optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
+
+interface IProps {
+    region: IEditableRegion;
+    }
+
+const {region} = Astro.props as IProps;
+const regionItems = region.items;
 
 const bestSellers = await (new ProductsService()).bestSellers();
+const bigImage = regionItems[0];
+// remove the first item from the array
+regionItems.shift();
 
 ---
 <section class="my-10 lg:pt-20">
   <div class="container px-4 mx-auto 2xl:px-20">
-    <h4 class="mb-10 text-3xl font-bold lg:text-4xl">Shop Bestselling</h4>
+    <h4 class="mb-10 text-3xl font-bold lg:text-4xl text-[#E1302F]">Exclusive TH Clothes Distributor</h4>
     <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
       <!-- START ITEM -->
       <div class="flex flex-col gap-4 lg:row-span-2 lg:col-span-2">
+        <a href={bigImage.url} title={bigImage.image.title || bigImage.title}>
         <img
           class="object-cover w-full h-full"
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,h_700,w_auto/site%20images/category%20pages/clothing/jumpers/clothing-jumpers"
-          alt=""
+          src={optimizeCloudinaryImage(bigImage.image.url, 700)}
+          alt={bigImage.image.alt || ''}
+          title={bigImage.image.title || ''}
+          width="700"
+          height="700"
+          loading="lazy"
         />
-        <a href="" class="flex items-center">
-          <span>Jumpers</span>
+        </a>
+        <a href={bigImage.url} class="flex items-center" title={bigImage.image.title || bigImage.title}>
+          <span>{bigImage.title}</span>
           <span class="ml-1"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -36,15 +54,23 @@ const bestSellers = await (new ProductsService()).bestSellers();
       </div>
 
       <!-- END ITEM -->
+      {regionItems.map(item => (
+
 
       <!-- START ITEM -->
       <div class="flex flex-col gap-4">
+        <a href={item.url} title={item.image.title || item.title}>
         <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/bestsellers/hp-bestsellers-tshirts"
-          alt=""
+          src={cloudinaryRawSettings(item.image.url, 'c_scale,dpr_auto,f_auto,w_auto:50:411')}
+          alt={item.image.alt || ''}
+          title={item.image.title || ''}
+          width="350"
+          height="350"
+          loading="lazy"
         />
-        <a href="" class="flex items-center">
-          <span>T-shirts</span>
+        </a>
+        <a href={item.url} title={item.image.title || item.title} class="flex items-center">
+          <span>{item.title}</span>
           <span class="ml-1"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -63,90 +89,7 @@ const bestSellers = await (new ProductsService()).bestSellers();
         </a>
       </div>
 
-      <!-- END ITEM -->
-
-      <!-- START ITEM -->
-      <div class="flex flex-col gap-4">
-        <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/bestsellers/hp-bestsellers-caps"
-          alt=""
-        />
-        <a href="" class="flex items-center">
-          <span>BaseBall Caps</span>
-          <span class="ml-1"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </span>
-        </a>
-      </div>
-
-      <!-- END ITEM -->
-
-      <!-- START ITEM -->
-      <div class="flex flex-col gap-4">
-        <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/bestsellers/hp-bestsellers-totes"
-          alt=""
-        />
-        <a href="" class="flex items-center">
-          <span>Tote Bags</span>
-          <span class="ml-1"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </span>
-        </a>
-      </div>
-
-      <!-- END ITEM -->
-
-      <!-- START ITEM -->
-      <div class="flex flex-col gap-4">
-        <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/bestsellers/hp-bestsellers-bottles"
-          alt=""
-        />
-        <a href="" class="flex items-center">
-          <span>Bottles</span>
-          <span class="ml-1"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </span>
-        </a>
-      </div>
-
+      ))}
       <!-- END ITEM -->
     </div>
   </div>
