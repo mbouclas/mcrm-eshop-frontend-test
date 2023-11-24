@@ -41,6 +41,9 @@ const items = regionItems.map(item => {
               <a href={`/products/${item.slug}`} title={`${item.title} Products`}>
               <img
                   src={optimizeCloudinaryImage(item.thumb.url, 320)}
+                  loading="lazy"
+                  width="320"
+                  height="320"
                   title={item.thumb.title || `${item.title} Products`} alt={item.thumb.alt || `${item.title} Products`}
               />
               </a>

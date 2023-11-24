@@ -94,7 +94,11 @@ const allMaterials = await propertiesService.getPropertyValues({slug: 'material'
 
     <div class="text-center">
         <h1 class="text-4xl font-bold tracking-tight text-gray-700 text-shadow shadow-gray-500/50">{category && category.title || 'All Products'}</h1>
-
+        {category.description && (
+            <p class="mt-4 max-w-3xl mx-auto text-base text-gray-500">
+                {category.description}
+            </p>
+        )}
         <p class="mx-auto mt-4 max-w-3xl text-base text-gray-500">
             <TotalResultCounter count={paginated.total} suffix="Products" client:idle />
         </p>

@@ -1,17 +1,23 @@
+---
+import {cloudinaryRawSettings} from "../helpers/cloudinary.helper";
+---
 <section class="pt-20 pb-10 my-10 bg-gray-200">
   <div class="container px-4 mx-auto 2xl:px-20">
     <div class="flex flex-col-reverse justify-center lg:flex-row">
       <img
         class="flex-grow object-cover h-64 lg:h-80 lg:-mb-20"
-        src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:800/site%20images/shared/free-design-services"
-        alt=""
+        src={cloudinaryRawSettings('https://res.cloudinary.com/dqehxczmc/image/upload/v1698230659/SLIDERS/need_help_jziahc.jpg', 'c_scale,dpr_auto,f_auto,w_auto:50:800')}
+        alt="Need Help With your Design?"
+        width="800"
+        height="800"
+        loading="lazy"
       />
       <div class="px-10 mb-4 lg:mb-0">
         <h4 class="mb-4 text-2xl font-bold lg:text-3xl">
-          Need Help With your Design?
+          Do you have questions about your logo format and colors?
         </h4>
         <p class="text-sm font-light">
-          Speak to a designer.Call us on +357 22 38 2000
+          Contact our designers on +357 22 38 2000
         </p>
       </div>
     </div>
