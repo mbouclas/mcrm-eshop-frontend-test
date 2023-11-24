@@ -17,6 +17,7 @@
     "@astrojs/partytown": "^2.0.2",
     "@astrojs/sitemap": "^3.0.3",
     "@astrojs/svelte": "^4.0.3",
+    "@astropub/md": "^0.3.0",
     "@uppy/audio": "^1.1.1",
     "@uppy/core": "^3.2.1",
     "@uppy/dashboard": "^3.0.1",

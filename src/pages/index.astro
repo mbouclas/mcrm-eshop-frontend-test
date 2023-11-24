@@ -4,7 +4,7 @@ import Hero from "@components/Hero.astro"
 import PromotionalProducts from "@components/PromotionalProducts.astro"
 import WelcomeSection from "@components/WelcomeSection.astro"
 import BestsellingItems from "@components/BestsellingItems.astro"
-import NeedHelp from "@components/NeedHelp.astro"
+import BottomArea from "@components/NeedHelp.astro"
 import CategoryCards from "@components/CategoryCards.astro"
 import CustomPromo from "@components/CustomPromo.astro"
 import {EditableRegionsBackendService} from "@services/editable-regions-backend.service";
@@ -15,6 +15,7 @@ const hero = editableRegionsService.getRegionFromLayout(homepageRegions, "hero")
 const latestProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "latest-products");
 const promotionalProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "promotional-categories");
 const bestSelling = editableRegionsService.getRegionFromLayout(homepageRegions, "best-selling");
+const bottomArea = editableRegionsService.getRegionFromLayout(homepageRegions, "bottom-area");
 ---
 
 <Layout title="E-shop">
@@ -22,9 +23,9 @@ const bestSelling = editableRegionsService.getRegionFromLayout(homepageRegions, 
     <PromotionalProducts region={promotionalProducts} />
     <WelcomeSection />
     <BestsellingItems region={bestSelling} />
-    <NeedHelp />
-    <CategoryCards />
-    <CustomPromo />
+    <BottomArea  />
+    <CategoryCards region={bottomArea} />
+    <CustomPromo region={bottomArea} />
 </Layout>
 
 <style>

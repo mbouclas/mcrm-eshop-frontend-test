@@ -1,27 +1,42 @@
+---
+import {IEditableRegion} from "@models/editable-regions.model";
+import {cloudinaryRawSettings} from "@helpers/cloudinary.helper";
+interface IProps {
+    region: IEditableRegion;
+    }
+const {region} = Astro.props as IProps;
+const regionItems = region.items;
+
+---
+
 <section class="my-10 lg:pt-40">
   <div class="container px-4 mx-auto 2xl:px-20">
     <div class="flex flex-col items-center w-full gap-6 lg:flex-row">
-      <div class="flex flex-col items-center gap-4">
-        <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:660/site%20images/homepage/featured/hp-featured-home-2"
-          loading="lazy"
-          width="330"
-          height="330"
-          alt="Home office Suppliers"
-        />
-        <h4 class="text-2xl font-bold lg:text-3xl">Home office Suppliers</h4>
-      </div>
-      <div class="flex flex-col items-center gap-4">
-        <img
-          src="https://res.cloudinary.com/promotique/image/upload/c_scale,dpr_auto,f_auto,w_auto:50:660/Site%20Images/Homepage/first-aid-kit-001"
-          alt="Health & WellBeing"
-          loading="lazy"
-          width="330"
-          height="330"
-          srcset=""
-        />
-        <h4 class="text-2xl font-bold lg:text-3xl">Health & WellBeing</h4>
-      </div>
+      {regionItems.images.map(item => (
+          <div class="flex flex-col items-center gap-4">
+            {item.cta.url && (
+                <a href={item.cta.url} title={item.cta.text}>
+                <img
+                    src={cloudinaryRawSettings(item.image.url, 'c_scale,dpr_auto,f_auto,w_auto:50:660')}
+                    loading="lazy"
+                    width="330"
+                    height="330"
+                    alt={item.image.alt || item.cta.text}
+                />
+                </a>
+            )}
+            {!item.cta.url && (
+                <img
+                    src={cloudinaryRawSettings(item.image.url, 'c_scale,dpr_auto,f_auto,w_auto:50:660')}
+                    loading="lazy"
+                    width="330"
+                    height="330"
+                    alt={item.image.alt || ''}
+                />
+            )}
+          </div>
+      ))}
+
     </div>
   </div>
 </section>
