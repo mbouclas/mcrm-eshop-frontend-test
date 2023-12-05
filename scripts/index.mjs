@@ -10,6 +10,7 @@ import {ProductsService} from "./products.service.mjs";
 import {PropertiesService} from "./properties.service.mjs";
 import {MenuService} from "./menu.service.mjs";
 import {EditableRegionsService} from "./editable-regions.service.mjs";
+import {PagesService} from "./pages.service.mjs";
 const __filename = fileURLToPath(import.meta.url)
 const { API_BASE_URL, ASTRO_KEY } = loadEnv("production", process.cwd(), "")
 const __dirname = dirname(__filename)
@@ -32,6 +33,7 @@ if (!fs.existsSync(cacheFolderLocation)) {
 // await saveHome();
 
 // await saveEditableRegions();
+// await saveAllPages();
 // process.exit();
 await saveHome();
 await saveAllProducts();
@@ -42,6 +44,7 @@ await saveMenus();
 await saveContent();
 await saveContentCategories();
 await saveEditableRegions();
+await saveAllPages();
 
 async function saveAllProducts() {
     const s = new ProductsService();
@@ -68,6 +71,20 @@ async function saveAllProducts() {
     }
 
     console.log(`* Saving All products complete`)
+}
+
+async function saveAllPages() {
+    const s = new PagesService();
+    const items = await s.getPages();
+    try {
+        await writeFile(
+            join(cacheFolderLocation, `all_pages.json`),
+            JSON.stringify(items)
+        )
+        console.log(`* Saving All pages complete`)
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 async function saveAllProperties() {

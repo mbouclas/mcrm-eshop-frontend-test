@@ -1,35 +1,57 @@
 ---
-import { getCollection } from "astro:content"
-import Layout from "@layouts/Layout.astro"
+import {PageService} from "@services/page.service";
+import {IPageModel} from "../../models/page.model";
+import Layout from "../../layouts/Layout.astro";
+
+interface IPageProps {
+    item: IPageModel;
+}
 
 export async function getStaticPaths() {
-    const entries = await getCollection("page");
+    const allPages = await new PageService().load();
 
-    return entries.map((entry) => {
-        return {
-            params: { slug: entry.slug },
-            props: { entry },
+    const all = [];
+
+    for (let i = 0; allPages.length > i; i++) {
+        if (!allPages[i].slug) {
+            continue;
         }
-    })
+        all.push({
+            params: {
+                slug: allPages[i].slug,
+            },
+            props: {
+                item: allPages[i],
+            }
+        })
+    }
+
+    return all;
 }
 
-const { entry } = Astro.props
-const { Content } = await entry.render();
-
+const {item} = Astro.props as IPageProps;
+const breadCrumbs = [...[{title: 'Articles', slug: 'all'}], ...item.pageCategory.reverse()];
 const seo = {
-    title: entry.data.title,
-
+    title: `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
+    description: item.description,
 }
-
 ---
 <Layout seo={seo}>
     <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-            <div class="max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
-            <div class="prose leading:loose prose-headings:underline prose-a:text-accent max-w-none">
-                <Content />
+        <div class={`gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid ${item.thumb && item.thumb.url ? 'lg:grid-cols-2' : ''} lg:py-16 lg:px-6`}>
+            <div class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+                <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                    {item.title}
+                </h1>
+                <div class="mb-4" set:html={item.description_long}>
+
+                </div>
             </div>
-    </div>
+            {item.thumb && item.thumb.url && (
+            <div class="grid grid-cols-2 gap-4 mt-8">
+                <img class="w-full rounded-lg" src={item.thumb.url} alt={item.thumb.alt ? item.thumb.alt : item.title} loading="lazy" width="302" height="302">
             </div>
+            )}
+        </div>
     </section>
 </Layout>
