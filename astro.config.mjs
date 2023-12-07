@@ -5,7 +5,7 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
 import partytown from "@astrojs/partytown";
 import mdx from "@astrojs/mdx"
-import markdownIntegration from '@astropub/md'
+// import markdownIntegration from '@astropub/md'
 
 import svelte from "@astrojs/svelte";
 import { VitePWA } from 'vite-plugin-pwa'
@@ -24,7 +24,7 @@ const integrations = [
     tailwind(),
   svelte(),
     mdx(),
-  markdownIntegration(),
+  // markdownIntegration(),
     sitemap(),
   critters({critters: env === 'production'}),
     ];
@@ -42,6 +42,9 @@ export default defineConfig({
     ssr: {
       external: ["svgo"]
     }
+  },
+  experimental: {
+    contentCollectionCache: true,
   },
   integrations
 });

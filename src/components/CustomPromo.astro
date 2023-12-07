@@ -1,6 +1,6 @@
 ---
 import {IEditableRegion} from "@models/editable-regions.model";
-import { markdown } from '@astropub/md'
+import {marked} from 'marked';
 interface IProps {
   region: IEditableRegion;
 }
@@ -12,8 +12,7 @@ const regionItems = region.items;
   <div class="px-4 mx-auto contaner 2xl:px-20">
     <div class="grid grid-cols-2 gap-x-24">
       {regionItems.text.map(item => (
-      <div class="prose leading:loose  prose-a:text-accent max-w-none">
-        {markdown(item.paragraph)}
+      <div class="prose leading:loose  prose-a:text-accent max-w-none" set:html={marked.parse(item.paragraph)}>
       </div>
       ))}
     </div>
