@@ -1,6 +1,6 @@
 import {addToCartAction, cart, removeFromCart} from "@stores/cart.store";
 import type { ICart, ICartItem } from '@stores/cart.store';
-import {rearg} from "lodash";
+
 
 export class CartHandlers {
    constructor(public Cart: ICart) {

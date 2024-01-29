@@ -8,9 +8,7 @@ import {appConfig} from "@stores/http.store";
 import Spinner from "@components/loading-spiner.svelte";
 const {item, allColors} = Astro.props;
 
-
 const colors = getProductColors(allColors, item.variants.filter(variant => variant.color || variant.image));
-
 ---
 <div class=" relative flex flex-col overflow-hidden rounded-lg hover:shadow-2xl border border-black/20 border-opacity-50 bg-white" id={`item-${item.slug}`}>
     <div class=" absolute bg-black/70 h-full w-full z-50 loading-mask hidden">

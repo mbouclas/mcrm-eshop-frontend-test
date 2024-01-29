@@ -25,17 +25,24 @@ if (process.env.USE_CACHE && process.env.USE_CACHE === "true") {
 if (!fs.existsSync(cacheFolderLocation)) {
     fs.mkdirSync(cacheFolderLocation)
 }
+const timeStart = Date.now();
+Promise.all([
+    saveHome(),
+    saveAllProducts(),
+    saveAllProperties(),
+    saveProductCategories(),
+    saveProductPerCategories(),
+    saveMenus(),
+    saveContent(),
+    saveContentCategories(),
+    saveEditableRegions(),
+    saveAllPages()
+]).then(() => {
+    console.log(`* All done in ${Date.now() - timeStart}ms`);
+    process.exit();
+});
 
-// await saveAllProperties();
-// await saveAllProducts();
-// await saveProductCategories();
-// await saveProductPerCategories();
-// await saveHome();
-
-// await saveEditableRegions();
-// await saveAllPages();
-// process.exit();
-await saveHome();
+/*await saveHome();
 await saveAllProducts();
 await saveAllProperties();
 await saveProductCategories();
@@ -45,7 +52,10 @@ await saveContent();
 await saveContentCategories();
 await saveEditableRegions();
 await saveAllPages();
+console.log(`* All done in ${Date.now() - timeStart}ms`);
+process.exit();
 
+ */
 async function saveAllProducts() {
     const s = new ProductsService();
     // const items = await s.getProducts(100);
