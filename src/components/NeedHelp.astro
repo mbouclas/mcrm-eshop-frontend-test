@@ -1,6 +1,7 @@
 ---
 import {cloudinaryRawSettings} from "@helpers/cloudinary.helper";
-
+import {optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
+const img = 'https://res.cloudinary.com/dqehxczmc/image/upload/v1698230659/SLIDERS/need_help_jziahc.jpg'
 
 ---
 <section class="pt-20 pb-10 my-10 bg-gray-200">
@@ -8,7 +9,9 @@ import {cloudinaryRawSettings} from "@helpers/cloudinary.helper";
     <div class="flex flex-col-reverse justify-center lg:flex-row">
       <img
         class="flex-grow object-cover h-64 lg:h-80 lg:-mb-20"
-        src={cloudinaryRawSettings('https://res.cloudinary.com/dqehxczmc/image/upload/v1698230659/SLIDERS/need_help_jziahc.jpg', 'c_scale,dpr_auto,f_auto,w_auto:50:800')}
+        src={cloudinaryRawSettings(img, 'c_scale,dpr_auto,f_auto,w_auto:50:800')}
+        srcset={`${optimizeCloudinaryImage(img, 400)} 400w, ${optimizeCloudinaryImage(img, 700)} 700w, ${optimizeCloudinaryImage(img, 968)} 968w`}
+        sizes="(min-width: 1540px) 637px, (min-width: 1280px) 574px, (min-width: 1040px) 479px, (min-width: 780px) 736px, (min-width: 680px) 608px, calc(94.44vw - 15px)"
         alt="Need Help With your Design?"
         width="800"
         height="800"

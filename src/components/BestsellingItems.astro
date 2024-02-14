@@ -2,6 +2,7 @@
 import {ProductsService} from "@services/products.service";
 import {IEditableRegion} from "@models/editable-regions.model";
 import {cloudinaryRawSettings, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
+import {cloudinarySrcSet} from "../helpers/cloudinary.helper";
 
 interface IProps {
     region: IEditableRegion;
@@ -23,9 +24,13 @@ regionItems.shift();
       <!-- START ITEM -->
       <div class="flex flex-col gap-4 lg:row-span-2 lg:col-span-2">
         <a href={bigImage.url} title={bigImage.image.title || bigImage.title}>
+
+
         <img
           class="object-cover w-full h-full"
           src={optimizeCloudinaryImage(bigImage.image.url, 700)}
+          srcset={`${optimizeCloudinaryImage(bigImage.image.url, 400)} 400w, ${optimizeCloudinaryImage(bigImage.image.url, 700)} 700w, ${optimizeCloudinaryImage(bigImage.image.url, 968)} 968w`}
+          sizes="(min-width: 1540px) 676px, (min-width: 1280px) 612px, (min-width: 1040px) 484px, (min-width: 780px) 356px, (min-width: 680px) 292px, calc(47.22vw - 20px)"
           alt={bigImage.image.alt || ''}
           title={bigImage.image.title || ''}
           width="700"
@@ -62,6 +67,8 @@ regionItems.shift();
         <a href={item.url} title={item.image.title || item.title}>
         <img
           src={cloudinaryRawSettings(item.image.url, 'c_scale,dpr_auto,f_auto,w_auto:50:411')}
+          srcset={`${optimizeCloudinaryImage(item.image.url, 400)} 400w, ${optimizeCloudinaryImage(item.image.url, 700)} 700w, ${optimizeCloudinaryImage(item.image.url, 968)} 968w`}
+          sizes="(min-width: 1540px) 326px, (min-width: 1280px) 294px, (min-width: 1040px) 230px, (min-width: 780px) 350px, (min-width: 680px) 292px, calc(47.22vw - 20px)"
           alt={item.image.alt || ''}
           title={item.image.title || ''}
           width="350"
