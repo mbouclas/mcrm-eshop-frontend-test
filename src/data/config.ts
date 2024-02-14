@@ -3,7 +3,7 @@ export const config = {
     seo: {
         defaults: {
             title: 'RPS Promotions | Custom prints and embroidery',
-            description: '',
+            description: 'Every Company Needs Promo Products!  RPS Offers Logo-Branded Merch for All Occasions. Gifts, Events, Marketing. Shop Now!',
             canonical: import.meta.env.BASE_URL,
         }
     },

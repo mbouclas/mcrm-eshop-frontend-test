@@ -4,6 +4,7 @@
     import {logoMobileUrl} from "@data/defaults";
     import MobileCart from "@components/mobile-cart.svelte";
     import {cart} from "@stores/cart.store";
+    import {config} from "@data/config.ts";
     let shown = true,
     cartCount = 0;
     const modalId = 'mobileMenu',
@@ -50,7 +51,8 @@
 
 <Sidebar id="mobileMenu">
     <div slot="title">
-        <img alt="Home"
+        <img alt={config.seo.defaults.title}
+             title={config.seo.defaults.title}
              src={logoMobileUrl}
              width="95"
              height="67"

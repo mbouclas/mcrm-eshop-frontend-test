@@ -6,10 +6,10 @@ import MobileMenu from '@components/mobile-menu.svelte'
 import UserIcon from '@components/header-user-icon.svelte'
 import DesktopMenu from '@components/desktop-menu.svelte'
 import DesktopMenuItem from '@components/desktop-menu-item.svelte'
-import MobileMenuItem from '@components/mobile-menu-item.svelte'
 import AstroMobileMenuItem from '@components/mobile-menu-item.astro';
 import {MenusBackendService} from "@services/menus-backend.service";
 import {logoMobileUrl, logoUrl} from "../data/defaults";
+import {config} from "@data/config";
 const menuService = new MenusBackendService()
 const menu = await menuService.getMenu('top-menu')
 
@@ -158,7 +158,8 @@ const menu = await menuService.getMenu('top-menu')
   <div class="flex items-center  justify-center mx-auto   h-full w-full ">
     <a class="inline-flex focus:outline-none" href="/" title="home">
       <span >
-        <img alt="Home"
+        <img alt={config.seo.defaults.title}
+             title={config.seo.defaults.title}
              src={logoMobileUrl}
              width="95"
              height="67"
