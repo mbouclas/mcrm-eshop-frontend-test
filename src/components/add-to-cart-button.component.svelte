@@ -13,6 +13,7 @@ isBagValid.subscribe(state => {
     if (!valid) {return;}
 
     selection = productStore.get();
+
 });
 async function handleClick() {
     const selection = productStore.get();

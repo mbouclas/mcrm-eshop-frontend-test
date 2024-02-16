@@ -47,6 +47,7 @@ const allMaterials = await propertiesService.getPropertyValues({slug: 'material'
 const id = Math.random();
 
 const colors = getProductColors(allColors, item.variants.filter(variant => variant.color || variant.image));
+
 const categories = await (new ProductsService).categories(true);
 function slimDownProduct(item) {
     return {
@@ -199,14 +200,14 @@ if (Array.isArray(item.related)) {
             {Array.isArray(item.related) && item.related.length > 0 && (
                     <div class="mt-12 px-4">
                         <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Recommended items</h2>
-                        <ProductGrid products={item.related} />
+                        <ProductGrid products={item.related} withColors={false} />
                     </div>
             )}
 
             {Array.isArray(item.similar) && item.similar.length > 0 && (
                     <div class="mt-12 px-4">
                         <h2 class="text-xl font-semibold tracking-tight text-gray-900 mb-4">Similar items</h2>
-                    <ProductGrid products={item.similar} />
+                    <ProductGrid products={item.similar} withColors={false} />
                     </div>
             )}
 

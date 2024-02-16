@@ -12,6 +12,7 @@
     export let mode: 'image'|'picture' = 'image',
     withLabels = false;
     export let size: 'small'|'normal'|'large' = 'small';
+    export let withColors = true;
     let outerRing = 6,
         innerRing = 3,
     selectedColor = colors[0];
@@ -61,7 +62,10 @@
     })
 
     onMount(() => {
-        setColorAction(selectedColor);
+        if (withColors) {
+            setColorAction(selectedColor);
+        }
+
         container = document.querySelector(targetImage);
 
         if (!container) {
@@ -149,6 +153,7 @@
     <h3 class="text-sm text-gray-600"><span class="font-semibold">Color:</span> {selectedColor.name}</h3>
     </div>
 {/if}
+{#if withColors}
 <div class="w-full grid grid-cols-5 px-3 gap-2 py-2">
     {#each colors as color}
         <a href="#" title={color.name}
@@ -164,3 +169,4 @@
         </a>
     {/each}
 </div>
+    {/if}

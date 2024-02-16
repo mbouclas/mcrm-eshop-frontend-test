@@ -6,7 +6,7 @@ import {optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
 import ColorSelector from '@components/product/color-selector.svelte';
 import {appConfig} from "@stores/http.store";
 import Spinner from "@components/loading-spiner.svelte";
-const {item, allColors} = Astro.props;
+const {item, allColors, withColors = true} = Astro.props;
 
 const colors = getProductColors(allColors, item.variants.filter(variant => variant.color || variant.image));
 ---
@@ -34,7 +34,7 @@ const colors = getProductColors(allColors, item.variants.filter(variant => varia
                 {item.title}
             </a>
         </h3>
-            <ColorSelector colors={colors} client:idle targetImage={`#item-${item.slug}`} />
+            <ColorSelector colors={colors} client:idle targetImage={`#item-${item.slug}`} {withColors} />
         <div class="flex flex-1 flex-col justify-end">
             {colors.length > 0 && (
             <p class="text-sm italic text-gray-500">{colors.length} {colors.length === 1 ? 'color' : 'colors'}</p>
