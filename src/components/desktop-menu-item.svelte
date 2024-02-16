@@ -37,7 +37,7 @@
             <div class="relative bg-white">
                 <div class="mx-auto max-w-7xl px-8">
                     <div class="grid grid-cols-3 gap-x-8 gap-y-10 py-16">
-                        {#if metaData}
+                        {#if metaData && metaData.cta.image}
                                 <div class="group relative text-base sm:text-sm ">
                                 <div class=" overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                                     <img src={metaData.cta.image} width="350" height="350"
