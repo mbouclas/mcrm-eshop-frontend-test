@@ -85,9 +85,12 @@ const propertiesService = new PropertiesService();
 const allColors = await propertiesService.getPropertyValues({slug: 'color'});
 
 const allMaterials = await propertiesService.getPropertyValues({slug: 'material'});
-
+const seo = {
+    title: category.seo && category.seo.title || category.title,
+    description: category.seo && category.seo.description || category.description,
+}
 ---
-<Layout title="Products">
+<Layout {seo}>
 <Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...category?.parents]}
              current={category.slug !== 'all' ? category.title : ''}
              slug={`products`} />

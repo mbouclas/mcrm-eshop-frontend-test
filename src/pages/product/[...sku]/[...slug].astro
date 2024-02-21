@@ -58,9 +58,10 @@ function slimDownProduct(item) {
 
 const srcSet = cloudinarySrcSet(item.thumb ? item.thumb.url : config.defaultNoImage);
 const breadCrumbs = [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
+
 const seo = {
-    title: `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
-    description: item.description,
+    title: item.seo && item.seo.title || `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
+    description: item.seo && item.seo.description || item.description,
 }
 
 if (Array.isArray(item.similar)) {
