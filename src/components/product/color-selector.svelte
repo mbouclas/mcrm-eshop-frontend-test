@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {IProductColorForSelector} from "@models/products.model";
-    import {cloudinarySrcSet, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
+    import {cloudinaryRawSettings, cloudinarySrcSet, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {createEventDispatcher, onMount} from 'svelte';
     import {productStore, setColorAction} from "@stores/product.store";
     import {appliedFiltersStore} from "@stores/search.store";
@@ -161,7 +161,7 @@
             <div class={`h-${outerRing} w-${outerRing} border border-[${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}] flex rounded-full items-center justify-center`}
                  style={`border-color:${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}`}>
                 {#if color.image}
-                    <div class={`h-${innerRing} w-${innerRing} rounded-full`} style={`background:url('${color.image}')`}></div>
+                   <img src={cloudinaryRawSettings(color.image, 'w_30,h_30,c_scale,dpr_auto,f_auto')} alt={color.name} width="30" height="30" class={` rounded-full`} />
                 {:else}
                     <div class={`h-${innerRing} w-${innerRing} rounded-full`} style={`background-color:${color.color}`}></div>
                 {/if}

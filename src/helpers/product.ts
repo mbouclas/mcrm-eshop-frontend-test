@@ -7,6 +7,7 @@ export function getProductColors(propertyValues: IPropertyValue[], variants: IVa
     const colors: IProductColorForSelector[] = [];
     variants.forEach(variant => {
         const found = propertyValues.find(v => v.code === variant.color);
+
         // eliminate duplicates and add only colors that are in variants
         if (found && !colors.find(c => c.code === found.code)) {
             colors.push({
