@@ -126,6 +126,19 @@
         setColorAction(color);
         selectedColor = color;
 
+        const clickedEl = this.querySelector(`[data-color="${color.slug}"]`);
+
+        this.parentElement.querySelectorAll('.color-option').forEach(el => {
+            el.classList.remove('ring-2', 'ring-black', 'ring-offset-2');
+        });
+
+        if (clickedEl) {
+            clickedEl.classList.add('ring-2', 'ring-black', 'ring-offset-2');
+        }
+
+
+
+
         if (mode === 'image') {
             target['src'] = optimizeCloudinaryImage(color.variant.image);
             return;
@@ -157,8 +170,9 @@
 <div class="w-full grid grid-cols-5 px-3 gap-2 py-2">
     {#each colors as color}
         <a href="#" title={color.name}
-            on:click|preventDefault={selectVariant.bind(this, color)}>
-            <div class={`h-${outerRing} w-${outerRing} border border-[${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}] flex rounded-full items-center justify-center`}
+           on:click|preventDefault={selectVariant.bind(this, color)}>
+            <div data-color={color.slug}
+                    class={`color-option h-${outerRing} w-${outerRing} border border-[${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}] flex rounded-full items-center justify-center`}
                  style={`border-color:${['#ffffff', '#faeee0'].indexOf(color.color) !==  -1 ? '#000' : color.color}`}>
                 {#if color.image}
                    <img src={cloudinaryRawSettings(color.image, 'w_30,h_30,c_scale,dpr_auto,f_auto')} alt={color.name} width="30" height="30" class={` rounded-full`} />
