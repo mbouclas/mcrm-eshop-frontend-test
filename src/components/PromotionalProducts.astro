@@ -8,7 +8,9 @@ interface IProps {
     }
 
 const {region} = Astro.props as IProps;
-
+if (typeof region.items === 'string') {
+    region.items = JSON.parse(region.items);
+}
 const regionItems = region.items.map(i => i.item);
 const categories = await new ProductsService().categories(true);
 const defaultNoImage = 'https://res.cloudinary.com/promotique/images/c_scale,dpr_auto,f_auto,w_auto:50:411/site%20images/homepage/hp-tile-clothing/Clothing';
