@@ -34,6 +34,9 @@ const integrations = [
 // https://astro.build/config
 console.log(env, process.env.SITE_BASE_URL)
 export default defineConfig({
+  image: {
+    domains: ['res.cloudinary.com']
+  },
   site: process.env.SITE_BASE_URL,
   vite: {
     plugins: [

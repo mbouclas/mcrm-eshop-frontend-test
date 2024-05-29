@@ -55,7 +55,7 @@
                             <div class="grid max-w-screen-xl space-y-2 px-4 py-5 mx-auto text-gray-900 dark:text-white xl:grid-cols-3 lg:grid-cols-2 md:px-6">
                                 {#each children as item}
                                 <div>
-                                    <a href={item.link || item.permalink} class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <a href={item.link ? item.link.replace('/category', '/products') : item.permalink.replace('/category', '/products')} class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                                         <div class="font-semibold">{item.title}</div>
                                         <span class="text-sm text-gray-500 dark:text-gray-400">{item.description || ''}</span>
                                     </a>
