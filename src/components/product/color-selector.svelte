@@ -98,11 +98,16 @@
         if (!container && attempt < 3) {
             // retry after 100ms
             setTimeout(() => {
+                container = document.querySelector(targetImage);
+                target = container.querySelector('.product-image');
+                mask = container.querySelector('.loading-mask');
+
                 selectVariant(color, attempt + 1);
             }, 100);
 
             return;
         }
+
 
         if (!target) {
             return;
@@ -112,6 +117,8 @@
         if (!target && attempt < 3) {
             // retry after 100ms
             setTimeout(() => {
+                target = container.querySelector('.product-image');
+                mask = container.querySelector('.loading-mask');
                 selectVariant(color, attempt + 1);
             }, 100);
 
@@ -126,9 +133,9 @@
         setColorAction(color);
         selectedColor = color;
 
-        const clickedEl = this.querySelector(`[data-color="${color.slug}"]`);
+        const clickedEl = container.querySelector(`[data-color="${color.slug}"]`);
 
-        this.parentElement.querySelectorAll('.color-option').forEach(el => {
+        container.parentElement.querySelectorAll('.color-option').forEach(el => {
             el.classList.remove('ring-2', 'ring-black', 'ring-offset-2');
         });
 
