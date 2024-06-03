@@ -69,7 +69,7 @@ const extrasMenu = {
             <div class="w-full lg:w-1/2">
               <h4 class="mb-4 font-bold">Let us Help</h4>
               <div class="  grid grid-cols-2 gap-2 text-sm justify-start space-y-2.5">
-                {extrasMenu.menuItem.map(item => (
+                {menu.menuItem.map(item => (
                 <p>
                   <a href={item.link || item.permalink} class="hover:text-primary">{item.title}</a>
                 </p>
@@ -94,11 +94,7 @@ const extrasMenu = {
             <li>
               <a href="">+357 22 38 2000</a>
             </li>
-            {menu.menuItem.map(item => (
-            <li>
-              <a href={item.link || item.permalink} title={item.title}>{item.title}</a>
-            </li>
-            ))}
+
           </ul>
           <p class="text-gray-500 text-[12px] font-bold mt-2">
             RPS Promotions PLC {new Date().getFullYear()}<br/>

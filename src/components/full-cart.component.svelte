@@ -100,7 +100,8 @@
                                 {/if}
 
                                 <p class="mt-1 text-sm font-medium text-gray-900">
-                                    {#if !item.conditions}
+
+                                    {#if !item.conditions || Array.isArray(item.conditions) && item.conditions.length === 0}
                                     {moneyFormat(item.price)}
                                     {:else}
                                         <span class="line-through text-gray-400">
