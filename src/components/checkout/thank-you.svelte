@@ -56,7 +56,7 @@
             <td class="hidden py-6 pr-8 sm:table-cell">{item.quantity}</td>
             <td class=" py-6 pr-8 sm:table-cell">{moneyFormat(item.price * item.quantity)}</td>
             <td class="whitespace-nowrap py-6 text-right font-medium">
-                <a href={`/product/${item.sku}/${item.slug}`} class="text-indigo-600">View<span class="hidden lg:inline"> Product</span><span class="sr-only">, Men's 3D Glasses Artwork Tee</span></a>
+                <a href={`/product/${item.sku}/${item.slug}`} class="text-indigo-600">View <span class="hidden lg:inline"> Product</span><span class="sr-only">, Men's 3D Glasses Artwork Tee</span></a>
             </td>
         </tr>
             {/each}

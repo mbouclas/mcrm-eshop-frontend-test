@@ -104,7 +104,7 @@
 
                 <div class="flex flex-1 items-end justify-between pt-2 bg-gray-100 p-2">
                     <p class="mt-1 text-sm  text-gray-900">
-                        {#if !item.conditions}
+                        {#if !item.conditions || Array.isArray(item.conditions) && item.conditions.length === 0}
                             {moneyFormat(item.price)}
                         {:else}
                                         <span class="line-through text-gray-400">

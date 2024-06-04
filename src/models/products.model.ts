@@ -111,6 +111,7 @@ export interface IProductColorForSelector {
     image?: string
     variant: IProductColorForSelectorVariant;
     code: string;
+    price: number;
     name: string;
     slug: string;
 }

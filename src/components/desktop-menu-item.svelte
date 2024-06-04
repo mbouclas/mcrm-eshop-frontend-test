@@ -42,6 +42,7 @@
                                 <div class=" overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                                     <img src={metaData.cta.image} width="350" height="350"
                                          alt={metaData.cta.alt} title={metaData.cta.title}
+                                         loading="lazy" decoding="async"
                                          class=" object-fill object-center">
                                 </div>
                                 <a href={metaData.cta.url} class="mt-6 block font-medium text-gray-900">

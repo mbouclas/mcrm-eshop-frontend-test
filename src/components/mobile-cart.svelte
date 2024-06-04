@@ -36,7 +36,7 @@
                                     <a href={`/product/${item.sku}/${item.slug}`}>{item.title}</a>
                                 </h3>
                                 <p class="ml-4">
-                                    {#if !item.conditions}
+                                    {#if !item.conditions || Array.isArray(item.conditions) && item.conditions.length === 0}
                                         {moneyFormat(item.price)}
                                     {:else}
                                         <span class="line-through text-gray-400">

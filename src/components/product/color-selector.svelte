@@ -6,6 +6,7 @@
     import {appliedFiltersStore} from "@stores/search.store";
     import {appConfig} from "@stores/http.store";
     import {scrollToEl} from "@helpers/general";
+    import {moneyFormat} from "@helpers/money-format.ts";
     const dispatch = createEventDispatcher();
 
     export let colors: IProductColorForSelector[] = [];
@@ -95,6 +96,10 @@
 
 
     function selectVariant(color: IProductColorForSelector, attempt = 1) {
+        if (mode === 'picture') {
+            document.querySelector('.price').innerHTML = moneyFormat(color.price);
+        }
+
         if (!container && attempt < 3) {
             // retry after 100ms
             setTimeout(() => {
@@ -139,6 +144,7 @@
             el.classList.remove('ring-2', 'ring-black', 'ring-offset-2');
         });
 
+
         if (clickedEl) {
             clickedEl.classList.add('ring-2', 'ring-black', 'ring-offset-2');
         }
@@ -152,6 +158,11 @@
         }
 
         //srcset
+        if (!color.variant.image) {
+            mask.classList.add('hidden');
+            return
+        }
+
         const srcSet = cloudinarySrcSet(color.variant.image);
         target.querySelector('img').src = srcSet.original;
         const sources = target.querySelectorAll('source');

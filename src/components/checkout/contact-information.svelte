@@ -257,7 +257,7 @@
                 </div>
                 <label for="terms" class="text-sm text-gray-500">I have read the terms and conditions and agree to the sale of my personal information to the highest bidder.</label>
             </div>
-            <Button color="black" type="submit">Continue</Button>
+            <Button color="black" type="submit">Continue as guest</Button>
 
         </form>
 

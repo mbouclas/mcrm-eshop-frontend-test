@@ -20,12 +20,14 @@ const bottomArea = editableRegionsService.getRegionFromLayout(homepageRegions, "
 
 <Layout title="E-shop">
     <Hero item={hero} />
+    <main class="content">
     <PromotionalProducts region={promotionalProducts} />
     <WelcomeSection />
     <BestsellingItems region={bestSelling} />
     <BottomArea  />
     <CategoryCards region={bottomArea} />
     <CustomPromo region={bottomArea} />
+    </main>
 </Layout>
 
 <style>
