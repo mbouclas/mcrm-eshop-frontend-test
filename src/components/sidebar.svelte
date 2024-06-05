@@ -12,6 +12,10 @@
             return;
         }
 
+        if (typeof document === 'undefined') {
+            return;
+        }
+
         shown = state.items[id];
 
         if (shown) {

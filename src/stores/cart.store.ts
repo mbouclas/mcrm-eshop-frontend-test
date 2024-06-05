@@ -84,6 +84,13 @@ export interface ICartItem {
     uuid: string;
 }
 
+export interface ICartEvent {
+    action: 'add' | 'remove' | 'clear';
+    product: IAddToCartDto;
+    quantity: number;
+    silent?: boolean;
+}
+
 const cachedCart = (typeof localStorage !== 'undefined') ? localStorage.getItem('cart') : null;
 
 export const cart = atom<ICart>({
@@ -92,6 +99,8 @@ export const cart = atom<ICart>({
     qty: 0,
     items: [],
 });
+
+export const cartEventsStore = atom<Partial<ICartEvent>>({});
 
 onMount(cart, () => {
     task(async () => {
@@ -119,9 +128,18 @@ cart.subscribe(value => {
 export const addToCartAction = async (item: IAddToCartDto, overwriteQuantity = false) => {
     const res = await cartService.addToCart(item, overwriteQuantity);
     res.qty = res.items.length;
+    if (!item.metaData) {
+        item.metaData = {};
+    }
 
+    item.metaData['cartItem'] = res.items.find((x: ICartItem) => x.variantId === item.variantId);
     cart.set(res);
     setAlertAction({type: 'success', message: `Item added to cart`, position: 'top', timeout: 3000});
+    sendCartEventAction({
+        action: 'add',
+        product: item,
+        quantity: item.quantity
+    });
 }
 
 export const updateCartAction = (newCart: ICart) => {
@@ -178,4 +196,9 @@ export const clearCart = async () => {
 
 export function getCart() {
     return cart.get();
+}
+
+
+export function sendCartEventAction(event: ICartEvent) {
+    cartEventsStore.set(event);
 }

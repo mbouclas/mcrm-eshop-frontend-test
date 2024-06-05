@@ -3,7 +3,7 @@ import {PropertiesService} from "@services/properties.service";
 import {getProductColors} from "@helpers/product";
 import Layout from "@layouts/Layout.astro";
 import {ProductsService} from "@services/products.service";
-import {IProductModel} from "@models/products.model";
+import type {IProductModel} from "@models/products.model";
 import {moneyFormat} from "@helpers/money-format";
 import AddToCartButton from '@components/add-to-cart-button.component.svelte';
 import ColorSelector from "@components/product/color-selector.svelte";
@@ -15,6 +15,7 @@ import Breadcrumbs from "@partials/breadcrumbs.astro";
 import Spinner from '@components/loading-spiner.svelte';
 import Schema from '@components/product-schema.svelte';
 import ProductGrid from '@partials/product-grid.astro';
+import OnAddToCart from '@components/product/on-product-added.svelte';
 
 interface IProductPageProps {
     item: IProductModel;
@@ -78,6 +79,8 @@ if (Array.isArray(item.related)) {
 
 ---
 <Layout seo={seo}>
+    <OnAddToCart client:idle />
+
     <Breadcrumbs items={breadCrumbs}
                  current={item.title}
                  slug={`products`} />

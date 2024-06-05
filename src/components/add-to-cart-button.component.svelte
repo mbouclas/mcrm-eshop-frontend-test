@@ -7,7 +7,6 @@ export let item: any;
 export let quantity = 1;
 let valid = false,
     selection;
-
 isBagValid.subscribe(state => {
     valid = state;
     if (!valid) {return;}
@@ -17,7 +16,9 @@ isBagValid.subscribe(state => {
 });
 async function handleClick() {
     const selection = productStore.get();
-    const metaData = {};
+    const metaData = {
+        title: item.title,
+    };
     Object.keys(selection).filter(key => key !== 'quantity')
         .forEach(key => metaData[key] = selection[key]);
 

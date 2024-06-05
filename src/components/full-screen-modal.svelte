@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {fly, fade} from "svelte/transition";
     import {modalStore, setModalShownAction} from "@stores/search.store";
 
 
