@@ -6,9 +6,10 @@
     const dispatch = createEventDispatcher();
     export let contact = {};
     function handleClick() {
-        dispatch('done', {
+        window.location.href = '/register';
+/*        dispatch('done', {
             decision: 'register',
-        });
+        });*/
     }
 
     async function handleNope() {
@@ -28,5 +29,5 @@
         You have used our service in the past. Why don't you register with us to enjoy a better experience?
     </p>
 </div>
-<Button type="button" color="cta" onClickHandler={handleClick}>Register</Button>
+<Button type="button" color="cta" onClickHandler={handleClick}>Create an account</Button>
 <Button type="button" color="error" onClickHandler={handleNope}>Continue as guest</Button>
