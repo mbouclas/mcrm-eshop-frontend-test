@@ -1,5 +1,6 @@
 ---
 import type {IMenuItem} from "@models/menus.model";
+import {safeUrl} from "../helpers/urls";
 
 const {items, level = 0} = Astro.props as {items: IMenuItem[]};
 ---
@@ -8,7 +9,7 @@ const {items, level = 0} = Astro.props as {items: IMenuItem[]};
     {items.map(item => (
             <li class={`mb-0.5 ${level > 0 ? 'ltr:pl-4 rtl:pr-4' : ''}`}>
                 <a class="w-full font-semibold text-gray-600 dark:text-white text-[15px] menu-item relative py-3 ltr:pl-5 rtl:pr-5 ltr:md:pl-6 rtl:md:pr-6 ltr:pr-4 rtl:pl-4 transition duration-300 ease-in-out"
-                   href={item.permalink} title={item.title}>
+                   href={safeUrl(item.permalink)} title={item.title}>
                     <span class="block w-full">{item.title}</span>
                 </a>
                 {Array.isArray(item.children) && (

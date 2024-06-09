@@ -3,6 +3,7 @@ import {ProductsService} from "@services/products.service";
 import {IEditableRegion} from "@models/editable-regions.model";
 import {cloudinaryRawSettings, optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
 import {cloudinarySrcSet} from "../helpers/cloudinary.helper";
+import {safeUrl} from "../helpers/urls";
 
 interface IProps {
     region: IEditableRegion;
@@ -23,7 +24,7 @@ regionItems.shift();
     <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
       <!-- START ITEM -->
       <div class="flex flex-col gap-4 lg:row-span-2 lg:col-span-2">
-        <a href={bigImage.url} title={bigImage.image.title || bigImage.title}>
+        <a href={safeUrl(bigImage.url)} title={bigImage.image.title || bigImage.title}>
 
 
         <img
@@ -38,7 +39,7 @@ regionItems.shift();
           loading="lazy"
         />
         </a>
-        <a href={bigImage.url} class="flex items-center" title={bigImage.image.title || bigImage.title}>
+        <a href={safeUrl(bigImage.url)} class="flex items-center" title={bigImage.image.title || bigImage.title}>
           <span>{bigImage.title}</span>
           <span class="ml-1"
             ><svg
@@ -64,7 +65,7 @@ regionItems.shift();
 
       <!-- START ITEM -->
       <div class="flex flex-col gap-4">
-        <a href={item.url} title={item.image.title || item.title}>
+        <a href={safeUrl(item.url)} title={item.image.title || item.title}>
         <img
           src={cloudinaryRawSettings(item.image.url, 'c_scale,dpr_auto,f_auto,w_auto:50:411')}
           srcset={`${optimizeCloudinaryImage(item.image.url, 400)} 400w, ${optimizeCloudinaryImage(item.image.url, 700)} 700w, ${optimizeCloudinaryImage(item.image.url, 968)} 968w`}
@@ -76,7 +77,7 @@ regionItems.shift();
           loading="lazy"
         />
         </a>
-        <a href={item.url} title={item.image.title || item.title} class="flex items-center">
+        <a href={safeUrl(item.url)} title={item.image.title || item.title} class="flex items-center">
           <span>{item.title}</span>
           <span class="ml-1"
             ><svg

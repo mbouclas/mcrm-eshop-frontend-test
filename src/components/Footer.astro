@@ -1,5 +1,6 @@
 ---
 import {MenusBackendService} from "@services/menus-backend.service";
+import {safeUrl} from "@helpers/urls";
 const menuService = new MenusBackendService()
 const menu = await menuService.getMenu('bottom-menu')
 // const extrasMenu = await menuService.getMenu('extras-menu')
@@ -71,7 +72,7 @@ const extrasMenu = {
               <div class="  grid grid-cols-2 gap-2 text-sm justify-start space-y-2.5">
                 {menu.menuItem.map(item => (
                 <p>
-                  <a href={item.link || item.permalink} class="hover:text-primary">{item.title}</a>
+                  <a href={safeUrl(item.link || item.permalink)} class="hover:text-primary">{item.title}</a>
                 </p>
                 ))}
               </div>

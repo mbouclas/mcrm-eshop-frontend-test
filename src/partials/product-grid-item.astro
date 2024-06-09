@@ -6,6 +6,7 @@ import {optimizeCloudinaryImage} from "../helpers/cloudinary.helper";
 import ColorSelector from '@components/product/color-selector.svelte';
 import {appConfig} from "@stores/http.store";
 import Spinner from "@components/loading-spiner.svelte";
+import {safeUrl} from "../helpers/urls";
 const {item, allColors, withColors = true} = Astro.props;
 
 const colors = getProductColors(allColors, item.variants.filter(variant => variant.color || variant.image));
@@ -18,7 +19,7 @@ const colors = getProductColors(allColors, item.variants.filter(variant => varia
     </div>
     <div class=" sm:aspect-none group-hover:opacity-75 sm:h-96 relative" >
 
-        <a href={`/product/${item.sku}/${item.slug}`} title={item.title}>
+        <a href={safeUrl(`/product/${item.sku}/${item.slug}`)} title={item.title}>
 <img  src={optimizeCloudinaryImage(item.thumb || appConfig.defaultNoImage, 360, 360, 'fill')}
      alt={item.thumb && item.thumb.alt || item.title}
      title={item.thumb && item.thumb.title ||item.title}

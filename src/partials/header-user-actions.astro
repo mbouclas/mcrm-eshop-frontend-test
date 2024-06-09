@@ -10,6 +10,7 @@ import AstroMobileMenuItem from '@components/mobile-menu-item.astro';
 import {MenusBackendService} from "@services/menus-backend.service";
 import {logoMobileUrl, logoUrl} from "../data/defaults";
 import {config} from "@data/config";
+import {safeUrl} from "../helpers/urls";
 const menuService = new MenusBackendService()
 const menu = await menuService.getMenu('top-menu')
 
@@ -30,10 +31,10 @@ const menu = await menuService.getMenu('top-menu')
           <a href="/">Home</a>
         </li>
         <li class="font-light text-white">
-          <a href="/page/about-us" title="About RPS promotions">About RPS</a>
+          <a href="/page/about-us/" title="About RPS promotions">About RPS</a>
         </li>
         <li class="font-light text-white">
-          <a href="/contact">Contact Us</a>
+          <a href="/contact/">Contact Us</a>
         </li>
         <li class="ml-auto">
 
@@ -123,7 +124,7 @@ const menu = await menuService.getMenu('top-menu')
     <div class="container px-3 mx-auto 2xl:px-20">
     <DesktopMenu>
       {menu.menuItem.map(item => (
-          <DesktopMenuItem title={item.title} link={item.link || item.permalink} children={item.children || []} client:idle
+          <DesktopMenuItem title={item.title} link={safeUrl(item.link || item.permalink)} children={item.children || []} client:idle
           metaData={item.metaData}/>
       ))}
     </DesktopMenu>

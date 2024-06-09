@@ -2,6 +2,7 @@
 import {IEditableRegion} from "@models/editable-regions.model";
 import {ProductsService} from "@services/products.service";
 import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
+import {safeUrl} from "../helpers/urls";
 
 interface IProps {
     region: IEditableRegion;
@@ -40,7 +41,7 @@ const items = regionItems.map(item => {
       <div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
         {items.map(item => (
             <div class="flex flex-col gap-4">
-              <a href={`/products/${item.slug}`} title={`${item.title} Products`}>
+              <a href={safeUrl(`/products/${item.slug}`)} title={`${item.title} Products`}>
               <img
                   src={optimizeCloudinaryImage(item.thumb.url, 320)}
                   loading="lazy"
@@ -49,7 +50,7 @@ const items = regionItems.map(item => {
                   title={item.thumb.title || `${item.title} Products`} alt={item.thumb.alt || `${item.title} Products`}
               />
               </a>
-              <a href={`/products/${item.slug}`} title={`${item.title} Products`} class="flex items-center">
+              <a href={safeUrl(`/products/${item.slug}`)} title={`${item.title} Products`} class="flex items-center">
                 <span>{item.title}</span>
                 <span class="ml-1"
                 ><svg
