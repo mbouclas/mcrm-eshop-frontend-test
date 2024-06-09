@@ -32,6 +32,8 @@
     "@uppy/webcam": "^3.3.1",
     "@uppy/xhr-upload": "^3.2.0",
     "astro-critters": "^2.0.11",
+    "astro-favicons": "^2.0.2",
+    "astro-robots-txt": "^1.0.0",
     "marked": "^11.0.0",
     "nanostores": "^0.8.1",
     "svelte": "^4.2.3",

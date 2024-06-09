@@ -5,6 +5,8 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
 import partytown from "@astrojs/partytown";
 import mdx from "@astrojs/mdx"
+import robotsTxt from "astro-robots-txt";
+import favicons from "astro-favicons";
 // import markdownIntegration from '@astropub/md'
 
 import svelte from "@astrojs/svelte";
@@ -26,6 +28,16 @@ const integrations = [
     mdx(),
   // markdownIntegration(),
     sitemap(),
+  robotsTxt(),
+  favicons({
+    masterPicture: "./public/logo.png",
+    appName: process.env.APP_NAME,
+    appShortName: process.env.APP_SHORT_NAME,
+    appDescription: process.env.APP_DESCRIPTION,
+    background: "#ffffff",
+    theme_color: "#ffffff",
+    faviconsDarkMode: false,
+  }),
   critters({critters: env === 'production'}),
     ];
 /*if (process.env.ENV === 'production') {
