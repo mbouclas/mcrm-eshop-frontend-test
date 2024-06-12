@@ -11,9 +11,6 @@
     export let onSubmit: () => void;
     let errors = {};
     let model = {
-        email: 'mbouclas@gmail.com',
-        firstName: 'Michael',
-        lastName: 'Bouclas',
         quantity: 1
     };
     let success = false;
