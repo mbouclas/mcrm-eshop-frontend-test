@@ -18,6 +18,7 @@
     "@astrojs/sitemap": "^3.1.5",
     "@astrojs/svelte": "^5.4.0",
     "@fontsource/nunito": "^5.0.18",
+    "@playform/inline": "^0.0.7",
     "@uppy/audio": "^1.1.1",
     "@uppy/core": "^3.2.1",
     "@uppy/dashboard": "^3.0.1",

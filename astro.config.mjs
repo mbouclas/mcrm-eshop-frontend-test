@@ -8,7 +8,7 @@ import mdx from "@astrojs/mdx"
 import robotsTxt from "astro-robots-txt";
 import favicons from "astro-favicons";
 // import markdownIntegration from '@astropub/md'
-
+import playformInline from "@playform/inline";
 import svelte from "@astrojs/svelte";
 import { VitePWA } from 'vite-plugin-pwa'
 import {resolve} from "path";
@@ -38,7 +38,10 @@ const integrations = [
     theme_color: "#ffffff",
     faviconsDarkMode: false,
   }),
-  critters({critters: env === 'production'}),
+  playformInline({
+    critters: env === 'production'
+  }),
+  // critters({critters: env === 'production'}),
     ];
 /*if (process.env.ENV === 'production') {
   integrations.push(partytown())
