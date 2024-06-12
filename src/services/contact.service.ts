@@ -4,9 +4,10 @@ import {setHttpLoading} from "@stores/http.store";
 export class ContactService extends BaseHttpService {
     async submitContactForm(data: any) {
         setHttpLoading(true);
+        const otp = await this.getOtp();
         const res = await fetch(`${import.meta.env.PUBLIC_BASE_URL}contact`, {
             method: 'POST',
-            headers: this.setHeaders(),
+            headers: this.setHeaders(otp),
             credentials: "include",
             body: JSON.stringify(data)
         });

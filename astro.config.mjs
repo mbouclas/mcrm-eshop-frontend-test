@@ -18,16 +18,16 @@ const env = process.env.ENV ? process.env.ENV : process.env.NODE_ENV || 'develop
 try {
   envPath = (statSync(resolve(`.env.${env}`))) ?  `.env.${env}` : '.env';
 }
- catch (e) {
+catch (e) {
 
- }
+}
 dotenv.config({ path: resolve(process.cwd(), envPath)});
 const integrations = [
-    tailwind(),
+  tailwind(),
   svelte(),
-    mdx(),
+  mdx(),
   // markdownIntegration(),
-    sitemap(),
+  sitemap(),
   robotsTxt(),
   favicons({
     masterPicture: "./public/logo.png",
@@ -42,7 +42,7 @@ const integrations = [
     critters: env === 'production'
   }),
   // critters({critters: env === 'production'}),
-    ];
+];
 /*if (process.env.ENV === 'production') {
   integrations.push(partytown())
 }*/
