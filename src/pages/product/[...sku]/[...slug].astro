@@ -60,7 +60,7 @@ function slimDownProduct(item) {
 
 const srcSet = cloudinarySrcSet(item.thumb ? item.thumb.url : config.defaultNoImage);
 
-const breadCrumbs = Array.isArray(item.breadcrumbs) ?
+const breadCrumbs = (Array.isArray(item.breadcrumbs) && Array.isArray(item.breadcrumbs[0])) ?
 [...[{title: 'Products', slug: 'all'}], ...item.breadcrumbs[0].reverse()] :
     [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
 
