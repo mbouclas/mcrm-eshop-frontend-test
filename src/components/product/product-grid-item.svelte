@@ -7,7 +7,8 @@
     import {optimizeCloudinaryImage} from "@helpers/cloudinary.helper";
     import {appConfig} from "@stores/http.store";
     import Spinner from "@components/loading-spiner.svelte";
-    import {onDestroy, onMount} from "svelte";
+    import { onMount} from "svelte";
+    import RequestPriceButton from "@components/product/request-price-button.svelte";
 
     let productColors = [],
         target: Element|null,
@@ -55,7 +56,11 @@
             {#if productColors.length > 0}
                 <p class="text-sm italic text-gray-500">{productColors.length} {productColors.length === 1 ? 'color' : 'colors'}</p>
             {/if}
+            {#if item.price === -1 || item.price === 0 || typeof item.price !== 'number'}
+                <RequestPriceButton id={item.id} />
+                {:else}
             <p class="text-base font-medium text-gray-900">{moneyFormat(item.price)}</p>
+                {/if}
         </div>
 
 
