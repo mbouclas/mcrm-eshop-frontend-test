@@ -96,10 +96,11 @@
 
 
     function selectVariant(color: IProductColorForSelector, attempt = 1) {
-        if (mode === 'picture') {
-            document.querySelector('.price').innerHTML = moneyFormat(color.price);
+        const priceEl = document.querySelector('.price');
+        if (mode === 'picture' && priceEl) {
+            priceEl.innerHTML = moneyFormat(color.price);
         }
-
+console.log(color)
         if (!container && attempt < 3) {
             // retry after 100ms
             setTimeout(() => {
@@ -114,10 +115,6 @@
         }
 
 
-        if (!target) {
-            return;
-        }
-
         // In case the DOM is not ready, retry
         if (!target && attempt < 3) {
             // retry after 100ms
@@ -127,6 +124,10 @@
                 selectVariant(color, attempt + 1);
             }, 100);
 
+            return;
+        }
+
+        if (!target) {
             return;
         }
 

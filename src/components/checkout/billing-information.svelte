@@ -13,7 +13,7 @@
     export let model: IAddress = {} as IAddress;
     let addresses: IAddress[] = [];
     let store: ICheckoutStore,
-        useSameAsShipping = false;
+        useSameAsShipping = true;
     checkoutStore.subscribe((state) => {
         store = state;
 

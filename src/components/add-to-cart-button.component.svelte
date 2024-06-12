@@ -32,6 +32,7 @@ async function handleClick() {
 
 }
 </script>
+
 <button type="button" on:click={handleClick} disabled={!valid}
         class:disabled:opacity-50={!valid}
         class:cursor-not-allowed={!valid}

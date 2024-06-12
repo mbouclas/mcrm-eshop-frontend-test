@@ -73,9 +73,9 @@
 {#if account}
     <fieldset>
         <legend class="text-sm font-semibold leading-6 text-gray-900">Your Addresses</legend>
-        {#if account.addresses.length > 1}
+        {#if Array.isArray(account.addresses) && account.addresses.length > 1}
         <p class="mt-1 text-sm leading-6 text-gray-600">Select one to set as default</p>
-            {/if}
+
         <div class="mt-6 space-y-6">
             {#each account.addresses as address, idx}
                 <div class="flex items-center gap-x-3">
@@ -100,6 +100,7 @@
                 </div>
             {/each}
         </div>
+        {/if}
     </fieldset>
 
 

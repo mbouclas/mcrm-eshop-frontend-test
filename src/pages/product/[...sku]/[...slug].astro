@@ -6,6 +6,7 @@ import {ProductsService} from "@services/products.service";
 import type {IProductModel} from "@models/products.model";
 import {moneyFormat} from "@helpers/money-format";
 import AddToCartButton from '@components/add-to-cart-button.component.svelte';
+import RequestPriceButton from '@components/product/request-price-button.svelte';
 import ColorSelector from "@components/product/color-selector.svelte";
 import ProductDetails from "@components/product/product-details.svelte";
 import QuantitySelector from "@components/product/quantity-selector.svelte";
@@ -58,7 +59,10 @@ function slimDownProduct(item) {
 }
 
 const srcSet = cloudinarySrcSet(item.thumb ? item.thumb.url : config.defaultNoImage);
-const breadCrumbs = [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
+
+const breadCrumbs = Array.isArray(item.breadcrumbs) ?
+[...[{title: 'Products', slug: 'all'}], ...item.breadcrumbs[0].reverse()] :
+    [...[{title: 'Products', slug: 'all'}], ...item.categories.reverse()];
 
 const seo = {
     title: item.seo && item.seo.title || `${breadCrumbs.map(i => i.title).join(' - ')} - ${item.title}`,
@@ -172,11 +176,14 @@ if (Array.isArray(item.related)) {
                         <QuantitySelector client:idle />
                         </div>
                         <div class="mt-10 flex">
+
                             {item.price && item.price !== -1 && (
                             <AddToCartButton item={slimDownProduct(item)} client:idle>Add to Quote</AddToCartButton>
                             )}
+
                             {!item.price || item.price === -1 && (
-                                    <div>Request price</div>
+
+                                    <RequestPriceButton client:idle id={item.id} />
                             )}
                         </div>
                     </form>

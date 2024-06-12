@@ -235,7 +235,7 @@
                 <div class="mt-1">
                     <input bind:value={model.email} class:border-red-600={errors.email}
                            type="email" id="email" name="email" autocomplete="email"
-                           placeholder="Last Name"
+                           placeholder="Email address"
                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
             </div>

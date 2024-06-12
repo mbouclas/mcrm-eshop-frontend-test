@@ -31,7 +31,10 @@
         },
     ];
 
-    userStore.subscribe((state) => {
+    userStore.subscribe(async (state) => {
+        if (state.email && !state.accessToken) {
+            await logoutUserAction();
+        }
         user = state;
     });
 

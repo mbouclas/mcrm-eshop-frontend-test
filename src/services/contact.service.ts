@@ -13,4 +13,17 @@ export class ContactService extends BaseHttpService {
         setHttpLoading(false);
         return await res.json();
     }
+
+    async requestPrice(data: any, productId: string) {
+        setHttpLoading(true);
+        const otp = await this.getOtp();
+        const res = await fetch(`${import.meta.env.PUBLIC_BASE_URL}contact/request-price`, {
+            method: 'POST',
+            headers: this.setHeaders(otp),
+            credentials: "include",
+            body: JSON.stringify({...data, ...{productId}})
+        });
+        setHttpLoading(false);
+        return await res.json();
+    }
 }

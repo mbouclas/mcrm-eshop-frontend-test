@@ -24,3 +24,4 @@ bakcups
 wrangler-build.ps1
 __cache
 .astro
+public/backups/*
