@@ -41,7 +41,7 @@
                         {#if metaData && metaData.cta.image}
                                 <div class="group relative text-base sm:text-sm ">
                                 <div class=" overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                    <img src={metaData.cta.image} width="350" height="350"
+                                    <img src={typeof metaData.cta.image === 'string' ? metaData.cta.image : metaData.cta.image.url} width="350" height="350"
                                          alt={metaData.cta.alt} title={metaData.cta.title}
                                          loading="lazy" decoding="async"
                                          class=" object-fill object-center">
