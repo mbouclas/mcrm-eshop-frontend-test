@@ -3,6 +3,7 @@
     import type {IMenuItem} from "@models/menus.model";
     import type {IGenericObject} from "@models/general";
     import {safeUrl} from "@helpers/urls.ts";
+    import {cloudinaryRawSettings} from "@helpers/cloudinary.helper.ts";
     let showMenu = false;
     export let link: string;
     export let children: IMenuItem[];
@@ -41,7 +42,8 @@
                         {#if metaData && metaData.cta.image}
                                 <div class="group relative text-base sm:text-sm ">
                                 <div class=" overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                    <img src={typeof metaData.cta.image === 'string' ? metaData.cta.image : metaData.cta.image.url} width="350" height="350"
+                                    <img src={cloudinaryRawSettings(typeof metaData.cta.image === 'string' ? metaData.cta.image : metaData.cta.image.url, 'w_384,f_webp')}
+                                         width="350" height="350"
                                          alt={metaData.cta.alt} title={metaData.cta.title}
                                          loading="lazy" decoding="async"
                                          class=" object-fill object-center">

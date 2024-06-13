@@ -9,7 +9,7 @@ const {item} = Astro.props as IHeroProps;
 const region = item.items;
 
 ---
-<section class="w-full">
+<section class="container px-4 mx-auto 2xl:px-20">
   <div class=" px-4 my-4">
     <div class="flex flex-col items-center lg:flex-row">
       <div class="w-full px-6 pb-4 lg:pb-0 lg:w-1/2">
@@ -24,7 +24,7 @@ const region = item.items;
         <div class="my-4 text-center">
           <a
             href={region['cta']['url']}
-            class="flex items-center justify-center w-full lg:justify-start"
+            class="py-2 px-5 inline-block font-semibold tracking-wide border align-middle duration-500 text-base text-center bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-white rounded-md me-2 mt-2"
           >
             <span>{region['cta']['title']}</span>
 

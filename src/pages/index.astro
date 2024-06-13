@@ -16,9 +16,11 @@ const latestProducts = editableRegionsService.getRegionFromLayout(homepageRegion
 const promotionalProducts = editableRegionsService.getRegionFromLayout(homepageRegions, "promotional-categories");
 const bestSelling = editableRegionsService.getRegionFromLayout(homepageRegions, "best-selling");
 const bottomArea = editableRegionsService.getRegionFromLayout(homepageRegions, "bottom-area");
+const seoArea = editableRegionsService.getRegionFromLayout(homepageRegions, "seo");
+const seo = seoArea.items;
 ---
 
-<Layout title="E-shop">
+<Layout title="Promotional corporate gifts Cyprus" {seo}>
     <Hero item={hero} />
     <main class="content">
     <PromotionalProducts region={promotionalProducts} />
