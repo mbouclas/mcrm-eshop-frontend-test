@@ -6,7 +6,8 @@ import {contactHeroImageUrl} from "@data/defaults";
 const editableRegionsService = new EditableRegionsBackendService();
 const regionData = await editableRegionsService.getLayout("contact");
 const region = editableRegionsService.getRegionFromLayout(regionData, "top");
-const {title, caption, map} = JSON.parse(region.items);
+
+const {title, caption, map} = typeof region.items === 'string' ? JSON.parse(region.items) : region.items;
 
 ---
 <Layout title="Contact Us">
