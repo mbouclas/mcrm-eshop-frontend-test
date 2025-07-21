@@ -34,7 +34,7 @@
            aria-expanded={showMenu}>{title}</a>
     </div>
     {#if Array.isArray(children) && children.length > 0}
-        <div class="absolute left-0 top-full w-screen max-w-7xl z-20"
+        <div class="fixed left-0 top-full w-full max-w-none z-20"
              on:mouseenter={openMenu}
              on:mouseleave={closeMenu}
              transition:fade={{ duration: 150 }}
