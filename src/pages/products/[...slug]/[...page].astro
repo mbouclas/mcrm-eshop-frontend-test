@@ -22,11 +22,11 @@ export async function getStaticPaths() {
     const all = [];
 
     for (let i = 0; categories.length > i; i++) {
-        // const products = (new ProductsService).filterProductsByCategory({slug: categories[i].slug}, allProducts);
         const products = await (new ProductsService).getCategoryProductsWithAggregations(categories[i].slug);
-
         const firstPage = arrayPaginator(products.data, 1, per_page);
-        for (let idx = 0; idx < firstPage.totalPages; idx++) {
+        // Always push at least one page, even if there are no products
+        const totalPages = Math.max(firstPage.totalPages, 1);
+        for (let idx = 0; idx < totalPages; idx++) {
             all.push({
                 params: {
                     page: idx === 0 ? undefined : (idx + 1).toString(),
@@ -35,7 +35,7 @@ export async function getStaticPaths() {
                 props: {
                     paginated: arrayPaginator(products.data, idx + 1, per_page),
                     category: categories[i],
-                    latest: products.data.slice(0, 4),
+                    latest: products.data ? products.data.slice(0, 4) : [],
                     aggregations: products.aggregations,
                     categories: [categories[i]],
                 }
@@ -89,12 +89,20 @@ const seo = {
     title: category.seo && category.seo.title || category.title,
     description: category.seo && category.seo.description || category.description,
 }
+
+
 ---
 <Layout {seo}>
 <Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...category?.parents]}
              current={category.slug !== 'all' ? category.title : ''}
              slug={`products`} />
 
+{products && products.length === 0 ? (
+    <div class="text-center py-16 text-lg text-gray-500">No products here yet...
+    <br>
+    Stay tuned</div>
+) : (
+    <>
     <div class="text-center">
         <h1 class="text-4xl font-bold tracking-tight text-gray-700 text-shadow shadow-gray-500/50">{category && category.title || 'All Products'}</h1>
         {category.description && (
@@ -107,23 +115,18 @@ const seo = {
         </p>
     </div>
     <main class="mx-auto  px-4 lg:max-w-none lg:px-8 content">
-<div class="pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-    <aside>
-
-<div class="block lg:hidden">
-
-        <MobileFilters client:idle>
-            <div slot="categories">
-                <CategoriesList categories={categories} category={category}  agg={aggregations.find(a => a.key === 'categories')} />
-            </div>
-        </MobileFilters>
-</div>
-
+    <div class="pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+        <aside>
+        <div class="block lg:hidden">
+            <MobileFilters client:idle>
+                <div slot="categories">
+                    <CategoriesList categories={categories} category={category}  agg={aggregations.find(a => a.key === 'categories')} />
+                </div>
+            </MobileFilters>
+        </div>
         <div class="flex items-center flex-wrap  hidden lg:block">
             <TextFilter client:idle />
         </div>
-
-
         <div class="hidden lg:block">
             <form class="space-y-10 divide-y divide-gray-200">
                 <div class="py-6" id="categoriesList">
@@ -138,20 +141,14 @@ const seo = {
                 <div class="py-6">
                 <MaterialsList client:idle  />
                 </div>
-
             </form>
         </div>{/* End of desktop */}
     </aside>{/* End of sidebar */}
     <section class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
-
-            <MainSearch appliedFilters={appliedFilters} colors={allColors} materials={allMaterials}
-                        client:idle>
-
-                <ProductGrid products={products} />
-
-
-            </MainSearch>
-
+        <MainSearch appliedFilters={appliedFilters} colors={allColors} materials={allMaterials}
+                    client:idle>
+            <ProductGrid products={products} />
+        </MainSearch>
         <div class="mt-8">
             <Pagination
                     totalPages={paginated.totalPages}
@@ -159,11 +156,10 @@ const seo = {
                     currentPage={paginated.currentPage}
                     client:idle
             />
-
         </div>
     </section>{/* End of products area */}
-</div>{/* End of products grid */}
+    </div>{/* End of products grid */}
     </main>
-
-
+    </>
+)}
 </Layout>
