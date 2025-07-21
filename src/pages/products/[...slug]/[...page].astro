@@ -91,9 +91,16 @@ const seo = {
 }
 
 
+let parentChain = [];
+let currentParent = category.parent;
+while (currentParent) {
+    parentChain.unshift({ title: currentParent.title, slug: currentParent.slug });
+    currentParent = currentParent.parent;
+}
+
 ---
 <Layout {seo}>
-<Breadcrumbs items={[...[{title: 'All Products', slug: 'all'}], ...category?.parents]}
+<Breadcrumbs items={[{title: 'All Products', slug: 'all'}, ...parentChain]}
              current={category.slug !== 'all' ? category.title : ''}
              slug={`products`} />
 

@@ -30,15 +30,16 @@
 
 </script>
 
-<ul class:ml-4={idx > 0}>
-    {#each mergeCategoriesWithAggs(categories, agg) as item}
-        {#if item.doc_count > 0}
-        <li class="" >
-            <a href={safeUrl(`/products/${item.slug}`)} class:list={[{'font-bold': item.slug === category?.slug}]} class="ml-3 text-sm dark:text-white/70 text-gray-600">{item.title} <span>({item.doc_count || 0})</span></a>
-            {#if Array.isArray(item.children)}
-                <svelte:self categories={item.children} agg={agg} idx={idx = idx + 1} />
-            {/if}
-        </li>
-            {/if}
-    {/each}
-</ul>
+
+    <ul class:ml-4={idx > 0}>
+        {#each mergeCategoriesWithAggs(categories, agg) as item}
+            {#if item.doc_count > 0}
+            <li class="" >
+                <a href={safeUrl(`/products/${item.slug}`)} class:list={[{'font-bold': item.slug === category?.slug}]} class="ml-3 text-sm dark:text-white/70 text-gray-600">{item.title} <span>({item.doc_count || 0})</span></a>
+                {#if Array.isArray(item.children)}
+                    <svelte:self categories={item.children} agg={agg} idx={idx = idx + 1} />
+                {/if}
+            </li>
+                {/if}
+        {/each}
+    </ul>
