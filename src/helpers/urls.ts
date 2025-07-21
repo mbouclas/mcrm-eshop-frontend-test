@@ -1,3 +1,4 @@
-export function safeUrl(url: string) {
-    return (url.endsWith('/')) ? url : url + '/';
+export function safeUrl(url: unknown) {
+    if (typeof url !== 'string' || !url) return '';
+    return url.endsWith('/') ? url : url + '/';
 }
