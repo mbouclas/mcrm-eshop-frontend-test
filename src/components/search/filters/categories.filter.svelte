@@ -16,7 +16,8 @@
     });
 
 </script>
-{#if categories.length > 1}
+
+{#if categories.length >= 1 && categories[0].children?.length > 0}
 <fieldset>
     <legend class="block text-sm font-medium text-gray-900 dark:text-white">Categories</legend>
     <div class="border-b  border-gray-200 mb-4 my-2"></div>

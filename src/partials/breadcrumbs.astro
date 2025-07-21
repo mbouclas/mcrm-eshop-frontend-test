@@ -2,7 +2,7 @@
 import {constructBreadCrumbs} from "@helpers/breadcrumbs";
 const {items = [], slug, current} = Astro.props;
 const crumbs = constructBreadCrumbs(items, slug, current);
-console.log(items)
+
 ---
 <nav class="flex px-12 py-4" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
